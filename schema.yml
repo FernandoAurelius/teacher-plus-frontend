@@ -1,0 +1,577 @@
+openapi: 3.0.3
+info:
+  title: Teacher Plus Backend API
+  version: 1.0.0
+  description: API for the Teacher Plus application
+paths:
+  /api/ai/chat/:
+    post:
+      operationId: chatWithAI
+      description: Sends a chat message and receives a response.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatRequest'
+          description: ''
+  /api/ai/chat/stream/:
+    post:
+      operationId: streamChatWithAI
+      description: Establishes a Server-Sent Events (SSE) connection for streaming
+        chat responses.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: Server-Sent Events stream of chat response
+          description: ''
+  /api/ai/index/:
+    post:
+      operationId: indexDocument
+      description: Ingests a document, chunks it, embeds the chunks, and stores them.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentIngest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DocumentIngest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DocumentIngest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentIngestResponse'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentIngest'
+          description: ''
+  /api/ai/search/:
+    get:
+      operationId: searchDocuments
+      description: Performs a semantic search based on the query.
+      parameters:
+      - in: query
+        name: k
+        schema:
+          type: integer
+          default: 5
+        description: Number of results to return
+      - in: query
+        name: q
+        schema:
+          type: string
+        description: Search query
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchResult'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                description: Missing query parameter
+          description: ''
+  /api/login/:
+    post:
+      operationId: loginUser
+      description: Authenticates a user and sets access and refresh tokens as cookies.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+          description: ''
+  /api/logout/:
+    post:
+      operationId: logoutUser
+      description: Logs out the user by deleting access and refresh token cookies.
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: Logged out successfully
+          description: ''
+  /api/refresh/:
+    post:
+      operationId: refreshUserToken
+      description: Refreshes the access token using the refresh token from cookies.
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefreshResponse'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefreshResponse'
+          description: ''
+  /api/user-context/:
+    post:
+      operationId: updateUserContext
+      description: Updates or creates user context information.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserContext'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserContext'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserContext'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserContext'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserContext'
+          description: ''
+  /api/users/:
+    get:
+      operationId: listUsers
+      description: Retrieves a list of all users.
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+          description: ''
+    post:
+      operationId: createUser
+      description: Creates a new user.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/users/{id}/:
+    get:
+      operationId: retrieveUser
+      description: Retrieves details of a specific user.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    put:
+      operationId: updateUser
+      description: Updates details of a specific user.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    delete:
+      operationId: deleteUser
+      description: Deletes a specific user.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          content:
+            application/json:
+              schema:
+                description: User deleted successfully
+          description: ''
+components:
+  schemas:
+    ChatMessage:
+      type: object
+      properties:
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        content:
+          type: string
+      required:
+      - content
+      - role
+    ChatRequest:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatMessage'
+        stream:
+          type: boolean
+          default: false
+      required:
+      - messages
+    ChatResponse:
+      type: object
+      properties:
+        reply:
+          type: string
+      required:
+      - reply
+    DocumentIngest:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+          maxLength: 255
+        text:
+          type: string
+      required:
+      - text
+      - title
+    DocumentIngestResponse:
+      type: object
+      properties:
+        document_id:
+          type: string
+          format: uuid
+        chunks:
+          type: integer
+      required:
+      - chunks
+      - document_id
+    Login:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+      - password
+      - username
+    LoginResponse:
+      type: object
+      properties:
+        detail:
+          type: string
+      required:
+      - detail
+    RefreshResponse:
+      type: object
+      properties:
+        detail:
+          type: string
+      required:
+      - detail
+    RoleEnum:
+      enum:
+      - user
+      - assistant
+      - system
+      type: string
+      description: |-
+        * `user` - user
+        * `assistant` - assistant
+        * `system` - system
+    SearchResult:
+      type: object
+      properties:
+        text:
+          type: string
+        score:
+          type: number
+          format: double
+      required:
+      - score
+      - text
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        username:
+          type: string
+          title: Usuário
+          description: Obrigatório. 150 caracteres ou menos. Letras, números e @/./+/-/_
+            apenas.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Endereço de email
+          maxLength: 254
+        first_name:
+          type: string
+          title: Primeiro nome
+          maxLength: 150
+        last_name:
+          type: string
+          title: Último nome
+          maxLength: 150
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - id
+      - password
+      - username
+    UserContext:
+      type: object
+      properties:
+        persona:
+          type: string
+          maxLength: 20
+        goal:
+          type: string
+          maxLength: 100
+        deadline:
+          type: string
+          format: date
+        weekly_time_hours:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        study_routine:
+          type: string
+        background_level:
+          type: string
+          maxLength: 100
+        background_institution_type:
+          type: string
+          maxLength: 20
+        self_assessment: {}
+        diagnostic_status:
+          type: string
+          maxLength: 20
+        diagnostic_snapshot: {}
+        interests: {}
+        preferences_formats: {}
+        preferences_language:
+          type: string
+          maxLength: 50
+        preferences_accessibility: {}
+        tech_device:
+          type: string
+          maxLength: 100
+        tech_connectivity:
+          type: string
+          maxLength: 100
+        notifications:
+          type: string
+          maxLength: 100
+        consent_lgpd:
+          type: boolean
+        materials:
+          type: array
+          items:
+            type: string
+            format: uuid
+      required:
+      - background_institution_type
+      - background_level
+      - deadline
+      - diagnostic_status
+      - goal
+      - notifications
+      - persona
+      - preferences_language
+      - study_routine
+      - tech_connectivity
+      - tech_device
+      - weekly_time_hours
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: access_token
+      description: JWT authentication with HttpOnly cookies

@@ -1,8 +1,8 @@
 @import 'tailwindcss';
 @import "tw-animate-css";
 
+/* ====== VARIANT / THEME JÁ EXISTENTES ====== */
 @custom-variant dark (&:is(.dark *));
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -40,8 +40,24 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* ====== TOKENS NeoDash (derivados do JSON) ====== */
+  --neo-primary: #3B82F6;
+  --neo-secondary: #6366F1;
+  --neo-success: #22C55E;
+  --neo-warning: #FBBF24;
+  --neo-danger: #EF4444;
+
+  /* Gradients */
+  --neo-app-bg: linear-gradient(135deg, #8EC5FC 0%, #E0C3FC 100%);          /* gradients.appBackground */
+  --neo-cta-glow: radial-gradient(35% 35% at 50% 50%, #A726FF 0%, #F72585 100%); /* gradients.ctaGlow */
+
+  /* Dimensões das blobs (ajustadas com clamp p/ responsivo) */
+  --neo-blob-size: clamp(28rem, 40vw, 46rem);
+  --neo-blob-blur: 48px;
 }
 
+/* ====== PALETA OKLCH JÁ EXISTENTE (mantida) ====== */
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.129 0.042 264.695);
@@ -77,7 +93,6 @@
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
 }
-
 .dark {
   --background: oklch(0.129 0.042 264.695);
   --foreground: oklch(0.984 0.003 247.858);
@@ -113,11 +128,55 @@
   --sidebar-ring: oklch(0.446 0.043 257.281);
 }
 
+/* ====== BASE (mantido) ====== */
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+  * { @apply border-border outline-ring/50; }
+  body { @apply bg-background text-foreground; }
+}
+
+/* ====== KEYFRAMES ====== */
+@keyframes neo-float-x {
+  0%   { transform: translateX(-8%) translateY(0) scale(1); }
+  50%  { transform: translateX(8%)  translateY(-2%) scale(1.05); }
+  100% { transform: translateX(-8%) translateY(0) scale(1); }
+}
+@keyframes neo-float-y {
+  0%   { transform: translateY(-6%) translateX(0) rotate(0deg); }
+  50%  { transform: translateY(6%)  translateX(2%) rotate(15deg); }
+  100% { transform: translateY(-6%) translateX(0) rotate(0deg); }
+}
+@keyframes neo-rotate {
+  0% { transform: rotate(0deg) scale(1); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+/* ====== UTILITÁRIOS (Tailwind v4) ====== */
+@utility neo-animated-bg {
+  position: relative;
+  background: var(--neo-app-bg);
+  isolation: isolate; /* blobs ficam atrás do conteúdo */
+}
+@utility neo-blob {
+  position: absolute;
+  width: var(--neo-blob-size);
+  height: var(--neo-blob-size);
+  filter: blur(var(--neo-blob-blur));
+  background: var(--neo-cta-glow);
+  border-radius: 9999px;
+  opacity: .55;
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+@utility animate-float-x { animation: neo-float-x 18s var(--tw-ease) infinite; }
+@utility animate-float-y { animation: neo-float-y 22s var(--tw-ease) infinite; }
+@utility animate-rotate-slow { animation: neo-rotate 60s linear infinite; }
+
+/* Posições responsivas base das blobs */
+@utility neo-blob-1 { inset-inline-start: -12%; top: -8%; }
+@utility neo-blob-2 { inset-inline-end: -16%; bottom: -14%; }
+@utility neo-blob-3 { inset-inline-start: 30%; top: 40%; }
+
+/* Respeito à acessibilidade de movimento */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float-x, .animate-float-y, .animate-rotate-slow { animation: none !important; }
 }
