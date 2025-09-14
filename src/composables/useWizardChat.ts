@@ -1,13 +1,11 @@
-// src/composables/useWizardChat.ts
 import { ref } from 'vue'
-import { createApiClient } from '@/lib/api'   // seu arquivo com Zodios/endpoints
 import { ssePost } from './useSSE'
+import { client } from '@/api/client'
+
+const BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8010'
 
 type Role = 'user' | 'assistant' | 'system'
 export type ChatMsg = { role: Role; content: string }
-
-const BASE = import.meta.env.VITE_API_BASE_URL ?? ''
-const api = createApiClient(BASE, { withCredentials: true })
 
 export function useWizardChat(opts?: { simulate?: boolean }) {
   const messages = ref<ChatMsg[]>([])
@@ -39,8 +37,8 @@ export function useWizardChat(opts?: { simulate?: boolean }) {
       messages.value.push({ role: 'assistant', content: partial.value })
       partial.value = ''
     } else {
-      const { data } = await api.chatWithAI({ body: { messages: messages.value, stream: false } })
-      messages.value.push({ role: 'assistant', content: data.reply })
+      const response = await client.chatWithAI({ messages: messages.value, stream: false })
+      messages.value.push({ role: 'assistant', content: response.reply })
     }
   }
 
