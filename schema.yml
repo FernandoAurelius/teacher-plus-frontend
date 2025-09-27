@@ -9,7 +9,7 @@ paths:
       operationId: chatWithAI
       description: Sends a chat message and receives a response.
       tags:
-      - api
+      - ai
       requestBody:
         content:
           application/json:
@@ -43,7 +43,7 @@ paths:
       description: Establishes a Server-Sent Events (SSE) connection for streaming
         chat responses.
       tags:
-      - api
+      - ai
       requestBody:
         content:
           application/json:
@@ -70,7 +70,7 @@ paths:
       operationId: indexDocument
       description: Ingests a document, chunks it, embeds the chunks, and stores them.
       tags:
-      - api
+      - ai
       requestBody:
         content:
           application/json:
@@ -116,7 +116,7 @@ paths:
         description: Search query
         required: true
       tags:
-      - api
+      - ai
       security:
       - cookieAuth: []
       responses:
@@ -139,7 +139,7 @@ paths:
       operationId: loginUser
       description: Authenticates a user and sets access and refresh tokens as cookies.
       tags:
-      - api
+      - login
       requestBody:
         content:
           application/json:
@@ -173,7 +173,7 @@ paths:
       operationId: logoutUser
       description: Logs out the user by deleting access and refresh token cookies.
       tags:
-      - api
+      - logout
       security:
       - cookieAuth: []
       responses:
@@ -188,7 +188,7 @@ paths:
       operationId: refreshUserToken
       description: Refreshes the access token using the refresh token from cookies.
       tags:
-      - api
+      - refresh
       security:
       - cookieAuth: []
       - {}
@@ -210,7 +210,7 @@ paths:
       operationId: updateUserContext
       description: Updates or creates user context information.
       tags:
-      - api
+      - user-context
       requestBody:
         content:
           application/json:
@@ -243,7 +243,7 @@ paths:
       operationId: listUsers
       description: Retrieves a list of all users.
       tags:
-      - api
+      - users
       security:
       - cookieAuth: []
       responses:
@@ -253,24 +253,24 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/User'
+                  $ref: '#/components/schemas/UserRead'
           description: ''
     post:
       operationId: createUser
       description: Creates a new user.
       tags:
-      - api
+      - users
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserWrite'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserWrite'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserWrite'
         required: true
       security:
       - cookieAuth: []
@@ -280,13 +280,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserRead'
           description: ''
         '400':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserWrite'
           description: ''
   /api/users/{id}/:
     get:
@@ -300,7 +300,7 @@ paths:
           format: uuid
         required: true
       tags:
-      - api
+      - users
       security:
       - cookieAuth: []
       responses:
@@ -308,7 +308,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserRead'
           description: ''
     put:
       operationId: updateUser
@@ -321,18 +321,18 @@ paths:
           format: uuid
         required: true
       tags:
-      - api
+      - users
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserWrite'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserWrite'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserWrite'
         required: true
       security:
       - cookieAuth: []
@@ -341,13 +341,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserRead'
           description: ''
         '400':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserWrite'
           description: ''
     delete:
       operationId: deleteUser
@@ -360,7 +360,7 @@ paths:
           format: uuid
         required: true
       tags:
-      - api
+      - users
       security:
       - cookieAuth: []
       responses:
@@ -441,8 +441,11 @@ components:
       properties:
         detail:
           type: string
+        has_user_context:
+          type: boolean
       required:
       - detail
+      - has_user_context
     RefreshResponse:
       type: object
       properties:
@@ -471,40 +474,6 @@ components:
       required:
       - score
       - text
-    User:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        username:
-          type: string
-          title: Usuário
-          description: Obrigatório. 150 caracteres ou menos. Letras, números e @/./+/-/_
-            apenas.
-          pattern: ^[\w.@+-]+$
-          maxLength: 150
-        email:
-          type: string
-          format: email
-          title: Endereço de email
-          maxLength: 254
-        first_name:
-          type: string
-          title: Primeiro nome
-          maxLength: 150
-        last_name:
-          type: string
-          title: Último nome
-          maxLength: 150
-        password:
-          type: string
-          writeOnly: true
-      required:
-      - id
-      - password
-      - username
     UserContext:
       type: object
       properties:
@@ -569,6 +538,65 @@ components:
       - tech_connectivity
       - tech_device
       - weekly_time_hours
+    UserRead:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        username:
+          type: string
+          title: Usuário
+          description: Obrigatório. 150 caracteres ou menos. Letras, números e @/./+/-/_
+            apenas.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Endereço de email
+          maxLength: 254
+        first_name:
+          type: string
+          title: Primeiro nome
+          maxLength: 150
+        last_name:
+          type: string
+          title: Último nome
+          maxLength: 150
+      required:
+      - id
+      - username
+    UserWrite:
+      type: object
+      properties:
+        username:
+          type: string
+          title: Usuário
+          description: Obrigatório. 150 caracteres ou menos. Letras, números e @/./+/-/_
+            apenas.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Endereço de email
+          maxLength: 254
+        first_name:
+          type: string
+          title: Primeiro nome
+          maxLength: 150
+        last_name:
+          type: string
+          title: Último nome
+          maxLength: 150
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - password
+      - username
   securitySchemes:
     cookieAuth:
       type: apiKey

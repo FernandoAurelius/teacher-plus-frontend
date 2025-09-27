@@ -15,7 +15,7 @@ const DocumentIngestResponse = z
   .passthrough()
 const SearchResult = z.object({ text: z.string(), score: z.number() }).passthrough()
 const Login = z.object({ username: z.string(), password: z.string() }).passthrough()
-const LoginResponse = z.object({ detail: z.string() }).passthrough()
+const LoginResponse = z.object({ detail: z.string(), has_user_context: z.boolean() }).passthrough()
 const RefreshResponse = z.object({ detail: z.string() }).passthrough()
 const UserContext = z
   .object({
@@ -40,9 +40,20 @@ const UserContext = z
     materials: z.array(z.string().uuid()).optional(),
   })
   .passthrough()
-const User = z
+const UserRead = z
   .object({
     id: z.string().uuid(),
+    username: z
+      .string()
+      .max(150)
+      .regex(/^[\w.@+-]+$/),
+    email: z.string().max(254).email().optional(),
+    first_name: z.string().max(150).optional(),
+    last_name: z.string().max(150).optional(),
+  })
+  .passthrough()
+const UserWrite = z
+  .object({
     username: z
       .string()
       .max(150)
@@ -66,7 +77,8 @@ export const schemas = {
   LoginResponse,
   RefreshResponse,
   UserContext,
-  User,
+  UserRead,
+  UserWrite,
 }
 
 export const endpoints = makeApi([
@@ -166,11 +178,11 @@ export const endpoints = makeApi([
         schema: Login,
       },
     ],
-    response: z.object({ detail: z.string() }).passthrough(),
+    response: LoginResponse,
     errors: [
       {
         status: 401,
-        schema: z.object({ detail: z.string() }).passthrough(),
+        schema: LoginResponse,
       },
     ],
   },
@@ -223,7 +235,7 @@ export const endpoints = makeApi([
     alias: 'listUsers',
     description: `Retrieves a list of all users.`,
     requestFormat: 'json',
-    response: z.array(User),
+    response: z.array(UserRead),
   },
   {
     method: 'post',
@@ -235,14 +247,14 @@ export const endpoints = makeApi([
       {
         name: 'body',
         type: 'Body',
-        schema: User,
+        schema: UserWrite,
       },
     ],
-    response: User,
+    response: UserRead,
     errors: [
       {
         status: 400,
-        schema: User,
+        schema: UserWrite,
       },
     ],
   },
@@ -259,7 +271,7 @@ export const endpoints = makeApi([
         schema: z.string().uuid(),
       },
     ],
-    response: User,
+    response: UserRead,
   },
   {
     method: 'put',
@@ -271,7 +283,7 @@ export const endpoints = makeApi([
       {
         name: 'body',
         type: 'Body',
-        schema: User,
+        schema: UserWrite,
       },
       {
         name: 'id',
@@ -279,11 +291,11 @@ export const endpoints = makeApi([
         schema: z.string().uuid(),
       },
     ],
-    response: User,
+    response: UserRead,
     errors: [
       {
         status: 400,
-        schema: User,
+        schema: UserWrite,
       },
     ],
   },

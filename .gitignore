@@ -31,3 +31,5 @@ coverage
 
 # Environment variables
 .env
+
+static-components-reference/*
