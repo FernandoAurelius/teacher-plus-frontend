@@ -48,8 +48,9 @@ watch(shouldShowConfirmation, (newVal) => {
 })
 
 async function onSend() {
-  if (!input.value.trim()) return
-  await send(input.value, true)
+  const trimmed = input.value.trim()
+  if (!trimmed) return
+  await send(trimmed, true)
   input.value = ''
   await nextTick()
   document.getElementById('chat-end')?.scrollIntoView({ behavior: 'smooth' })
@@ -108,7 +109,7 @@ async function confirmAndSave() {
     <div id="chat-end"></div>
 
     <div class="flex gap-2 pt-2">
-      <input v-model="input" type="text" placeholder="Digite sua resposta…"
+      <input v-model="input" @keydown.enter.prevent="onSend" type="text" placeholder="Digite sua resposta…"
              class="flex-1 px-3 py-2 rounded-lg border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring" />
       <button @click="onSend"
               class="px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[.98] transition">

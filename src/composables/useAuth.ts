@@ -15,7 +15,7 @@ export function useAuth() {
     store.error = ''
     try {
       await client.loginUser({ username, password })
-      store.isAuthenticated = true
+      await store.checkAuth()
       router.push('/wizard-simulado')
     } catch (err: unknown) {
       const error = err as { response?: { data?: { detail?: string } } }
@@ -28,7 +28,7 @@ export function useAuth() {
   const logout = async () => {
     store.loading = true
     try {
-      await client.logoutUser({})
+      await client.logoutUser(undefined)
       store.isAuthenticated = false
       store.user = null
       router.push('/login')

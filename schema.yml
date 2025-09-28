@@ -183,6 +183,21 @@ paths:
               schema:
                 description: Logged out successfully
           description: ''
+  /api/me/:
+    get:
+      operationId: getCurrentUser
+      description: Retrieves the current authenticated user's data.
+      tags:
+      - me
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRead'
+          description: ''
   /api/refresh/:
     post:
       operationId: refreshUserToken

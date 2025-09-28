@@ -16,6 +16,18 @@ const DocumentIngestResponse = z
 const SearchResult = z.object({ text: z.string(), score: z.number() }).passthrough()
 const Login = z.object({ username: z.string(), password: z.string() }).passthrough()
 const LoginResponse = z.object({ detail: z.string(), has_user_context: z.boolean() }).passthrough()
+const UserRead = z
+  .object({
+    id: z.string().uuid(),
+    username: z
+      .string()
+      .max(150)
+      .regex(/^[\w.@+-]+$/),
+    email: z.string().max(254).email().optional(),
+    first_name: z.string().max(150).optional(),
+    last_name: z.string().max(150).optional(),
+  })
+  .passthrough()
 const RefreshResponse = z.object({ detail: z.string() }).passthrough()
 const UserContext = z
   .object({
@@ -38,18 +50,6 @@ const UserContext = z
     notifications: z.string().max(100),
     consent_lgpd: z.boolean().optional(),
     materials: z.array(z.string().uuid()).optional(),
-  })
-  .passthrough()
-const UserRead = z
-  .object({
-    id: z.string().uuid(),
-    username: z
-      .string()
-      .max(150)
-      .regex(/^[\w.@+-]+$/),
-    email: z.string().max(254).email().optional(),
-    first_name: z.string().max(150).optional(),
-    last_name: z.string().max(150).optional(),
   })
   .passthrough()
 const UserWrite = z
@@ -75,9 +75,9 @@ export const schemas = {
   SearchResult,
   Login,
   LoginResponse,
+  UserRead,
   RefreshResponse,
   UserContext,
-  UserRead,
   UserWrite,
 }
 
@@ -193,6 +193,14 @@ export const endpoints = makeApi([
     description: `Logs out the user by deleting access and refresh token cookies.`,
     requestFormat: 'json',
     response: z.unknown(),
+  },
+  {
+    method: 'get',
+    path: '/api/me/',
+    alias: 'getCurrentUser',
+    description: `Retrieves the current authenticated user&#x27;s data.`,
+    requestFormat: 'json',
+    response: UserRead,
   },
   {
     method: 'post',
