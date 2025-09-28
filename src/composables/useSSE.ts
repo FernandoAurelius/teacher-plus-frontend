@@ -18,17 +18,41 @@ export async function ssePost(url: string, body: unknown, opts: SSEOptions = {})
 
   const reader = res.body.getReader()
   const decoder = new TextDecoder()
+
   let buffer = ''
+  let eventLines: string[] = []
 
   try {
     while (true) {
       const { value, done } = await reader.read()
       if (done) break
       buffer += decoder.decode(value, { stream: true })
-      const lines = buffer.split('\n')
-      buffer = lines.pop() || ''
-      for (const line of lines) {
-        if (line.startsWith('data:')) onMessage?.(line.slice(5).trim())
+
+      // consome linha a linha
+      let idx: number
+      while ((idx = buffer.indexOf('\n')) !== -1) {
+        const line = buffer.slice(0, idx)
+        buffer = buffer.slice(idx + 1)
+
+        if (line === '') {
+          // fim de um evento
+          if (eventLines.length) {
+            const dataPayload = eventLines
+              .filter(l => l.startsWith('data:'))
+              .map(l => l.slice(5).replace(/^\s/, '')) // remove 1 espaço após "data:"
+              .join('\n') // preserva quebras
+            if (dataPayload && !dataPayload.startsWith('[stream-error]')) {
+              onMessage?.(dataPayload)
+              // atraso extra opcional no cliente:
+              // await new Promise(r => setTimeout(r, 8))
+            }
+            eventLines = []
+          }
+        } else if (line.startsWith(':')) {
+          // comentário SSE — ignore
+        } else {
+          eventLines.push(line)
+        }
       }
     }
   } catch (e) {

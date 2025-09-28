@@ -95,7 +95,7 @@ async function confirmAndSave() {
       v-for="(m, i) in messages" :key="i"
       :class="m.role === 'assistant' ? 'bg-muted/30' : ''"
     >
-      <div class="overflow-hidden [mask-image:linear-gradient(90deg,#000_60%,transparent)]">
+      <div>
         <p class="leading-relaxed whitespace-pre-wrap">{{ m.content }}</p>
       </div>
     </div>
@@ -103,7 +103,7 @@ async function confirmAndSave() {
     <div v-if="isStreaming || partial"
          class="rounded-xl border border-border bg-muted/30 p-4 shadow-md animate-in fade-in">
       <IAThinking />
-      <div class="mt-2 whitespace-pre-wrap">{{ partial }}</div>
+      <div class="mt-2 whitespace-pre-wrap font-mono typing-caret">{{ partial }}</div>
     </div>
 
     <div id="chat-end"></div>
@@ -154,3 +154,23 @@ async function confirmAndSave() {
     </div>
   </div>
 </template>
+
+<style scoped>
+.typing-caret {
+  position: relative;
+}
+.typing-caret::after {
+  content: "";
+  position: absolute;
+  width: 1px;
+  height: 1em;
+  right: -2px;
+  top: 0.1em;
+  border-right: 1px solid currentColor;
+  animation: caret-blink .9s steps(1) infinite;
+}
+
+@keyframes caret-blink {
+  50% { border-right-color: transparent; }
+}
+</style>
