@@ -3,10 +3,11 @@ export type SSEOptions = {
   onMessage?: (data: string) => void
   onError?: (err: unknown) => void
   headers?: Record<string, string>
+  delayMs?: number
 }
 
 export async function ssePost(url: string, body: unknown, opts: SSEOptions = {}) {
-  const { signal, onMessage, onError, headers } = opts
+  const { signal, onMessage, onError, headers, delayMs = 0 } = opts
   const res = await fetch(url, {
     method: 'POST',
     credentials: 'include',
@@ -43,8 +44,7 @@ export async function ssePost(url: string, body: unknown, opts: SSEOptions = {})
               .join('\n') // preserva quebras
             if (dataPayload && !dataPayload.startsWith('[stream-error]')) {
               onMessage?.(dataPayload)
-              // atraso extra opcional no cliente:
-              // await new Promise(r => setTimeout(r, 8))
+              if (delayMs) await new Promise(r => setTimeout(r, delayMs))
             }
             eventLines = []
           }

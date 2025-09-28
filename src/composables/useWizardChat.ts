@@ -11,7 +11,10 @@ export function useWizardChat(opts?: { simulate?: boolean }) {
   const messages = ref<ChatMsg[]>([])
   const isStreaming = ref(false)
   const partial = ref('')
+  const chunkKey = ref(0)
   let abortCtrl: AbortController | null = null
+  let pending = ''
+  let flushTimer: number | null = null
 
   if (opts?.simulate) {
     messages.value.push({
@@ -23,6 +26,7 @@ export function useWizardChat(opts?: { simulate?: boolean }) {
   async function send(input: string, stream = true) {
     messages.value.push({ role: 'user', content: input })
     partial.value = ''
+    pending = ''
 
     if (stream) {
       isStreaming.value = true
@@ -35,10 +39,27 @@ export function useWizardChat(opts?: { simulate?: boolean }) {
           { messages: messages.value },
           {
             signal: abortCtrl.signal,
-            onMessage: (chunk) => { partial.value += chunk },
+            onMessage: (chunk) => {
+              pending += chunk
+              if (!flushTimer) {
+                flushTimer = window.setTimeout(() => {
+                  partial.value += pending
+                  pending = ''
+                  chunkKey.value++
+                  if (flushTimer) window.clearTimeout(flushTimer)
+                  flushTimer = null
+                }, 80)
+              }
+            },
             onError: () => { /* cai no finally */ }
           }
         )
+        // flush final
+        if (pending) {
+          partial.value += pending
+          pending = ''
+          chunkKey.value++
+        }
       } finally {
         isStreaming.value = false
         if (partial.value.trim()) {
@@ -52,5 +73,5 @@ export function useWizardChat(opts?: { simulate?: boolean }) {
     }
   }
 
-  return { messages, isStreaming, partial, send }
+  return { messages, isStreaming, partial, send, chunkKey }
 }

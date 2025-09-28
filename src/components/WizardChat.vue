@@ -2,10 +2,12 @@
 import { ref, nextTick, computed, watch } from 'vue'
 import { useWizardChat } from '@/composables/useWizardChat'
 import IAThinking from './IAThinking.vue'
+import ChatMarkdown from './ChatMarkdown.vue'
+import { Bot, User } from 'lucide-vue-next'
 import { client } from '@/api/client'
 
 const props = defineProps<{ simulate?: boolean }>()
-const { messages, isStreaming, partial, send } = useWizardChat({ simulate: props.simulate })
+const { messages, isStreaming, partial, send, chunkKey } = useWizardChat({ simulate: props.simulate })
 const input = ref('')
 const showConfirmationModal = ref(false)
 const isSaving = ref(false)
@@ -50,8 +52,8 @@ watch(shouldShowConfirmation, (newVal) => {
 async function onSend() {
   const trimmed = input.value.trim()
   if (!trimmed) return
-  await send(trimmed, true)
   input.value = ''
+  await send(trimmed, true)
   await nextTick()
   document.getElementById('chat-end')?.scrollIntoView({ behavior: 'smooth' })
 }
@@ -89,21 +91,47 @@ async function confirmAndSave() {
 </script>
 
 <template>
-  <div class="space-y-3">
+  <div class="space-y-3 max-h-[calc(100vh-200px)] overflow-y-auto">
     <div
-      class="rounded-xl border border-border bg-card p-4 shadow-md animate-in fade-in slide-in-from-bottom-2"
+      class="chat-message-fade"
       v-for="(m, i) in messages" :key="i"
-      :class="m.role === 'assistant' ? 'bg-muted/30' : ''"
     >
-      <div>
-        <p class="leading-relaxed whitespace-pre-wrap">{{ m.content }}</p>
+      <div v-if="m.role === 'assistant'" class="flex items-start gap-3">
+        <Bot class="h-5 w-5 text-primary mt-1 flex-shrink-0" />
+        <div
+          class="rounded-2xl border border-border bg-muted/30 px-4 py-3 shadow-sm
+                 w-fit max-w-[min(75ch,calc(100%-4rem))] break-words"
+        >
+          <ChatMarkdown :source="m.content" />
+        </div>
+      </div>
+      <div v-else class="flex items-start justify-end gap-3">
+        <div
+          class="rounded-2xl border border-border bg-card px-4 py-3 shadow-sm
+                 w-fit max-w-[min(75ch,calc(100%-4rem))] break-words text-right"
+        >
+          <p class="leading-relaxed whitespace-pre-wrap">{{ m.content }}</p>
+        </div>
+        <User class="h-5 w-5 text-muted-foreground mt-1 flex-shrink-0" />
       </div>
     </div>
 
     <div v-if="isStreaming || partial"
-         class="rounded-xl border border-border bg-muted/30 p-4 shadow-md animate-in fade-in">
-      <IAThinking />
-      <div class="mt-2 whitespace-pre-wrap font-mono typing-caret">{{ partial }}</div>
+         class="chat-message-fade">
+      <div class="flex items-start gap-3">
+        <Bot class="h-5 w-5 text-primary mt-1 flex-shrink-0" />
+        <div
+          class="rounded-2xl border border-border bg-muted/30 px-4 py-3 shadow-sm
+                 w-fit max-w-[min(75ch,calc(100%-4rem))] break-words"
+        >
+          <IAThinking />
+          <div class="mt-2 typing-mask" :key="chunkKey">
+            <div class="typing-caret">
+              <ChatMarkdown :source="partial" />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="chat-end"></div>
@@ -156,6 +184,25 @@ async function confirmAndSave() {
 </template>
 
 <style scoped>
+.typing-mask {
+  /* wipe por máscara, sem flashes */
+  -webkit-mask-image: linear-gradient(90deg, #000 65%, transparent 85%);
+          mask-image: linear-gradient(90deg, #000 65%, transparent 85%);
+  -webkit-mask-size: 200% 100%;
+          mask-size: 200% 100%;
+  -webkit-mask-position: 0 0;
+          mask-position: 0 0;
+  animation: mask-wipe .28s ease-out;
+  will-change: -webkit-mask-position, mask-position;
+}
+
+@keyframes mask-wipe {
+  to {
+    -webkit-mask-position: 100% 0;
+            mask-position: 100% 0;
+  }
+}
+
 .typing-caret {
   position: relative;
 }
@@ -172,5 +219,20 @@ async function confirmAndSave() {
 
 @keyframes caret-blink {
   50% { border-right-color: transparent; }
+}
+
+.chat-message-fade {
+  animation: chatFadeIn 0.6s ease-out;
+}
+
+@keyframes chatFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>
