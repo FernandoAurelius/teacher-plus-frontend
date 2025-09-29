@@ -14,12 +14,15 @@ export function useAuth() {
     store.loading = true
     store.error = ''
     try {
-      await client.loginUser({ username, password })
-      await store.checkAuth()
-      router.push('/wizard-simulado')
+      const has_user_context = (await client.loginUser({ username, password })).has_user_context
+      const userData = await client.getCurrentUser()
+      store.isAuthenticated = true
+      store.user = userData
+      return { userData, has_user_context }
     } catch (err: unknown) {
       const error = err as { response?: { data?: { detail?: string } } }
       store.error = error.response?.data?.detail || 'Credenciais inválidas'
+      throw err
     } finally {
       store.loading = false
     }

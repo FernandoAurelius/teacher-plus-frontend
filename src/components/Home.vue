@@ -1,7 +1,5 @@
 <template>
   <div class="min-h-screen text-foreground relative overflow-hidden">
-    <!-- Container de plano de fundo (cobre o viewport) -->
-    <NeoAnimatedBackground />
 
     <!-- Navigation -->
     <nav class="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
@@ -310,7 +308,6 @@ import {
   Check,
   ChevronDown
 } from 'lucide-vue-next'
-import NeoAnimatedBackground from './NeoAnimatedBackground.vue'
 
 const isAnnual = ref(false)
 const openFaq = ref(null)
@@ -646,4 +643,18 @@ const toggleFaq = (index) => {
   transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transition-duration: 300ms;
 }
+
+/* Floating icons animation */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-10px) rotate(5deg);
+  }
+}
+
 </style>

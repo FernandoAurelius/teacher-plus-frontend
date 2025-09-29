@@ -49,6 +49,7 @@ watch(shouldShowConfirmation, (newVal) => {
   }
 })
 
+
 async function onSend() {
   const trimmed = input.value.trim()
   if (!trimmed) return
@@ -91,7 +92,9 @@ async function confirmAndSave() {
 </script>
 
 <template>
-  <div class="space-y-3 max-h-[calc(100vh-200px)] overflow-y-auto">
+  <div class="relative">
+
+    <div class="space-y-3 max-h-[calc(100vh-200px)] overflow-y-auto relative z-10">
     <div
       class="chat-message-fade"
       v-for="(m, i) in messages" :key="i"
@@ -99,16 +102,16 @@ async function confirmAndSave() {
       <div v-if="m.role === 'assistant'" class="flex items-start gap-3">
         <Bot class="h-5 w-5 text-primary mt-1 flex-shrink-0" />
         <div
-          class="rounded-2xl border border-border bg-muted/30 px-4 py-3 shadow-sm
-                 w-fit max-w-[min(75ch,calc(100%-4rem))] break-words"
+          class="rounded-2xl border border-border bg-muted/70 backdrop-blur px-4 py-3 shadow-sm
+                  w-fit max-w-[min(75ch,calc(100%-4rem))] break-words"
         >
           <ChatMarkdown :source="m.content" />
         </div>
       </div>
       <div v-else class="flex items-start justify-end gap-3">
         <div
-          class="rounded-2xl border border-border bg-card px-4 py-3 shadow-sm
-                 w-fit max-w-[min(75ch,calc(100%-4rem))] break-words text-right"
+          class="rounded-2xl border border-border bg-card/90 backdrop-blur px-4 py-3 shadow-sm
+                  w-fit max-w-[min(75ch,calc(100%-4rem))] break-words text-right"
         >
           <p class="leading-relaxed whitespace-pre-wrap">{{ m.content }}</p>
         </div>
@@ -121,8 +124,8 @@ async function confirmAndSave() {
       <div class="flex items-start gap-3">
         <Bot class="h-5 w-5 text-primary mt-1 flex-shrink-0" />
         <div
-          class="rounded-2xl border border-border bg-muted/30 px-4 py-3 shadow-sm
-                 w-fit max-w-[min(75ch,calc(100%-4rem))] break-words"
+          class="rounded-2xl border border-border bg-muted/70 backdrop-blur px-4 py-3 shadow-sm
+                  w-fit max-w-[min(75ch,calc(100%-4rem))] break-words"
         >
           <IAThinking />
           <div class="mt-2 typing-mask" :key="chunkKey">
@@ -180,6 +183,7 @@ async function confirmAndSave() {
         </div>
       </div>
     </div>
+    </div>
   </div>
 </template>
 
@@ -235,4 +239,18 @@ async function confirmAndSave() {
     transform: translateY(0);
   }
 }
+
+/* Floating icons animation */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-10px) rotate(5deg);
+  }
+}
+
 </style>

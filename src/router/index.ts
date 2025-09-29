@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import WizardSimulado from '@/components/WizardSimulado.vue'
 import LoginSignup from '@/components/LoginSignup.vue'
 import Home from '@/components/Home.vue'
+import SignupPage from '@/components/SignupPage.vue'
 import { useAuthStore } from '@/stores/auth'
 
 const router = createRouter({
@@ -9,6 +10,7 @@ const router = createRouter({
   routes: [
     { path: '/', component: Home },
     { path: '/login', component: LoginSignup },
+    { path: '/signup', component: SignupPage },
     { path: '/wizard-simulado', component: WizardSimulado, meta: { requiresAuth: true } },
   ],
 })
