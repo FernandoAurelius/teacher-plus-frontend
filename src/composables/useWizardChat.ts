@@ -24,7 +24,9 @@ export function useWizardChat(opts?: { simulate?: boolean }) {
   }
 
   async function send(input: string, stream = true) {
-    messages.value.push({ role: 'user', content: input })
+    if (input.trim()) {
+      messages.value.push({ role: 'user', content: input })
+    }
     partial.value = ''
     pending = ''
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, nextTick, computed, watch } from 'vue'
+import { ref, nextTick, computed, watch, onMounted } from 'vue'
 import { useWizardChat } from '@/composables/useWizardChat'
 import IAThinking from './IAThinking.vue'
 import ChatMarkdown from './ChatMarkdown.vue'
@@ -11,6 +11,16 @@ const { messages, isStreaming, partial, send, chunkKey } = useWizardChat({ simul
 const input = ref('')
 const showConfirmationModal = ref(false)
 const isSaving = ref(false)
+
+onMounted(async () => {
+  // Adicionar prompt do sistema
+  messages.value.push({
+    role: 'system',
+    content: `Você é um assistente de IA especializado em ajudar estudantes a prepararem-se para o ENEM. Sua tarefa é coletar informações sobre o perfil do usuário, suas metas de estudo, rotina, e preferências para criar um plano personalizado. Comece se apresentando de forma amigável e faça perguntas iniciais para entender o perfil do estudante.`
+  })
+  // Iniciar stream automaticamente
+  await send('')
+})
 
 const collectedContext = computed(() => {
   // Extrair informações do contexto das mensagens do assistente
@@ -92,13 +102,12 @@ async function confirmAndSave() {
 </script>
 
 <template>
-  <div class="relative">
+  <div class="relative h-full max-h-dvh overflow-hidden flex flex-col">
 
-    <div class="space-y-3 max-h-[calc(100vh-200px)] overflow-y-auto relative z-10">
-    <div
-      class="chat-message-fade"
-      v-for="(m, i) in messages" :key="i"
-    >
+    <!-- Área rolável apenas do chat -->
+    <div class="flex-1 overflow-y-auto overscroll-contain scroll-smooth">
+      <div class="min-h-full flex flex-col justify-end space-y-3 px-4 pt-4 pb-28">
+        <div class="chat-message-fade" v-for="(m, i) in messages.filter(m => m.role !== 'system')" :key="i">
       <div v-if="m.role === 'assistant'" class="flex items-start gap-3">
         <Bot class="h-5 w-5 text-primary mt-1 flex-shrink-0" />
         <div
@@ -138,12 +147,15 @@ async function confirmAndSave() {
     </div>
 
     <div id="chat-end"></div>
+      </div>
+    </div>
 
-    <div class="flex gap-2 pt-2">
+    <!-- Barra fixa do input (dentro do componente, não da página) -->
+    <div class="absolute bottom-0 left-0 right-0 flex gap-2 p-4 bg-background border-t">
       <input v-model="input" @keydown.enter.prevent="onSend" type="text" placeholder="Digite sua resposta…"
-             class="flex-1 px-3 py-2 rounded-lg border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring" />
+             class="flex-1 px-3 py-2 rounded-lg border border-input bg-background hover:border-input hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50" />
       <button @click="onSend"
-              class="px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[.98] transition">
+              class="px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[.98] transition disabled:opacity-50">
         Enviar
       </button>
     </div>
@@ -182,7 +194,6 @@ async function confirmAndSave() {
           </div>
         </div>
       </div>
-    </div>
     </div>
   </div>
 </template>
