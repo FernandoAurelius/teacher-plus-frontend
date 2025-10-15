@@ -22,7 +22,6 @@
 | **Nomenclatura**    | PascalCase p/ components, kebab-case p/ files, sufixo *Store* para Pinia.          | `quizStore.ts`                               |
 | **Estilo Tailwind** | Apenas classes utilitárias; proibir CSS inline; radius e cores via tokens.         | `class="bg-primary text-white rounded-md"`   |
 | **Comentários**     | JSDoc de *intenção* no topo; sem repetir óbvio do código.                          | `/** Cria PDF A4 com cabeçalho da escola */` |
-| **Testes**          | Criar `.spec.ts` Vitest ≥ 90 % cobertura + Cypress e2e.                            | —                                            |
 
 ### 2.2 Anti‑Padrões proibidos
 
@@ -43,22 +42,10 @@ Antes de retornar, a IA deve:
 
 * Deve...?
 
-## 6 Logging e Attribution
-
-* Todos os resultados devem ser gravados via `gemini --log json --output logs/gemini-YYYYMMDDHHmmss.json`.
-* Commits derivados devem usar `Co-authored-by: Gemini-CLI <ai@gemini>` no rodapé.
-
-## 7 Limites e Segurança
-
-* Chave `GEMINI_API_KEY` vem de `.env.local`.
-* Máx. 60 req/min; exceder → cortar saída.
-* Não enviar dados pessoais dos usuários.
-
 ## 8 Referência Rápida de Bibliotecas
 
 * **Tailwind v4 Plugin** (`@tailwindcss/vite`) – obrigatório.
-* **Axios instance** em `src/shared/api/http.ts`.
-* **Gemini SDK wrapper** em `src/shared/api/gemini.ts`.
+* **Axios instance** em `src/shared/api/hlient.ts`.
 * **jsPDF** v2 para exportar A4.
 
 ---
