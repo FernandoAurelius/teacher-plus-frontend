@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { client } from '@/api/client'
-import { schemas } from '@/api/schemas'
+import { client } from '@/shared/api/client'
+import { schemas } from '@/shared/api/schemas'
 
 type UserRead = typeof schemas.UserRead._type
 

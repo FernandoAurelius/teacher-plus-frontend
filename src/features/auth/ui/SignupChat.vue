@@ -136,14 +136,14 @@
 <script setup lang="ts">
 import { ref, nextTick, onMounted } from 'vue'
 import { Bot, User, Eye, EyeOff } from 'lucide-vue-next'
-import IAThinking from './IAThinking.vue'
-import ChatMarkdown from './ChatMarkdown.vue'
-import { useAuth } from '@/composables/useAuth'
-import type { ChatMsg } from '@/composables/useWizardChat'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Button } from '@/components/ui/button'
+import IAThinking from '@/features/wizard-chat/ui/IAThinking.vue'
+import ChatMarkdown from '@/features/wizard-chat/ui/ChatMarkdown.vue'
+import { useAuth } from '@/features/auth/lib/useAuth'
+import type { ChatMsg } from '@/features/wizard-chat/lib/useWizardChat'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from '@/shared/ui/dialog'
+import { Input } from '@/shared/ui/input'
+import { Label } from '@/shared/ui/label'
+import { Button } from '@/shared/ui/button'
 
 const { signup } = useAuth()
 

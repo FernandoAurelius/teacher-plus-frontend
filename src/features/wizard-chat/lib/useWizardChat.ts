@@ -1,6 +1,6 @@
 import { ref } from 'vue'
-import { ssePost } from './useSSE'
-import { client } from '@/api/client'
+import { ssePost, type SSEEvent } from './useSSE'
+import { client } from '@/shared/api/client'
 
 const BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8010'
 
@@ -15,6 +15,7 @@ export function useWizardChat(opts?: { simulate?: boolean }) {
   let abortCtrl: AbortController | null = null
   let pending = ''
   let flushTimer: number | null = null
+  let currentAssistantMessage = ''
 
   if (opts?.simulate) {
     messages.value.push({
@@ -29,6 +30,7 @@ export function useWizardChat(opts?: { simulate?: boolean }) {
     }
     partial.value = ''
     pending = ''
+    currentAssistantMessage = ''
 
     if (stream) {
       isStreaming.value = true
@@ -38,19 +40,36 @@ export function useWizardChat(opts?: { simulate?: boolean }) {
       try {
         await ssePost(
           `${BASE}/api/ai/chat/stream/`,
-          { messages: messages.value },
+          { messages: messages.value, stream: true },
           {
             signal: abortCtrl.signal,
-            onMessage: (chunk) => {
-              pending += chunk
-              if (!flushTimer) {
-                flushTimer = window.setTimeout(() => {
-                  partial.value += pending
-                  pending = ''
-                  chunkKey.value++
-                  if (flushTimer) window.clearTimeout(flushTimer)
-                  flushTimer = null
-                }, 80)
+            onEvent: (event: SSEEvent) => {
+              if (event.type === 'token') {
+                const tokenData = event.data as { text: string; stage: string; index: number }
+                if (tokenData.stage === 'assistant_response' || tokenData.stage === 'study_plan') {
+                  pending += tokenData.text
+                  if (!flushTimer) {
+                    flushTimer = window.setTimeout(() => {
+                      partial.value += pending
+                      currentAssistantMessage += pending
+                      pending = ''
+                      chunkKey.value++
+                      if (flushTimer) window.clearTimeout(flushTimer)
+                      flushTimer = null
+                    }, 80)
+                  }
+                }
+              } else if (event.type === 'meta') {
+                const metaData = event.data as { type: string }
+                if (metaData.type === 'session_finished') {
+                  // flush final
+                  if (pending) {
+                    partial.value += pending
+                    currentAssistantMessage += pending
+                    pending = ''
+                    chunkKey.value++
+                  }
+                }
               }
             },
             onError: () => { /* cai no finally */ }
@@ -59,15 +78,17 @@ export function useWizardChat(opts?: { simulate?: boolean }) {
         // flush final
         if (pending) {
           partial.value += pending
+          currentAssistantMessage += pending
           pending = ''
           chunkKey.value++
         }
       } finally {
         isStreaming.value = false
-        if (partial.value.trim()) {
-          messages.value.push({ role: 'assistant', content: partial.value })
+        if (currentAssistantMessage.trim()) {
+          messages.value.push({ role: 'assistant', content: currentAssistantMessage })
         }
         partial.value = ''
+        currentAssistantMessage = ''
       }
     } else {
       const response = await client.chatWithAI({ messages: messages.value })

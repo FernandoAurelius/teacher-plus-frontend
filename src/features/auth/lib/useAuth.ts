@@ -1,7 +1,7 @@
-import { useAuthStore } from '@/stores/auth'
-import { client } from '@/api/client'
+import { useAuthStore } from '@/features/auth/model/store'
+import { client } from '@/shared/api/client'
 import { useRouter } from 'vue-router'
-import { schemas } from '@/api/schemas'
+import { schemas } from '@/shared/api/schemas'
 import z from 'zod'
 
 type UserWrite = z.infer<typeof schemas.UserWrite>

@@ -1,13 +1,18 @@
+export type SSEEvent = {
+  type: string
+  data: Record<string, unknown>
+}
+
 export type SSEOptions = {
   signal?: AbortSignal
-  onMessage?: (data: string) => void
+  onEvent?: (event: SSEEvent) => void
   onError?: (err: unknown) => void
   headers?: Record<string, string>
   delayMs?: number
 }
 
 export async function ssePost(url: string, body: unknown, opts: SSEOptions = {}) {
-  const { signal, onMessage, onError, headers, delayMs = 0 } = opts
+  const { signal, onEvent, onError, headers, delayMs = 0 } = opts
   const res = await fetch(url, {
     method: 'POST',
     credentials: 'include',
@@ -38,13 +43,24 @@ export async function ssePost(url: string, body: unknown, opts: SSEOptions = {})
         if (line === '') {
           // fim de um evento
           if (eventLines.length) {
+            const eventType = eventLines
+              .find(l => l.startsWith('event:'))
+              ?.slice(6)
+              .trim()
+
             const dataPayload = eventLines
               .filter(l => l.startsWith('data:'))
               .map(l => l.slice(5).replace(/^\s/, '')) // remove 1 espaço após "data:"
               .join('\n') // preserva quebras
-            if (dataPayload && !dataPayload.startsWith('[stream-error]')) {
-              onMessage?.(dataPayload)
-              if (delayMs) await new Promise(r => setTimeout(r, delayMs))
+
+            if (eventType && dataPayload && !dataPayload.startsWith('[stream-error]')) {
+              try {
+                const parsedData = JSON.parse(dataPayload)
+                onEvent?.({ type: eventType, data: parsedData })
+                if (delayMs) await new Promise(r => setTimeout(r, delayMs))
+              } catch (parseError) {
+                onError?.(parseError)
+              }
             }
             eventLines = []
           }

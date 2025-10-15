@@ -14,8 +14,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import SignupDialog from './SignupDialog.vue'
-import SignupChat from './SignupChat.vue'
+import SignupDialog from '@/features/auth/ui/SignupDialog.vue'
+import SignupChat from '@/features/auth/ui/SignupChat.vue'
 
 const started = ref(false)
 const router = useRouter()

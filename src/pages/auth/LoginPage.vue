@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useAuth } from '@/composables/useAuth'
+import { useAuth } from '@/features/auth/lib/useAuth'
 import { useRouter } from 'vue-router'
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/shared/ui/card'
+import { Button } from '@/shared/ui/button'
+import { Input } from '@/shared/ui/input'
+import { Label } from '@/shared/ui/label'
+import { Zap, Sparkles } from 'lucide-vue-next'
 
 const { login, loading, error } = useAuth()
 const router = useRouter()

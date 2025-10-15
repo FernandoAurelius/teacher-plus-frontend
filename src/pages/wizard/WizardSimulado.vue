@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import WizardChat from '@/components/WizardChat.vue'
+import WizardChat from '@/features/wizard-chat/ui/WizardChat.vue'
 </script>
 
 <template>

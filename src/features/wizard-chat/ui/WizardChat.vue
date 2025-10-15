@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, nextTick, computed, watch, onMounted } from 'vue'
-import { useWizardChat } from '@/composables/useWizardChat'
+import { useWizardChat } from '@/features/wizard-chat/lib/useWizardChat'
 import IAThinking from './IAThinking.vue'
 import ChatMarkdown from './ChatMarkdown.vue'
 import { Bot, User } from 'lucide-vue-next'
-import { client } from '@/api/client'
+import { client } from '@/shared/api/client'
 
 const props = defineProps<{ simulate?: boolean }>()
 const { messages, isStreaming, partial, send, chunkKey } = useWizardChat({ simulate: props.simulate })

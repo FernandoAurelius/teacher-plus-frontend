@@ -11,8 +11,8 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
-import NeoAnimatedBackground from '@/components/NeoAnimatedBackground.vue'
+import { useAuthStore } from '@/features/auth/model/store'
+import NeoAnimatedBackground from '@/widgets/NeoAnimatedBackground.vue'
 
 const route = useRoute()
 const authStore = useAuthStore()
