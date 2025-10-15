@@ -27,7 +27,7 @@ const handleLogin = async () => {
   try {
     const { userData, has_user_context } = await login(loginUsername.value, loginPassword.value)
     if (userData && has_user_context === false) {
-      router.push('/wizard-simulado')
+      router.push('/wizard')
     } else {
       router.push('/') // ou dashboard
     }

@@ -25,7 +25,7 @@ function startSignup() {
 }
 
 function onSignupComplete() {
-  // Após cadastro, redirecionar para wizard-simulado (etapa 2)
-  router.push('/wizard-simulado')
+  // Após cadastro, redirecionar para wizard (etapa 2)
+  router.push('/wizard')
 }
 </script>

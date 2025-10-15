@@ -6,8 +6,7 @@ import ChatMarkdown from './ChatMarkdown.vue'
 import { Bot, User } from 'lucide-vue-next'
 import { client } from '@/shared/api/client'
 
-const props = defineProps<{ simulate?: boolean }>()
-const { messages, isStreaming, partial, send, chunkKey } = useWizardChat({ simulate: props.simulate })
+const { messages, isStreaming, partial, send, chunkKey } = useWizardChat()
 const input = ref('')
 const showConfirmationModal = ref(false)
 const isSaving = ref(false)
@@ -16,7 +15,7 @@ onMounted(async () => {
   // Adicionar prompt do sistema
   messages.value.push({
     role: 'system',
-    content: `Você é um assistente de IA especializado em ajudar estudantes a prepararem-se para o ENEM. Sua tarefa é coletar informações sobre o perfil do usuário, suas metas de estudo, rotina, e preferências para criar um plano personalizado. Comece se apresentando de forma amigável e faça perguntas iniciais para entender o perfil do estudante.`
+    content: `Você é um assistente de IA especializado em ajudar estudantes ou professores em conteúdos educativos. Sua tarefa é coletar informações sobre o perfil do usuário, suas metas de estudo, rotina, e preferências para criar um plano personalizado. Comece se apresentando de forma amigável e faça perguntas iniciais para entender o perfil do usuário.`
   })
   // Iniciar stream automaticamente
   await send('')
@@ -54,7 +53,7 @@ const shouldShowConfirmation = computed(() => {
 })
 
 watch(shouldShowConfirmation, (newVal) => {
-  if (newVal && !props.simulate) {
+  if (newVal) {
     showConfirmationModal.value = true
   }
 })
@@ -70,8 +69,6 @@ async function onSend() {
 }
 
 async function confirmAndSave() {
-  if (props.simulate) return
-
   isSaving.value = true
   try {
     // Mapear contexto coletado para o formato esperado pela API

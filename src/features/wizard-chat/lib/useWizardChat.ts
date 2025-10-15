@@ -7,7 +7,7 @@ const BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8010'
 type Role = 'user' | 'assistant' | 'system'
 export type ChatMsg = { role: Role; content: string }
 
-export function useWizardChat(opts?: { simulate?: boolean }) {
+export function useWizardChat() {
   const messages = ref<ChatMsg[]>([])
   const isStreaming = ref(false)
   const partial = ref('')
@@ -16,13 +16,6 @@ export function useWizardChat(opts?: { simulate?: boolean }) {
   let pending = ''
   let flushTimer: number | null = null
   let currentAssistantMessage = ''
-
-  if (opts?.simulate) {
-    messages.value.push({
-      role: 'system',
-      content: 'MODO SIMULADO: NÃO chame commit_user_context. Apenas conduza o questionário e demonstre o resumo final.'
-    })
-  }
 
   async function send(input: string, stream = true) {
     if (input.trim()) {

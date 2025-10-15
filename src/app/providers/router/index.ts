@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import WizardSimulado from '@/pages/wizard/WizardSimulado.vue'
+import WizardPage from '@/pages/wizard/WizardPage.vue'
 import LoginSignup from '@/pages/auth/LoginPage.vue'
 import Home from '@/pages/home/HomePage.vue'
 import SignupPage from '@/pages/auth/SignupPage.vue'
@@ -11,7 +11,7 @@ const router = createRouter({
     { path: '/', component: Home },
     { path: '/login', component: LoginSignup },
     { path: '/signup', component: SignupPage },
-    { path: '/wizard-simulado', component: WizardSimulado, meta: { requiresAuth: true } },
+    { path: '/wizard', component: WizardPage, meta: { requiresAuth: true } },
   ],
 })
 
