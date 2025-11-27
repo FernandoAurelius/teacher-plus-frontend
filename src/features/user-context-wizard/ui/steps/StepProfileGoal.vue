@@ -20,7 +20,9 @@ const personaOptions = [
 <template>
   <div class="grid gap-4 animate-[fadeInUp_0.35s_ease-out]">
     <div>
-      <p class="text-sm text-muted-foreground">Comece com um retrato rápido para personalizar recomendações.</p>
+      <p class="text-sm text-muted-foreground">
+        Comece com um retrato rápido para personalizar recomendações.
+      </p>
     </div>
 
     <div class="grid gap-3">
@@ -28,7 +30,11 @@ const personaOptions = [
         <FormItem>
           <FormLabel>Persona principal</FormLabel>
           <FormControl>
-            <Select v-bind="field" :value="field.value || undefined" @update:value="field.onChange">
+            <Select
+              :model-value="field.value"
+              @update:model-value="field.onChange"
+              @blur="field.onBlur"
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Selecione quem você é no app" />
               </SelectTrigger>
@@ -51,19 +57,31 @@ const personaOptions = [
         <FormItem>
           <FormLabel>Objetivo principal</FormLabel>
           <FormControl>
-            <Input v-bind="field" placeholder="Ex.: Passar no ENEM com foco em humanas" />
+            <Input
+              :model-value="field.value"
+              @update:model-value="field.onChange"
+              @blur="field.onBlur"
+              placeholder="Ex.: Passar no ENEM com foco em humanas"
+            />
           </FormControl>
           <FormMessage />
         </FormItem>
       </FormField>
 
-      <div class="grid gap-3 md:grid-cols-2">
+      <div class="grid gap-3 md:grid-cols-2 md:items-end">
         <FormField name="deadline" v-slot="{ field }">
           <FormItem>
             <FormLabel>Prazo ou prova alvo</FormLabel>
             <FormControl>
-              <Input v-bind="field" placeholder="Enem 2025 / Dez 2025" />
+              <Input
+                :model-value="field.value"
+                @update:model-value="field.onChange"
+                @blur="field.onBlur"
+                type="date"
+                placeholder="Enem 2025 / Dez 2025"
+              />
             </FormControl>
+            <FormDescription>Informe uma data ou período aproximado.</FormDescription>
             <FormMessage />
           </FormItem>
         </FormField>
@@ -72,8 +90,17 @@ const personaOptions = [
           <FormItem>
             <FormLabel>Horas semanais de estudo</FormLabel>
             <FormControl>
-              <Input v-bind="field" type="number" min="1" max="168" inputmode="numeric" />
+              <Input
+                :model-value="field.value"
+                @update:model-value="field.onChange"
+                @blur="field.onBlur"
+                type="number"
+                min="0"
+                max="60"
+                inputmode="numeric"
+              />
             </FormControl>
+            <FormDescription>Use uma estimativa realista (0-60h).</FormDescription>
             <FormMessage />
           </FormItem>
         </FormField>

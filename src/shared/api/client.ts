@@ -1,8 +1,8 @@
 import { Zodios } from "@zodios/core";
 import { endpoints } from "./schemas";
 
-const baseURL = import.meta.env.VITE_API_BASE_URL || 'https://localhost:8010'
+export const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://localhost:8010'
 
-export const client = new Zodios(baseURL, endpoints, {
-  axiosConfig: { withCredentials: true, baseURL: baseURL }
+export const client = new Zodios(apiBaseUrl, endpoints, {
+  axiosConfig: { withCredentials: true, baseURL: apiBaseUrl }
 });

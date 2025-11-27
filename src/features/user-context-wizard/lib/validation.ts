@@ -2,29 +2,43 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
 
 const profileStepSchema = z.object({
-  persona: z.string().min(2, 'Descreva rapidamente sua persona').max(20, 'Use menos de 20 caracteres'),
-  goal: z.string().min(5, 'Objetivo muito curto').max(100, 'Objetivo muito longo'),
-  deadline: z.string().min(3, 'Informe um prazo ou período'),
-  weekly_time_hours: z.coerce.number().int().min(1, 'Use pelo menos 1h/semana').max(168, 'Limite de 168h'),
+  persona: z
+    .string()
+    .trim()
+    .min(2, 'Descreva rapidamente sua persona')
+    .max(20, 'Use menos de 20 caracteres'),
+  goal: z
+    .string()
+    .trim()
+    .min(5, 'Objetivo muito curto')
+    .max(100, 'Objetivo muito longo'),
+  deadline: z.string().trim().min(3, 'Informe um prazo ou período'),
+  weekly_time_hours: z
+    .coerce.number()
+    .int()
+    .min(0, 'Minimo 0h')
+    .max(60, 'Limite de 60h'),
 })
 
 const routineStepSchema = z.object({
-  study_routine: z.string().min(10, 'Conte como costuma estudar'),
+  study_routine: z.string().trim().min(10, 'Conte como costuma estudar'),
   preferences_formats: z.array(z.string()).default([]),
-  notifications: z.string().min(3, 'Selecione um canal'),
+  notifications: z.enum(['email', 'push', 'whatsapp'], {
+    errorMap: () => ({ message: 'Selecione um canal' }),
+  }),
 })
 
 const backgroundStepSchema = z.object({
-  background_level: z.string().min(2, 'Escolha seu nível'),
-  background_institution_type: z.string().min(2, 'Informe o tipo de instituição'),
+  background_level: z.string().trim().min(2, 'Escolha seu nível'),
+  background_institution_type: z.string().trim().min(2, 'Informe o tipo de instituição'),
   interests: z.array(z.string()).default([]),
 })
 
 const techStepSchema = z.object({
-  tech_device: z.string().min(2, 'Qual dispositivo você usa?'),
-  tech_connectivity: z.string().min(2, 'Informe a sua conexão'),
-  preferences_language: z.string().min(2, 'Escolha o idioma'),
-  preferences_accessibility: z.string().max(120, 'Limite de 120 caracteres').optional().or(z.literal('')),
+  tech_device: z.string().trim().min(2, 'Qual dispositivo você usa?'),
+  tech_connectivity: z.string().trim().min(2, 'Informe a sua conexão'),
+  preferences_language: z.string().trim().min(2, 'Escolha o idioma'),
+  preferences_accessibility: z.array(z.string()).default([]),
 })
 
 const reviewStepSchema = z.object({
@@ -63,6 +77,6 @@ export const defaultWizardValues: WizardFormValues = {
   tech_device: '',
   tech_connectivity: '',
   preferences_language: 'pt-BR',
-  preferences_accessibility: '',
+  preferences_accessibility: [],
   consent_lgpd: false,
 }

@@ -7,9 +7,13 @@ paths:
   /api/ai/chat/:
     post:
       operationId: chatWithAI
-      description: Sends a chat message and receives a response.
+      description: "\n        Envia uma mensagem de chat e recebe uma resposta completa\
+        \ (não-streaming).\n\n        **Uso**: Para respostas rápidas ou quando streaming\
+        \ não é necessário.\n        **Limitações**: Não suporta tool calls interativos\
+        \ ou geração de plano de estudos.\n        **Alternativa**: Use /api/ai/chat/sse/\
+        \ para funcionalidades completas com streaming.\n        "
       tags:
-      - ai
+      - api
       requestBody:
         content:
           application/json:
@@ -40,10 +44,19 @@ paths:
   /api/ai/chat/stream/:
     post:
       operationId: streamChatWithAI
-      description: Establishes a Server-Sent Events (SSE) connection for streaming
-        chat responses.
+      description: "\n        Estabelece uma conexão Server-Sent Events (SSE) para\
+        \ streaming de respostas de chat.\n\n        **Funcionalidades**:\n      \
+        \  - Streaming em tempo real com eventos estruturados\n        - Suporte a\
+        \ tool calls (ex: commit_user_context para onboarding)\n        - Geração\
+        \ automática de plano de estudos após commit\n        - Controle de sessão\
+        \ com meta-eventos\n\n        **Eventos SSE**:\n        - `meta`: Controle\
+        \ da sessão (started, committed, finished)\n        - `token`: Fragmentos\
+        \ de texto gerado\n        - `heartbeat`: Progresso durante tool calls\n \
+        \       - `error`: Tratamento de erros\n\n        **Fluxo típico**: session_started\
+        \ → tokens (assistant_response) → [tool calls] → [plan generation] → session_finished\n\
+        \        "
       tags:
-      - ai
+      - api
       requestBody:
         content:
           application/json:
@@ -70,7 +83,7 @@ paths:
       operationId: indexDocument
       description: Ingests a document, chunks it, embeds the chunks, and stores them.
       tags:
-      - ai
+      - api
       requestBody:
         content:
           application/json:
@@ -98,6 +111,49 @@ paths:
               schema:
                 $ref: '#/components/schemas/DocumentIngest'
           description: ''
+  /api/ai/jobs/{job_id}/:
+    get:
+      operationId: jobStatus
+      description: Consulta status de um job Celery.
+      parameters:
+      - in: path
+        name: job_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobStatus'
+          description: ''
+  /api/ai/jobs/stream/:
+    get:
+      operationId: jobStatusStream
+      description: SSE que streama mudancas de status de um job Celery.
+      parameters:
+      - in: query
+        name: job_id
+        schema:
+          type: string
+        description: Job ID a acompanhar
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: SSE com status do job
+          description: ''
   /api/ai/search/:
     get:
       operationId: searchDocuments
@@ -116,7 +172,7 @@ paths:
         description: Search query
         required: true
       tags:
-      - ai
+      - api
       security:
       - cookieAuth: []
       responses:
@@ -134,12 +190,149 @@ paths:
               schema:
                 description: Missing query parameter
           description: ''
+  /api/ai/study-plans/:
+    get:
+      operationId: listStudyPlans
+      description: Lista os planos de estudo do usuario autenticado.
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StudyPlanSummary'
+          description: ''
+  /api/ai/study-plans/{plan_id}/:
+    get:
+      operationId: getStudyPlan
+      description: Retorna um plano de estudo com secoes e tarefas.
+      parameters:
+      - in: path
+        name: plan_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudyPlan'
+          description: ''
+  /api/ai/study-plans/{plan_id}/materials/:
+    post:
+      operationId: uploadStudyPlanMaterial
+      description: Faz upload de arquivo, associa ao plano e o ingere no RAG (Document
+        + chunks).
+      parameters:
+      - in: path
+        name: plan_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanMaterialUpload'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PlanMaterialUpload'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PlanMaterialUpload'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanMaterialUploadResponse'
+          description: ''
+  /api/ai/study-plans/{plan_id}/tasks/:
+    post:
+      operationId: generateSectionTasks
+      description: Gera e persiste novas tarefas para uma secao especifica do plano.
+      parameters:
+      - in: path
+        name: plan_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateTasksRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GenerateTasksRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GenerateTasksRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StudyTask'
+          description: ''
+  /api/ai/study-plans/generate/:
+    post:
+      operationId: generateStudyPlan
+      description: Gera um plano de estudo + tarefas iniciais via IA, persistindo
+        secoes e tarefas.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GeneratePlanRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GeneratePlanRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GeneratePlanRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudyPlan'
+          description: ''
   /api/login/:
     post:
       operationId: loginUser
       description: Authenticates a user and sets access and refresh tokens as cookies.
       tags:
-      - login
+      - api
       requestBody:
         content:
           application/json:
@@ -153,7 +346,6 @@ paths:
               $ref: '#/components/schemas/Login'
         required: true
       security:
-      - cookieAuth: []
       - {}
       responses:
         '200':
@@ -173,7 +365,7 @@ paths:
       operationId: logoutUser
       description: Logs out the user by deleting access and refresh token cookies.
       tags:
-      - logout
+      - api
       security:
       - cookieAuth: []
       responses:
@@ -188,7 +380,7 @@ paths:
       operationId: getCurrentUser
       description: Retrieves the current authenticated user's data.
       tags:
-      - me
+      - api
       security:
       - cookieAuth: []
       responses:
@@ -203,9 +395,8 @@ paths:
       operationId: refreshUserToken
       description: Refreshes the access token using the refresh token from cookies.
       tags:
-      - refresh
+      - api
       security:
-      - cookieAuth: []
       - {}
       responses:
         '200':
@@ -221,11 +412,31 @@ paths:
                 $ref: '#/components/schemas/RefreshResponse'
           description: ''
   /api/user-context/:
+    get:
+      operationId: getUserContext
+      description: Retrieves the current authenticated user's context if it exists.
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserContext'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                description: User context not found
+          description: ''
     post:
       operationId: updateUserContext
       description: Updates or creates user context information.
       tags:
-      - user-context
+      - api
       requestBody:
         content:
           application/json:
@@ -242,6 +453,12 @@ paths:
       - cookieAuth: []
       responses:
         '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserContext'
+          description: ''
+        '201':
           content:
             application/json:
               schema:
@@ -258,9 +475,7 @@ paths:
       operationId: listUsers
       description: Retrieves a list of all users.
       tags:
-      - users
-      security:
-      - cookieAuth: []
+      - api
       responses:
         '200':
           content:
@@ -274,7 +489,7 @@ paths:
       operationId: createUser
       description: Creates a new user.
       tags:
-      - users
+      - api
       requestBody:
         content:
           application/json:
@@ -288,7 +503,6 @@ paths:
               $ref: '#/components/schemas/UserWrite'
         required: true
       security:
-      - cookieAuth: []
       - {}
       responses:
         '201':
@@ -315,7 +529,7 @@ paths:
           format: uuid
         required: true
       tags:
-      - users
+      - api
       security:
       - cookieAuth: []
       responses:
@@ -336,7 +550,7 @@ paths:
           format: uuid
         required: true
       tags:
-      - users
+      - api
       requestBody:
         content:
           application/json:
@@ -375,7 +589,7 @@ paths:
           format: uuid
         required: true
       tags:
-      - users
+      - api
       security:
       - cookieAuth: []
       responses:
@@ -441,6 +655,36 @@ components:
       required:
       - chunks
       - document_id
+    GeneratePlanRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        goal_override:
+          type: string
+    GenerateTasksRequest:
+      type: object
+      properties:
+        section_id:
+          type: string
+      required:
+      - section_id
+    JobStatus:
+      type: object
+      properties:
+        job_id:
+          type: string
+        status:
+          type: string
+        result:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        error:
+          type: string
+      required:
+      - job_id
+      - status
     Login:
       type: object
       properties:
@@ -461,6 +705,31 @@ components:
       required:
       - detail
       - has_user_context
+    PlanMaterialUpload:
+      type: object
+      properties:
+        title:
+          type: string
+        file:
+          type: string
+          format: uri
+      required:
+      - file
+    PlanMaterialUploadResponse:
+      type: object
+      properties:
+        document_id:
+          type: string
+          format: uuid
+        chunks:
+          type: integer
+        file_id:
+          type: string
+          format: uuid
+      required:
+      - chunks
+      - document_id
+      - file_id
     RefreshResponse:
       type: object
       properties:
@@ -489,6 +758,265 @@ components:
       required:
       - score
       - text
+    StudyDay:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        day_index:
+          type: integer
+        scheduled_date:
+          type: string
+          format: date
+          nullable: true
+        title:
+          type: string
+        focus:
+          type: string
+        target_minutes:
+          type: integer
+        status:
+          type: string
+        section_id:
+          type: string
+          nullable: true
+          readOnly: true
+        prerequisites:
+          type: array
+          items:
+            type: string
+          readOnly: true
+        week_index:
+          type: integer
+          nullable: true
+          readOnly: true
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/StudyTask'
+        metadata:
+          type: object
+          additionalProperties: {}
+      required:
+      - day_index
+      - focus
+      - id
+      - metadata
+      - prerequisites
+      - scheduled_date
+      - section_id
+      - status
+      - target_minutes
+      - tasks
+      - title
+      - week_index
+    StudyPlan:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        summary:
+          type: string
+        status:
+          type: string
+        start_date:
+          type: string
+          format: date
+          nullable: true
+        end_date:
+          type: string
+          format: date
+          nullable: true
+        total_days:
+          type: integer
+        metadata:
+          type: object
+          additionalProperties: {}
+        weeks:
+          type: array
+          items:
+            $ref: '#/components/schemas/StudyWeek'
+        days:
+          type: array
+          items:
+            $ref: '#/components/schemas/StudyDay'
+        rag_document_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+        generation_status:
+          type: string
+        last_error:
+          type: string
+        job_id:
+          type: string
+          nullable: true
+      required:
+      - days
+      - end_date
+      - generation_status
+      - id
+      - job_id
+      - last_error
+      - metadata
+      - rag_document_ids
+      - start_date
+      - status
+      - summary
+      - title
+      - total_days
+      - weeks
+    StudyPlanSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        status:
+          type: string
+        generation_status:
+          type: string
+        last_error:
+          type: string
+        job_id:
+          type: string
+          nullable: true
+        summary:
+          type: string
+        total_days:
+          type: integer
+        current_week:
+          type: string
+          readOnly: true
+        generated_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - current_week
+      - generated_at
+      - generation_status
+      - id
+      - job_id
+      - last_error
+      - status
+      - summary
+      - title
+      - total_days
+      - updated_at
+    StudyTask:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        day:
+          type: string
+          format: uuid
+        order:
+          type: integer
+        task_type:
+          type: string
+        status:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        duration_minutes:
+          type: integer
+        resources:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+        section_id:
+          type: string
+          nullable: true
+          readOnly: true
+        difficulty:
+          type: integer
+          nullable: true
+          readOnly: true
+        research_needed:
+          type: boolean
+          nullable: true
+          readOnly: true
+        content_type:
+          type: string
+          nullable: true
+          readOnly: true
+        content:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        metadata:
+          type: object
+          additionalProperties: {}
+      required:
+      - content
+      - content_type
+      - day
+      - description
+      - difficulty
+      - duration_minutes
+      - id
+      - metadata
+      - order
+      - research_needed
+      - resources
+      - section_id
+      - status
+      - task_type
+      - title
+    StudyWeek:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        week_index:
+          type: integer
+        title:
+          type: string
+        focus:
+          type: string
+        start_date:
+          type: string
+          format: date
+          nullable: true
+        end_date:
+          type: string
+          format: date
+          nullable: true
+        status:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: {}
+        days:
+          type: array
+          items:
+            $ref: '#/components/schemas/StudyDay'
+      required:
+      - days
+      - end_date
+      - focus
+      - id
+      - metadata
+      - start_date
+      - status
+      - title
+      - week_index
     UserContext:
       type: object
       properties:
@@ -509,15 +1037,15 @@ components:
           type: string
         background_level:
           type: string
-          maxLength: 100
-        background_institution_type:
-          type: string
-          maxLength: 20
-        self_assessment: {}
+          maxLength: 2000
+        self_assessment:
+          nullable: true
         diagnostic_status:
           type: string
+          nullable: true
           maxLength: 20
-        diagnostic_snapshot: {}
+        diagnostic_snapshot:
+          nullable: true
         interests: {}
         preferences_formats: {}
         preferences_language:
@@ -541,10 +1069,8 @@ components:
             type: string
             format: uuid
       required:
-      - background_institution_type
       - background_level
       - deadline
-      - diagnostic_status
       - goal
       - notifications
       - persona

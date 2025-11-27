@@ -1,0 +1,3454 @@
+{
+    "id": "040a58b9-96a5-4531-9123-06e9329cf8ad",
+    "title": "Certificação Java SE 8 OCA Programmer I",
+    "summary": "",
+    "status": "active",
+    "start_date": null,
+    "end_date": null,
+    "total_days": 6,
+    "metadata": {
+        "schema": {
+            "sections": [{
+                    "id": "s1",
+                    "title": "Fundamentos de Sintaxe e Estrutura Java para OCA",
+                    "milestone": "Dominar as regras de declaração, inicialização e escopo de variáveis, e a estrutura básica de classes conforme exigido pela OCA.",
+                    "prerequisites": []
+                },
+                {
+                    "id": "s2",
+                    "title": "Tipos de Dados, Operadores e Controle de Fluxo",
+                    "milestone": "Entender e aplicar tipos primitivos e de referência, precedência de operadores e estruturas de controle (if/else, switch, loops) com foco em detalhes da certificação.",
+                    "prerequisites": [
+                        "s1"
+                    ]
+                },
+                {
+                    "id": "s3",
+                    "title": "Arrays, Métodos e Encapsulamento",
+                    "milestone": "Habilidade de usar arrays unidimensionais, criar métodos (incluindo sobrecarga) e aplicar encapsulamento, compreendendo as nuances da linguagem.",
+                    "prerequisites": [
+                        "s2"
+                    ]
+                },
+                {
+                    "id": "s4",
+                    "title": "Herança e Polimorfismo",
+                    "milestone": "Compreender profundamente os conceitos de herança, polimorfismo, sobrescrita e sobrecarga de métodos, além de modificadores de acesso e o uso de 'final' e 'static'.",
+                    "prerequisites": [
+                        "s3"
+                    ]
+                },
+                {
+                    "id": "s5",
+                    "title": "Exceções e APIs Comuns",
+                    "milestone": "Saber como tratar exceções (checked vs. unchecked) e utilizar classes comuns da API Java como String, StringBuilder, Wrapper classes e ArrayList.",
+                    "prerequisites": [
+                        "s4"
+                    ]
+                },
+                {
+                    "id": "s6",
+                    "title": "Revisão Geral e Simulado Final",
+                    "milestone": "Revisão completa de todos os tópicos e prática intensiva com simulados para solidificar o conhecimento e identificar áreas fracas antes do exame.",
+                    "prerequisites": [
+                        "s5"
+                    ]
+                }
+            ]
+        },
+        "raw_payload": {
+            "plan": {
+                "sections": [{
+                        "id": "s1",
+                        "title": "Fundamentos de Sintaxe e Estrutura Java para OCA",
+                        "milestone": "Dominar as regras de declaração, inicialização e escopo de variáveis, e a estrutura básica de classes conforme exigido pela OCA.",
+                        "prerequisites": []
+                    },
+                    {
+                        "id": "s2",
+                        "title": "Tipos de Dados, Operadores e Controle de Fluxo",
+                        "milestone": "Entender e aplicar tipos primitivos e de referência, precedência de operadores e estruturas de controle (if/else, switch, loops) com foco em detalhes da certificação.",
+                        "prerequisites": [
+                            "s1"
+                        ]
+                    },
+                    {
+                        "id": "s3",
+                        "title": "Arrays, Métodos e Encapsulamento",
+                        "milestone": "Habilidade de usar arrays unidimensionais, criar métodos (incluindo sobrecarga) e aplicar encapsulamento, compreendendo as nuances da linguagem.",
+                        "prerequisites": [
+                            "s2"
+                        ]
+                    },
+                    {
+                        "id": "s4",
+                        "title": "Herança e Polimorfismo",
+                        "milestone": "Compreender profundamente os conceitos de herança, polimorfismo, sobrescrita e sobrecarga de métodos, além de modificadores de acesso e o uso de 'final' e 'static'.",
+                        "prerequisites": [
+                            "s3"
+                        ]
+                    },
+                    {
+                        "id": "s5",
+                        "title": "Exceções e APIs Comuns",
+                        "milestone": "Saber como tratar exceções (checked vs. unchecked) e utilizar classes comuns da API Java como String, StringBuilder, Wrapper classes e ArrayList.",
+                        "prerequisites": [
+                            "s4"
+                        ]
+                    },
+                    {
+                        "id": "s6",
+                        "title": "Revisão Geral e Simulado Final",
+                        "milestone": "Revisão completa de todos os tópicos e prática intensiva com simulados para solidificar o conhecimento e identificar áreas fracas antes do exame.",
+                        "prerequisites": [
+                            "s5"
+                        ]
+                    }
+                ]
+            },
+            "tasks": [{
+                    "id": "t1",
+                    "type": "lecture",
+                    "title": "Estrutura Básica de Classes e o Método main()",
+                    "content": {
+                        "body": "Nesta aula, abordaremos os componentes essenciais de um programa Java: classes, o método 'main', como organizar seu código em pacotes e a importância das declarações 'import'. Foco nos detalhes exigidos pela certificação, como os modificadores de acesso do 'main' e a estrutura de pacotes.",
+                        "summary": "Introdução à anatomia de um programa Java, incluindo classes, métodos, pacotes e o ponto de entrada da aplicação."
+                    },
+                    "difficulty": 3,
+                    "section_id": "s1",
+                    "description": "Explorar a estrutura de classes Java, a sintaxe do método main, pacotes, importações e a compilação/execução básica de programas Java.",
+                    "estimated_time": 75,
+                    "research_needed": false,
+                    "suggested_order": 1
+                },
+                {
+                    "id": "t2",
+                    "type": "flashcards",
+                    "title": "Identificadores, Palavras-Chave e Tipos Primitivos",
+                    "content": {
+                        "cards": [{
+                                "front": "Qual é a regra principal para o primeiro caractere de um identificador Java?"
+                            },
+                            {
+                                "front": "Dê três exemplos de palavras-chave reservadas em Java."
+                            },
+                            {
+                                "front": "Qual é o valor padrão de um 'boolean' em uma classe em Java?"
+                            },
+                            {
+                                "front": "Qual é o valor padrão de um 'int' em uma classe em Java?"
+                            },
+                            {
+                                "front": "Identificador '1abc' é válido? Por quê?"
+                            }
+                        ]
+                    },
+                    "difficulty": 3,
+                    "section_id": "s1",
+                    "description": "Flashcards para memorizar regras de identificadores, lista de palavras-chave reservadas, tipos primitivos e seus valores padrão.",
+                    "estimated_time": 60,
+                    "research_needed": false,
+                    "suggested_order": 2
+                },
+                {
+                    "id": "t3",
+                    "type": "quiz",
+                    "title": "Quiz: Fundamentos de Sintaxe Java",
+                    "content": {
+                        "items": [{
+                                "prompt": "Qual das seguintes linhas de código não compila? (A) int i=10; (B) boolean b=true; (C) String s='hello'; (D) double d=10.0;"
+                            },
+                            {
+                                "prompt": "Qual é o modificador de acesso mais restritivo em Java?"
+                            },
+                            {
+                                "prompt": "Qual palavra-chave é usada para indicar que uma variável não pode ser alterada após a inicialização?"
+                            },
+                            {
+                                "prompt": "O que acontece se você não inicializar uma variável local?"
+                            }
+                        ]
+                    },
+                    "difficulty": 4,
+                    "section_id": "s1",
+                    "description": "Teste rápido sobre a sintaxe básica de classes, métodos, variáveis e identificadores, focando em pegadinhas comuns da prova OCA.",
+                    "estimated_time": 45,
+                    "research_needed": false,
+                    "suggested_order": 3,
+                    "assessment_target": "s1"
+                },
+                {
+                    "id": "t4",
+                    "type": "lecture",
+                    "title": "Tipos Primitivos e de Referência, Wrappers e Casting",
+                    "content": {
+                        "body": "Esta aula detalha os 8 tipos primitivos de Java, como eles se comportam em memória versus tipos de referência (objetos). Abordaremos o autoboxing e unboxing, essenciais para a interação entre primitivos e Wrappers, e as complexas regras de casting que são frequentemente testadas na OCA.",
+                        "summary": "Diferenças fundamentais entre tipos de dados em Java, conversão entre eles e o papel das classes Wrapper."
+                    },
+                    "difficulty": 3,
+                    "section_id": "s2",
+                    "description": "Entender a diferença entre tipos primitivos e de referência, o uso de classes Wrapper, autoboxing/unboxing e as regras de casting numérico e de objetos.",
+                    "estimated_time": 90,
+                    "research_needed": false,
+                    "suggested_order": 4
+                },
+                {
+                    "id": "t5",
+                    "type": "flashcards",
+                    "title": "Precedência de Operadores e Expressões",
+                    "content": {
+                        "cards": [{
+                                "front": "Qual operador tem maior precedência: '++' ou '*'?"
+                            },
+                            {
+                                "front": "Qual é o resultado de '5 + 2 * 3'?"
+                            },
+                            {
+                                "front": "Qual é a diferença entre '==' e '.equals()' para objetos String?"
+                            },
+                            {
+                                "front": "Qual o efeito do operador ternário (?:)?"
+                            }
+                        ]
+                    },
+                    "difficulty": 4,
+                    "section_id": "s2",
+                    "description": "Flashcards para revisar a precedência de operadores aritméticos, lógicos, de atribuição e condicionais, e como eles afetam o resultado de expressões.",
+                    "estimated_time": 60,
+                    "research_needed": false,
+                    "suggested_order": 5
+                },
+                {
+                    "id": "t6",
+                    "type": "quiz",
+                    "title": "Quiz: Controle de Fluxo (if/else, switch, loops)",
+                    "content": {
+                        "items": [{
+                                "prompt": "Qual é o tipo de dado que pode ser usado em uma declaração 'switch'?"
+                            },
+                            {
+                                "prompt": "Qual a diferença entre 'break' e 'continue' em um loop?"
+                            },
+                            {
+                                "prompt": "O que acontece se uma expressão 'switch' não tiver um 'break' em um 'case'?"
+                            },
+                            {
+                                "prompt": "Considere o código: `for (int i=0; i<10; i++) { if (i==5) break; System.out.print(i); }`. Qual será a saída?"
+                            }
+                        ]
+                    },
+                    "difficulty": 4,
+                    "section_id": "s2",
+                    "description": "Questões sobre o uso correto de 'if/else', 'switch' (incluindo fall-through e tipos suportados), e todas as variações de loops ('for', 'while', 'do/while', 'for-each').",
+                    "estimated_time": 60,
+                    "research_needed": false,
+                    "suggested_order": 6,
+                    "assessment_target": "s2"
+                },
+                {
+                    "id": "t7",
+                    "type": "lecture",
+                    "title": "Arrays Unidimensionais",
+                    "content": {
+                        "body": "Nesta aula, cobriremos a sintaxe para declarar e instanciar arrays, como acessar seus elementos e a propriedade `length`. Atenção especial será dada aos valores padrão de arrays de tipos primitivos e de referência, e como arrays são tratados como objetos em Java.",
+                        "summary": "Fundamentos sobre arrays: criação, acesso a elementos e iteração."
+                    },
+                    "difficulty": 3,
+                    "section_id": "s3",
+                    "description": "Explorar a declaração, inicialização e manipulação de arrays unidimensionais em Java, incluindo seus comportamentos e armadilhas da OCA.",
+                    "estimated_time": 75,
+                    "research_needed": false,
+                    "suggested_order": 7
+                },
+                {
+                    "id": "t8",
+                    "type": "flashcards",
+                    "title": "Métodos e Sobrecarga",
+                    "content": {
+                        "cards": [{
+                                "front": "Quais são os requisitos para sobrecarregar um método?"
+                            },
+                            {
+                                "front": "Qual a diferença entre 'public', 'protected', 'default' e 'private'?"
+                            },
+                            {
+                                "front": "Um método que não retorna nada deve ter qual tipo de retorno?"
+                            },
+                            {
+                                "front": "O que é um argumento de tipo varargs?"
+                            }
+                        ]
+                    },
+                    "difficulty": 3,
+                    "section_id": "s3",
+                    "description": "Flashcards sobre a estrutura de métodos, parâmetros, retorno, modificadores de acesso e as regras de sobrecarga de métodos.",
+                    "estimated_time": 60,
+                    "research_needed": false,
+                    "suggested_order": 8
+                },
+                {
+                    "id": "t9",
+                    "type": "quiz",
+                    "title": "Quiz: Encapsulamento, Construtores e o 'this'",
+                    "content": {
+                        "items": [{
+                                "prompt": "Qual é o principal objetivo do encapsulamento em Java?"
+                            },
+                            {
+                                "prompt": "Quando um construtor padrão é fornecido automaticamente pelo compilador?"
+                            },
+                            {
+                                "prompt": "Como 'this' é usado para referenciar membros da instância dentro de uma classe?"
+                            },
+                            {
+                                "prompt": "Qual é a diferença entre um 'setter' e um 'getter'?"
+                            }
+                        ]
+                    },
+                    "difficulty": 4,
+                    "section_id": "s3",
+                    "description": "Avaliar o entendimento sobre encapsulamento, a criação e uso de construtores (incluindo o construtor padrão) e a utilização da palavra-chave 'this'.",
+                    "estimated_time": 60,
+                    "research_needed": false,
+                    "suggested_order": 9,
+                    "assessment_target": "s3"
+                },
+                {
+                    "id": "t10",
+                    "type": "lecture",
+                    "title": "Introdução à Herança e a Palavra-Chave 'super'",
+                    "content": {
+                        "body": "Esta aula aborda a palavra-chave 'extends', o conceito de classes pai e filho, e como a herança permite a reutilização de código. Daremos atenção especial à inicialização de classes (ordem de execução de blocos de instância, construtores) e ao uso de 'super()' para chamar construtores da superclasse.",
+                        "summary": "Fundamentos da herança em Java e como classes se relacionam em uma hierarquia."
+                    },
+                    "difficulty": 3,
+                    "section_id": "s4",
+                    "description": "Explorar os conceitos de herança, como classes filhas estendem classes pai, e o uso da palavra-chave 'super' para acessar membros da classe pai.",
+                    "estimated_time": 75,
+                    "research_needed": false,
+                    "suggested_order": 10
+                },
+                {
+                    "id": "t11",
+                    "type": "flashcards",
+                    "title": "Polimorfismo, Sobrescrita e Classes Abstratas",
+                    "content": {
+                        "cards": [{
+                                "front": "O que é polimorfismo em Java?"
+                            },
+                            {
+                                "front": "Quais são as regras para sobrescrever um método?"
+                            },
+                            {
+                                "front": "Qual a diferença entre uma classe abstrata e uma interface (em Java 8)?"
+                            },
+                            {
+                                "front": "Quando usar a anotação @Override?"
+                            }
+                        ]
+                    },
+                    "difficulty": 4,
+                    "section_id": "s4",
+                    "description": "Flashcards sobre polimorfismo, as regras para sobrescrever métodos, classes abstratas e interfaces (conceitos básicos de OCA).",
+                    "estimated_time": 60,
+                    "research_needed": false,
+                    "suggested_order": 11
+                },
+                {
+                    "id": "t12",
+                    "type": "quiz",
+                    "title": "Quiz: final, static e Casting de Objetos",
+                    "content": {
+                        "items": [{
+                                "prompt": "Qual é a principal característica de uma variável 'final'?"
+                            },
+                            {
+                                "prompt": "O que acontece se você tentar estender uma classe 'final'?"
+                            },
+                            {
+                                "prompt": "Quando um método deve ser declarado como 'static'?"
+                            },
+                            {
+                                "prompt": "É permitido fazer casting de uma superclasse para uma subclasse sem uma verificação? Explique."
+                            }
+                        ]
+                    },
+                    "difficulty": 4,
+                    "section_id": "s4",
+                    "description": "Testar o conhecimento sobre a palavra-chave 'final' (para classes, métodos e variáveis), membros 'static' (variáveis, métodos, blocos) e as regras de casting entre tipos de objetos polimórficos.",
+                    "estimated_time": 60,
+                    "research_needed": false,
+                    "suggested_order": 12,
+                    "assessment_target": "s4"
+                },
+                {
+                    "id": "t13",
+                    "type": "lecture",
+                    "title": "Manipulação de Exceções",
+                    "content": {
+                        "body": "Nesta aula, diferenciaremos 'Error', 'Exception' e 'RuntimeException'. Exploraremos a hierarquia de exceções, como criar e lançar exceções personalizadas, e as melhores práticas para o tratamento de exceções na OCA.",
+                        "summary": "Como Java lida com erros em tempo de execução e como escrever código robusto."
+                    },
+                    "difficulty": 3,
+                    "section_id": "s5",
+                    "description": "Estudar o mecanismo de tratamento de exceções em Java, incluindo blocos 'try-catch-finally', tipos de exceções (checked vs. unchecked) e as palavras-chave 'throw' e 'throws'.",
+                    "estimated_time": 90,
+                    "research_needed": false,
+                    "suggested_order": 13
+                },
+                {
+                    "id": "t14",
+                    "type": "flashcards",
+                    "title": "Classes Comuns da API Java (String, StringBuilder)",
+                    "content": {
+                        "cards": [{
+                                "front": "Qual a diferença entre String e StringBuilder em termos de mutabilidade?"
+                            },
+                            {
+                                "front": "Qual método da classe String é usado para verificar se uma string contém uma sequência de caracteres específica?"
+                            },
+                            {
+                                "front": "Como você concatena duas Strings em Java?"
+                            },
+                            {
+                                "front": "Qual o resultado de 'new String(\"hello\").equals(\"hello\")'?"
+                            }
+                        ]
+                    },
+                    "difficulty": 3,
+                    "section_id": "s5",
+                    "description": "Flashcards focados nos principais métodos das classes `String` e `StringBuilder`, e suas diferenças de performance e imutabilidade.",
+                    "estimated_time": 60,
+                    "research_needed": false,
+                    "suggested_order": 14
+                },
+                {
+                    "id": "t15",
+                    "type": "quiz",
+                    "title": "Quiz: Wrapper Classes e ArrayList",
+                    "content": {
+                        "items": [{
+                                "prompt": "Qual é a classe Wrapper para o tipo primitivo 'int'?"
+                            },
+                            {
+                                "prompt": "Como você cria um `ArrayList` que armazena objetos `String`?"
+                            },
+                            {
+                                "prompt": "Qual método é usado para adicionar um elemento a um `ArrayList`?"
+                            },
+                            {
+                                "prompt": "O que acontece se você tentar acessar um índice fora dos limites de um `ArrayList`?"
+                            }
+                        ]
+                    },
+                    "difficulty": 4,
+                    "section_id": "s5",
+                    "description": "Questões sobre o uso das classes Wrapper (Integer, Double, Boolean, etc.) e a classe `ArrayList` para manipulação de coleções.",
+                    "estimated_time": 60,
+                    "research_needed": false,
+                    "suggested_order": 15,
+                    "assessment_target": "s5"
+                },
+                {
+                    "id": "t16",
+                    "type": "external_resource",
+                    "title": "Documentação Oficial de Exceções Java",
+                    "content": {
+                        "resources": [{
+                            "title": "Oracle Java SE Tutorials - Exceptions"
+                        }]
+                    },
+                    "difficulty": 3,
+                    "section_id": "s5",
+                    "description": "Explore a documentação oficial da Oracle sobre o tratamento de exceções para aprofundar seu conhecimento. **URL:** https://docs.oracle.com/javase/tutorial/essential/exceptions/index.html. **Racional:** Fonte primária e mais autoritativa. **Como usar:** Leia os tutoriais e experimente os exemplos de código. **Fallback:** Artigos de tratamento de exceções em sites como Baeldung ou GeeksforGeeks.",
+                    "estimated_time": 75,
+                    "research_needed": true,
+                    "suggested_order": 16
+                },
+                {
+                    "id": "t17",
+                    "type": "summary",
+                    "title": "Revisão dos Tópicos Chave da OCA Java SE 8",
+                    "content": {
+                        "body": "Este resumo serve como um guia final para a revisão. Relembraremos as regras de identificadores, precedência de operadores, nuances de controle de fluxo, comportamento de arrays, hierarquia de classes, polimorfismo, tratamento de exceções e o uso das principais classes da API. Concentre-se nas áreas onde você ainda tem dúvidas.",
+                        "summary": "Revisão geral e focada nos pontos críticos para a aprovação."
+                    },
+                    "difficulty": 3,
+                    "section_id": "s6",
+                    "description": "Um resumo consolidado de todos os tópicos essenciais para a certificação, destacando os pontos mais importantes e frequentemente testados.",
+                    "estimated_time": 120,
+                    "research_needed": false,
+                    "suggested_order": 17
+                },
+                {
+                    "id": "t18",
+                    "type": "quiz",
+                    "title": "Simulado Completo OCA Java SE 8 Programmer I",
+                    "content": {
+                        "items": [{
+                                "prompt": "Qual será a saída do seguinte código Java? [código complexo com herança e polimorfismo]"
+                            },
+                            {
+                                "prompt": "Qual o resultado de 'Integer i = 10; Integer j = 10; System.out.println(i == j);' e por que?"
+                            },
+                            {
+                                "prompt": "Qual o principal benefício de usar a interface List em vez da classe concreta ArrayList diretamente?"
+                            }
+                        ]
+                    },
+                    "difficulty": 5,
+                    "section_id": "s6",
+                    "description": "Um simulado completo (70-75 questões, 150 minutos) para simular as condições do exame real e avaliar sua prontidão. Tente fazê-lo em um ambiente tranquilo e sem interrupções.",
+                    "estimated_time": 150,
+                    "research_needed": true,
+                    "suggested_order": 18,
+                    "assessment_target": "s6"
+                },
+                {
+                    "id": "t19",
+                    "type": "flashcards",
+                    "title": "Pontos Críticos e Dúvidas Frequentes da OCA",
+                    "content": {
+                        "cards": [{
+                                "front": "Explique a diferença entre 'instanceof' e casting em tempo de compilação/execução."
+                            },
+                            {
+                                "front": "Quais modificadores de acesso são permitidos para métodos em uma interface (Java 8)?"
+                            },
+                            {
+                                "front": "O que é 'NPE' e como evitá-la?"
+                            },
+                            {
+                                "front": "Quando um bloco 'finally' não será executado?"
+                            }
+                        ]
+                    },
+                    "difficulty": 4,
+                    "section_id": "s6",
+                    "description": "Flashcards específicos para as pegadinhas e conceitos que mais causam confusão nos exames OCA, com base em feedback de outros estudantes e áreas de dificuldade comum.",
+                    "estimated_time": 60,
+                    "research_needed": false,
+                    "suggested_order": 19
+                },
+                {
+                    "id": "t20",
+                    "type": "external_resource",
+                    "title": "Recursos Adicionais para Simulados e Questões",
+                    "content": {
+                        "resources": [{
+                            "title": "ExamTopics - Oracle 1Z0-808 Practice Questions"
+                        }]
+                    },
+                    "difficulty": 4,
+                    "section_id": "s6",
+                    "description": "Plataformas com simulados e questões de prática adicionais para fortalecer seu conhecimento e testar sua velocidade. **URL:** (Exemplo) https://www.examtopics.com/exams/oracle/1z0-808/ **Racional:** Essencial para prática e familiarização com o formato da prova. **Como usar:** Faça mais simulados, revise as respostas erradas e entenda as explicações. **Fallback:** Livros de preparação para OCA ou outros sites de quizzes Java.",
+                    "estimated_time": 90,
+                    "research_needed": true,
+                    "suggested_order": 20
+                }
+            ]
+        }
+    },
+    "weeks": [{
+        "id": "b39cf897-69ce-4f23-b212-b85d90636a2d",
+        "week_index": 1,
+        "title": "Week 1",
+        "focus": "",
+        "start_date": null,
+        "end_date": null,
+        "status": "active",
+        "metadata": {},
+        "days": [{
+                "id": "bdac3b45-a93f-4408-89ec-f6d8e559abc5",
+                "day_index": 1,
+                "scheduled_date": null,
+                "title": "Fundamentos de Sintaxe e Estrutura Java para OCA",
+                "focus": "Dominar as regras de declaração, inicialização e escopo de variáveis, e a estrutura básica de classes conforme exigido pela OCA.",
+                "target_minutes": 0,
+                "status": "ready",
+                "section_id": "s1",
+                "prerequisites": [],
+                "week_index": 1,
+                "tasks": [{
+                        "id": "7a9d71d9-761a-4185-80bf-12881d15164b",
+                        "day": "bdac3b45-a93f-4408-89ec-f6d8e559abc5",
+                        "order": 1,
+                        "task_type": "lesson",
+                        "status": "pending",
+                        "title": "Estrutura Básica de Classes e o Método main()",
+                        "description": "Explorar a estrutura de classes Java, a sintaxe do método main, pacotes, importações e a compilação/execução básica de programas Java.",
+                        "duration_minutes": 75,
+                        "resources": [],
+                        "section_id": "s1",
+                        "difficulty": 3,
+                        "research_needed": false,
+                        "content_type": "lesson",
+                        "content": {
+                            "summary": "Introdução à anatomia de um programa Java, incluindo classes, métodos, pacotes e o ponto de entrada da aplicação.",
+                            "body": "Nesta aula, abordaremos os componentes essenciais de um programa Java: classes, o método 'main', como organizar seu código em pacotes e a importância das declarações 'import'. Foco nos detalhes exigidos pela certificação, como os modificadores de acesso do 'main' e a estrutura de pacotes.",
+                            "key_points": [],
+                            "source_refs": []
+                        },
+                        "metadata": {
+                            "content": {
+                                "body": "Nesta aula, abordaremos os componentes essenciais de um programa Java: classes, o método 'main', como organizar seu código em pacotes e a importância das declarações 'import'. Foco nos detalhes exigidos pela certificação, como os modificadores de acesso do 'main' e a estrutura de pacotes.",
+                                "summary": "Introdução à anatomia de um programa Java, incluindo classes, métodos, pacotes e o ponto de entrada da aplicação."
+                            },
+                            "difficulty": 3,
+                            "section_id": "s1",
+                            "dependencies": [],
+                            "prerequisites": [],
+                            "task_schema_id": "t1",
+                            "research_needed": false
+                        }
+                    },
+                    {
+                        "id": "08924678-ce83-4662-a041-38a7eb54ea71",
+                        "day": "bdac3b45-a93f-4408-89ec-f6d8e559abc5",
+                        "order": 2,
+                        "task_type": "flashcards",
+                        "status": "pending",
+                        "title": "Identificadores, Palavras-Chave e Tipos Primitivos",
+                        "description": "Flashcards para memorizar regras de identificadores, lista de palavras-chave reservadas, tipos primitivos e seus valores padrão.",
+                        "duration_minutes": 60,
+                        "resources": [],
+                        "section_id": "s1",
+                        "difficulty": 3,
+                        "research_needed": false,
+                        "content_type": "flashcards",
+                        "content": {
+                            "title": "Identificadores, Palavras-Chave e Tipos Primitivos",
+                            "description": "Flashcards para memorizar regras de identificadores, lista de palavras-chave reservadas, tipos primitivos e seus valores padrão.",
+                            "tags": [],
+                            "cards": [{
+                                    "id": "daf5d945-9c46-46f6-8f95-a7b82d2e8879",
+                                    "front": "Qual é a regra principal para o primeiro caractere de um identificador Java?",
+                                    "back": "",
+                                    "hints": [],
+                                    "tags": [],
+                                    "difficulty": 1
+                                },
+                                {
+                                    "id": "e1e86e8f-300f-4296-b145-1a31c2f946b8",
+                                    "front": "Dê três exemplos de palavras-chave reservadas em Java.",
+                                    "back": "",
+                                    "hints": [],
+                                    "tags": [],
+                                    "difficulty": 1
+                                },
+                                {
+                                    "id": "d7537761-4a41-498a-9b6f-87102479fed1",
+                                    "front": "Qual é o valor padrão de um 'boolean' em uma classe em Java?",
+                                    "back": "",
+                                    "hints": [],
+                                    "tags": [],
+                                    "difficulty": 1
+                                },
+                                {
+                                    "id": "603951b7-84b7-48e0-b184-d0f8572b9e31",
+                                    "front": "Qual é o valor padrão de um 'int' em uma classe em Java?",
+                                    "back": "",
+                                    "hints": [],
+                                    "tags": [],
+                                    "difficulty": 1
+                                },
+                                {
+                                    "id": "97ce6ee3-85a8-4a6e-ae0e-cb37b840d448",
+                                    "front": "Identificador '1abc' é válido? Por quê?",
+                                    "back": "",
+                                    "hints": [],
+                                    "tags": [],
+                                    "difficulty": 1
+                                }
+                            ]
+                        },
+                        "metadata": {
+                            "content": {
+                                "cards": [{
+                                        "front": "Qual é a regra principal para o primeiro caractere de um identificador Java?"
+                                    },
+                                    {
+                                        "front": "Dê três exemplos de palavras-chave reservadas em Java."
+                                    },
+                                    {
+                                        "front": "Qual é o valor padrão de um 'boolean' em uma classe em Java?"
+                                    },
+                                    {
+                                        "front": "Qual é o valor padrão de um 'int' em uma classe em Java?"
+                                    },
+                                    {
+                                        "front": "Identificador '1abc' é válido? Por quê?"
+                                    }
+                                ]
+                            },
+                            "difficulty": 3,
+                            "section_id": "s1",
+                            "dependencies": [],
+                            "prerequisites": [],
+                            "task_schema_id": "t2",
+                            "research_needed": false
+                        }
+                    },
+                    {
+                        "id": "e03bcc2f-e85d-42e2-a600-a97e2baa9a74",
+                        "day": "bdac3b45-a93f-4408-89ec-f6d8e559abc5",
+                        "order": 3,
+                        "task_type": "assessment",
+                        "status": "pending",
+                        "title": "Quiz: Fundamentos de Sintaxe Java",
+                        "description": "Teste rápido sobre a sintaxe básica de classes, métodos, variáveis e identificadores, focando em pegadinhas comuns da prova OCA.",
+                        "duration_minutes": 45,
+                        "resources": [],
+                        "section_id": "s1",
+                        "difficulty": 4,
+                        "research_needed": false,
+                        "content_type": "assessment",
+                        "content": {
+                            "title": "Quiz: Fundamentos de Sintaxe Java",
+                            "description": "Teste rápido sobre a sintaxe básica de classes, métodos, variáveis e identificadores, focando em pegadinhas comuns da prova OCA.",
+                            "assessment_type": "quiz",
+                            "passing_score": null,
+                            "time_limit_minutes": null,
+                            "metadata": {},
+                            "items": [{
+                                    "id": "b18c591c-c41f-4817-a7b1-e55d1da7fbcd",
+                                    "item_type": "mcq",
+                                    "prompt": "Qual das seguintes linhas de código não compila? (A) int i=10; (B) boolean b=true; (C) String s='hello'; (D) double d=10.0;",
+                                    "choices": [],
+                                    "answer": {
+                                        "answer": null,
+                                        "explanation": null
+                                    },
+                                    "explanation": "",
+                                    "difficulty": 1,
+                                    "metadata": {}
+                                },
+                                {
+                                    "id": "ef84277d-e6b0-46be-bd05-571dd961a72c",
+                                    "item_type": "mcq",
+                                    "prompt": "Qual é o modificador de acesso mais restritivo em Java?",
+                                    "choices": [],
+                                    "answer": {
+                                        "answer": null,
+                                        "explanation": null
+                                    },
+                                    "explanation": "",
+                                    "difficulty": 1,
+                                    "metadata": {}
+                                },
+                                {
+                                    "id": "e3120c05-7b57-4ca4-aeda-1d652db7dafe",
+                                    "item_type": "mcq",
+                                    "prompt": "Qual palavra-chave é usada para indicar que uma variável não pode ser alterada após a inicialização?",
+                                    "choices": [],
+                                    "answer": {
+                                        "answer": null,
+                                        "explanation": null
+                                    },
+                                    "explanation": "",
+                                    "difficulty": 1,
+                                    "metadata": {}
+                                },
+                                {
+                                    "id": "596d7206-3e09-4573-ad8d-4f10c2dae8a6",
+                                    "item_type": "mcq",
+                                    "prompt": "O que acontece se você não inicializar uma variável local?",
+                                    "choices": [],
+                                    "answer": {
+                                        "answer": null,
+                                        "explanation": null
+                                    },
+                                    "explanation": "",
+                                    "difficulty": 1,
+                                    "metadata": {}
+                                }
+                            ]
+                        },
+                        "metadata": {
+                            "content": {
+                                "items": [{
+                                        "prompt": "Qual das seguintes linhas de código não compila? (A) int i=10; (B) boolean b=true; (C) String s='hello'; (D) double d=10.0;"
+                                    },
+                                    {
+                                        "prompt": "Qual é o modificador de acesso mais restritivo em Java?"
+                                    },
+                                    {
+                                        "prompt": "Qual palavra-chave é usada para indicar que uma variável não pode ser alterada após a inicialização?"
+                                    },
+                                    {
+                                        "prompt": "O que acontece se você não inicializar uma variável local?"
+                                    }
+                                ]
+                            },
+                            "difficulty": 4,
+                            "section_id": "s1",
+                            "dependencies": [],
+                            "prerequisites": [],
+                            "task_schema_id": "t3",
+                            "research_needed": false,
+                            "assessment_target": "s1"
+                        }
+                    }
+                ],
+                "metadata": {
+                    "section_id": "s1",
+                    "prerequisites": []
+                }
+            },
+            {
+                "id": "8250ddf6-9e4a-4572-b170-8c2cd776bab7",
+                "day_index": 2,
+                "scheduled_date": null,
+                "title": "Tipos de Dados, Operadores e Controle de Fluxo",
+                "focus": "Entender e aplicar tipos primitivos e de referência, precedência de operadores e estruturas de controle (if/else, switch, loops) com foco em detalhes da certificação.",
+                "target_minutes": 0,
+                "status": "ready",
+                "section_id": "s2",
+                "prerequisites": [
+                    "s1"
+                ],
+                "week_index": 1,
+                "tasks": [{
+                        "id": "711bf9e3-e36d-4252-9432-b98041ff3dd3",
+                        "day": "8250ddf6-9e4a-4572-b170-8c2cd776bab7",
+                        "order": 4,
+                        "task_type": "lesson",
+                        "status": "pending",
+                        "title": "Tipos Primitivos e de Referência, Wrappers e Casting",
+                        "description": "Entender a diferença entre tipos primitivos e de referência, o uso de classes Wrapper, autoboxing/unboxing e as regras de casting numérico e de objetos.",
+                        "duration_minutes": 90,
+                        "resources": [],
+                        "section_id": "s2",
+                        "difficulty": 3,
+                        "research_needed": false,
+                        "content_type": "lesson",
+                        "content": {
+                            "summary": "Diferenças fundamentais entre tipos de dados em Java, conversão entre eles e o papel das classes Wrapper.",
+                            "body": "Esta aula detalha os 8 tipos primitivos de Java, como eles se comportam em memória versus tipos de referência (objetos). Abordaremos o autoboxing e unboxing, essenciais para a interação entre primitivos e Wrappers, e as complexas regras de casting que são frequentemente testadas na OCA.",
+                            "key_points": [],
+                            "source_refs": []
+                        },
+                        "metadata": {
+                            "content": {
+                                "body": "Esta aula detalha os 8 tipos primitivos de Java, como eles se comportam em memória versus tipos de referência (objetos). Abordaremos o autoboxing e unboxing, essenciais para a interação entre primitivos e Wrappers, e as complexas regras de casting que são frequentemente testadas na OCA.",
+                                "summary": "Diferenças fundamentais entre tipos de dados em Java, conversão entre eles e o papel das classes Wrapper."
+                            },
+                            "difficulty": 3,
+                            "section_id": "s2",
+                            "dependencies": [],
+                            "prerequisites": [],
+                            "task_schema_id": "t4",
+                            "research_needed": false
+                        }
+                    },
+                    {
+                        "id": "fd5074f1-7dd8-4786-8085-17cd672fde22",
+                        "day": "8250ddf6-9e4a-4572-b170-8c2cd776bab7",
+                        "order": 5,
+                        "task_type": "flashcards",
+                        "status": "pending",
+                        "title": "Precedência de Operadores e Expressões",
+                        "description": "Flashcards para revisar a precedência de operadores aritméticos, lógicos, de atribuição e condicionais, e como eles afetam o resultado de expressões.",
+                        "duration_minutes": 60,
+                        "resources": [],
+                        "section_id": "s2",
+                        "difficulty": 4,
+                        "research_needed": false,
+                        "content_type": "flashcards",
+                        "content": {
+                            "title": "Precedência de Operadores e Expressões",
+                            "description": "Flashcards para revisar a precedência de operadores aritméticos, lógicos, de atribuição e condicionais, e como eles afetam o resultado de expressões.",
+                            "tags": [],
+                            "cards": [{
+                                    "id": "8c8b3de3-890d-4816-9bfb-4642214f8a64",
+                                    "front": "Qual operador tem maior precedência: '++' ou '*'?",
+                                    "back": "",
+                                    "hints": [],
+                                    "tags": [],
+                                    "difficulty": 1
+                                },
+                                {
+                                    "id": "64ffb88f-e382-4f79-ba6f-5054119363b8",
+                                    "front": "Qual é o resultado de '5 + 2 * 3'?",
+                                    "back": "",
+                                    "hints": [],
+                                    "tags": [],
+                                    "difficulty": 1
+                                },
+                                {
+                                    "id": "b1f130b3-d2ad-4255-84fd-82f36e9bb9c6",
+                                    "front": "Qual é a diferença entre '==' e '.equals()' para objetos String?",
+                                    "back": "",
+                                    "hints": [],
+                                    "tags": [],
+                                    "difficulty": 1
+                                },
+                                {
+                                    "id": "f5b62305-bf11-4e3c-9af1-b0f1c41903f8",
+                                    "front": "Qual o efeito do operador ternário (?:)?",
+                                    "back": "",
+                                    "hints": [],
+                                    "tags": [],
+                                    "difficulty": 1
+                                }
+                            ]
+                        },
+                        "metadata": {
+                            "content": {
+                                "cards": [{
+                                        "front": "Qual operador tem maior precedência: '++' ou '*'?"
+                                    },
+                                    {
+                                        "front": "Qual é o resultado de '5 + 2 * 3'?"
+                                    },
+                                    {
+                                        "front": "Qual é a diferença entre '==' e '.equals()' para objetos String?"
+                                    },
+                                    {
+                                        "front": "Qual o efeito do operador ternário (?:)?"
+                                    }
+                                ]
+                            },
+                            "difficulty": 4,
+                            "section_id": "s2",
+                            "dependencies": [],
+                            "prerequisites": [],
+                            "task_schema_id": "t5",
+                            "research_needed": false
+                        }
+                    },
+                    {
+                        "id": "c7eebfae-8b48-4b1f-9f41-bbdbed8434ea",
+                        "day": "8250ddf6-9e4a-4572-b170-8c2cd776bab7",
+                        "order": 6,
+                        "task_type": "assessment",
+                        "status": "pending",
+                        "title": "Quiz: Controle de Fluxo (if/else, switch, loops)",
+                        "description": "Questões sobre o uso correto de 'if/else', 'switch' (incluindo fall-through e tipos suportados), e todas as variações de loops ('for', 'while', 'do/while', 'for-each').",
+                        "duration_minutes": 60,
+                        "resources": [],
+                        "section_id": "s2",
+                        "difficulty": 4,
+                        "research_needed": false,
+                        "content_type": "assessment",
+                        "content": {
+                            "title": "Quiz: Controle de Fluxo (if/else, switch, loops)",
+                            "description": "Questões sobre o uso correto de 'if/else', 'switch' (incluindo fall-through e tipos suportados), e todas as variações de loops ('for', 'while', 'do/while', 'for-each').",
+                            "assessment_type": "quiz",
+                            "passing_score": null,
+                            "time_limit_minutes": null,
+                            "metadata": {},
+                            "items": [{
+                                    "id": "d1b60b59-019f-4d76-8a66-4462a3cda422",
+                                    "item_type": "mcq",
+                                    "prompt": "Qual é o tipo de dado que pode ser usado em uma declaração 'switch'?",
+                                    "choices": [],
+                                    "answer": {
+                                        "answer": null,
+                                        "explanation": null
+                                    },
+                                    "explanation": "",
+                                    "difficulty": 1,
+                                    "metadata": {}
+                                },
+                                {
+                                    "id": "4855bc6a-1442-4a04-88e0-aa564b67e59c",
+                                    "item_type": "mcq",
+                                    "prompt": "Qual a diferença entre 'break' e 'continue' em um loop?",
+                                    "choices": [],
+                                    "answer": {
+                                        "answer": null,
+                                        "explanation": null
+                                    },
+                                    "explanation": "",
+                                    "difficulty": 1,
+                                    "metadata": {}
+                                },
+                                {
+                                    "id": "51d9aecc-3393-45e4-b9dc-891c239920fe",
+                                    "item_type": "mcq",
+                                    "prompt": "O que acontece se uma expressão 'switch' não tiver um 'break' em um 'case'?",
+                                    "choices": [],
+                                    "answer": {
+                                        "answer": null,
+                                        "explanation": null
+                                    },
+                                    "explanation": "",
+                                    "difficulty": 1,
+                                    "metadata": {}
+                                },
+                                {
+                                    "id": "2700e385-3e86-432b-9cd9-505a0a4198b3",
+                                    "item_type": "mcq",
+                                    "prompt": "Considere o código: `for (int i=0; i<10; i++) { if (i==5) break; System.out.print(i); }`. Qual será a saída?",
+                                    "choices": [],
+                                    "answer": {
+                                        "answer": null,
+                                        "explanation": null
+                                    },
+                                    "explanation": "",
+                                    "difficulty": 1,
+                                    "metadata": {}
+                                }
+                            ]
+                        },
+                        "metadata": {
+                            "content": {
+                                "items": [{
+                                        "prompt": "Qual é o tipo de dado que pode ser usado em uma declaração 'switch'?"
+                                    },
+                                    {
+                                        "prompt": "Qual a diferença entre 'break' e 'continue' em um loop?"
+                                    },
+                                    {
+                                        "prompt": "O que acontece se uma expressão 'switch' não tiver um 'break' em um 'case'?"
+                                    },
+                                    {
+                                        "prompt": "Considere o código: `for (int i=0; i<10; i++) { if (i==5) break; System.out.print(i); }`. Qual será a saída?"
+                                    }
+                                ]
+                            },
+                            "difficulty": 4,
+                            "section_id": "s2",
+                            "dependencies": [],
+                            "prerequisites": [],
+                            "task_schema_id": "t6",
+                            "research_needed": false,
+                            "assessment_target": "s2"
+                        }
+                    }
+                ],
+                "metadata": {
+                    "section_id": "s2",
+                    "prerequisites": [
+                        "s1"
+                    ]
+                }
+            },
+            {
+                "id": "e94e8dd1-98be-4172-99cc-36a22c610e57",
+                "day_index": 3,
+                "scheduled_date": null,
+                "title": "Arrays, Métodos e Encapsulamento",
+                "focus": "Habilidade de usar arrays unidimensionais, criar métodos (incluindo sobrecarga) e aplicar encapsulamento, compreendendo as nuances da linguagem.",
+                "target_minutes": 0,
+                "status": "ready",
+                "section_id": "s3",
+                "prerequisites": [
+                    "s2"
+                ],
+                "week_index": 1,
+                "tasks": [{
+                        "id": "a4092add-196d-4386-a3e9-e146d5a03c3c",
+                        "day": "e94e8dd1-98be-4172-99cc-36a22c610e57",
+                        "order": 7,
+                        "task_type": "lesson",
+                        "status": "pending",
+                        "title": "Arrays Unidimensionais",
+                        "description": "Explorar a declaração, inicialização e manipulação de arrays unidimensionais em Java, incluindo seus comportamentos e armadilhas da OCA.",
+                        "duration_minutes": 75,
+                        "resources": [],
+                        "section_id": "s3",
+                        "difficulty": 3,
+                        "research_needed": false,
+                        "content_type": "lesson",
+                        "content": {
+                            "summary": "Fundamentos sobre arrays: criação, acesso a elementos e iteração.",
+                            "body": "Nesta aula, cobriremos a sintaxe para declarar e instanciar arrays, como acessar seus elementos e a propriedade `length`. Atenção especial será dada aos valores padrão de arrays de tipos primitivos e de referência, e como arrays são tratados como objetos em Java.",
+                            "key_points": [],
+                            "source_refs": []
+                        },
+                        "metadata": {
+                            "content": {
+                                "body": "Nesta aula, cobriremos a sintaxe para declarar e instanciar arrays, como acessar seus elementos e a propriedade `length`. Atenção especial será dada aos valores padrão de arrays de tipos primitivos e de referência, e como arrays são tratados como objetos em Java.",
+                                "summary": "Fundamentos sobre arrays: criação, acesso a elementos e iteração."
+                            },
+                            "difficulty": 3,
+                            "section_id": "s3",
+                            "dependencies": [],
+                            "prerequisites": [],
+                            "task_schema_id": "t7",
+                            "research_needed": false
+                        }
+                    },
+                    {
+                        "id": "ff764251-08af-4f0f-966f-aa9b006c37e0",
+                        "day": "e94e8dd1-98be-4172-99cc-36a22c610e57",
+                        "order": 8,
+                        "task_type": "flashcards",
+                        "status": "pending",
+                        "title": "Métodos e Sobrecarga",
+                        "description": "Flashcards sobre a estrutura de métodos, parâmetros, retorno, modificadores de acesso e as regras de sobrecarga de métodos.",
+                        "duration_minutes": 60,
+                        "resources": [],
+                        "section_id": "s3",
+                        "difficulty": 3,
+                        "research_needed": false,
+                        "content_type": "flashcards",
+                        "content": {
+                            "title": "Métodos e Sobrecarga",
+                            "description": "Flashcards sobre a estrutura de métodos, parâmetros, retorno, modificadores de acesso e as regras de sobrecarga de métodos.",
+                            "tags": [],
+                            "cards": [{
+                                    "id": "8f8eeaea-f5c9-4165-b9ee-5f5875b94851",
+                                    "front": "Quais são os requisitos para sobrecarregar um método?",
+                                    "back": "",
+                                    "hints": [],
+                                    "tags": [],
+                                    "difficulty": 1
+                                },
+                                {
+                                    "id": "b5e3a6d8-65d5-4190-9d67-a0bfbc406d01",
+                                    "front": "Qual a diferença entre 'public', 'protected', 'default' e 'private'?",
+                                    "back": "",
+                                    "hints": [],
+                                    "tags": [],
+                                    "difficulty": 1
+                                },
+                                {
+                                    "id": "c841ec66-7745-447a-b758-02efeaaa5a4f",
+                                    "front": "Um método que não retorna nada deve ter qual tipo de retorno?",
+                                    "back": "",
+                                    "hints": [],
+                                    "tags": [],
+                                    "difficulty": 1
+                                },
+                                {
+                                    "id": "8e9b68f2-6fe0-4410-87fc-1809d3ac88f2",
+                                    "front": "O que é um argumento de tipo varargs?",
+                                    "back": "",
+                                    "hints": [],
+                                    "tags": [],
+                                    "difficulty": 1
+                                }
+                            ]
+                        },
+                        "metadata": {
+                            "content": {
+                                "cards": [{
+                                        "front": "Quais são os requisitos para sobrecarregar um método?"
+                                    },
+                                    {
+                                        "front": "Qual a diferença entre 'public', 'protected', 'default' e 'private'?"
+                                    },
+                                    {
+                                        "front": "Um método que não retorna nada deve ter qual tipo de retorno?"
+                                    },
+                                    {
+                                        "front": "O que é um argumento de tipo varargs?"
+                                    }
+                                ]
+                            },
+                            "difficulty": 3,
+                            "section_id": "s3",
+                            "dependencies": [],
+                            "prerequisites": [],
+                            "task_schema_id": "t8",
+                            "research_needed": false
+                        }
+                    },
+                    {
+                        "id": "355b9ed3-7523-419c-8054-e75655bf915a",
+                        "day": "e94e8dd1-98be-4172-99cc-36a22c610e57",
+                        "order": 9,
+                        "task_type": "assessment",
+                        "status": "pending",
+                        "title": "Quiz: Encapsulamento, Construtores e o 'this'",
+                        "description": "Avaliar o entendimento sobre encapsulamento, a criação e uso de construtores (incluindo o construtor padrão) e a utilização da palavra-chave 'this'.",
+                        "duration_minutes": 60,
+                        "resources": [],
+                        "section_id": "s3",
+                        "difficulty": 4,
+                        "research_needed": false,
+                        "content_type": "assessment",
+                        "content": {
+                            "title": "Quiz: Encapsulamento, Construtores e o 'this'",
+                            "description": "Avaliar o entendimento sobre encapsulamento, a criação e uso de construtores (incluindo o construtor padrão) e a utilização da palavra-chave 'this'.",
+                            "assessment_type": "quiz",
+                            "passing_score": null,
+                            "time_limit_minutes": null,
+                            "metadata": {},
+                            "items": [{
+                                    "id": "974f4fb1-9bd7-4a85-9598-a73b8317d0c1",
+                                    "item_type": "mcq",
+                                    "prompt": "Qual é o principal objetivo do encapsulamento em Java?",
+                                    "choices": [],
+                                    "answer": {
+                                        "answer": null,
+                                        "explanation": null
+                                    },
+                                    "explanation": "",
+                                    "difficulty": 1,
+                                    "metadata": {}
+                                },
+                                {
+                                    "id": "8291837a-ab9f-405c-911e-a67d940d1ce0",
+                                    "item_type": "mcq",
+                                    "prompt": "Quando um construtor padrão é fornecido automaticamente pelo compilador?",
+                                    "choices": [],
+                                    "answer": {
+                                        "answer": null,
+                                        "explanation": null
+                                    },
+                                    "explanation": "",
+                                    "difficulty": 1,
+                                    "metadata": {}
+                                },
+                                {
+                                    "id": "332ff931-f1c6-47a0-9d48-11491c3efac0",
+                                    "item_type": "mcq",
+                                    "prompt": "Como 'this' é usado para referenciar membros da instância dentro de uma classe?",
+                                    "choices": [],
+                                    "answer": {
+                                        "answer": null,
+                                        "explanation": null
+                                    },
+                                    "explanation": "",
+                                    "difficulty": 1,
+                                    "metadata": {}
+                                },
+                                {
+                                    "id": "8b21167a-6138-4804-849e-7c8526fd6e1b",
+                                    "item_type": "mcq",
+                                    "prompt": "Qual é a diferença entre um 'setter' e um 'getter'?",
+                                    "choices": [],
+                                    "answer": {
+                                        "answer": null,
+                                        "explanation": null
+                                    },
+                                    "explanation": "",
+                                    "difficulty": 1,
+                                    "metadata": {}
+                                }
+                            ]
+                        },
+                        "metadata": {
+                            "content": {
+                                "items": [{
+                                        "prompt": "Qual é o principal objetivo do encapsulamento em Java?"
+                                    },
+                                    {
+                                        "prompt": "Quando um construtor padrão é fornecido automaticamente pelo compilador?"
+                                    },
+                                    {
+                                        "prompt": "Como 'this' é usado para referenciar membros da instância dentro de uma classe?"
+                                    },
+                                    {
+                                        "prompt": "Qual é a diferença entre um 'setter' e um 'getter'?"
+                                    }
+                                ]
+                            },
+                            "difficulty": 4,
+                            "section_id": "s3",
+                            "dependencies": [],
+                            "prerequisites": [],
+                            "task_schema_id": "t9",
+                            "research_needed": false,
+                            "assessment_target": "s3"
+                        }
+                    }
+                ],
+                "metadata": {
+                    "section_id": "s3",
+                    "prerequisites": [
+                        "s2"
+                    ]
+                }
+            },
+            {
+                "id": "498e5a54-ecb8-4b5c-82e3-fbbc221bb1f5",
+                "day_index": 4,
+                "scheduled_date": null,
+                "title": "Herança e Polimorfismo",
+                "focus": "Compreender profundamente os conceitos de herança, polimorfismo, sobrescrita e sobrecarga de métodos, além de modificadores de acesso e o uso de 'final' e 'static'.",
+                "target_minutes": 0,
+                "status": "ready",
+                "section_id": "s4",
+                "prerequisites": [
+                    "s3"
+                ],
+                "week_index": 1,
+                "tasks": [{
+                        "id": "acf7546e-702d-4c3e-bec6-0a7da82d49f4",
+                        "day": "498e5a54-ecb8-4b5c-82e3-fbbc221bb1f5",
+                        "order": 10,
+                        "task_type": "lesson",
+                        "status": "pending",
+                        "title": "Introdução à Herança e a Palavra-Chave 'super'",
+                        "description": "Explorar os conceitos de herança, como classes filhas estendem classes pai, e o uso da palavra-chave 'super' para acessar membros da classe pai.",
+                        "duration_minutes": 75,
+                        "resources": [],
+                        "section_id": "s4",
+                        "difficulty": 3,
+                        "research_needed": false,
+                        "content_type": "lesson",
+                        "content": {
+                            "summary": "Fundamentos da herança em Java e como classes se relacionam em uma hierarquia.",
+                            "body": "Esta aula aborda a palavra-chave 'extends', o conceito de classes pai e filho, e como a herança permite a reutilização de código. Daremos atenção especial à inicialização de classes (ordem de execução de blocos de instância, construtores) e ao uso de 'super()' para chamar construtores da superclasse.",
+                            "key_points": [],
+                            "source_refs": []
+                        },
+                        "metadata": {
+                            "content": {
+                                "body": "Esta aula aborda a palavra-chave 'extends', o conceito de classes pai e filho, e como a herança permite a reutilização de código. Daremos atenção especial à inicialização de classes (ordem de execução de blocos de instância, construtores) e ao uso de 'super()' para chamar construtores da superclasse.",
+                                "summary": "Fundamentos da herança em Java e como classes se relacionam em uma hierarquia."
+                            },
+                            "difficulty": 3,
+                            "section_id": "s4",
+                            "dependencies": [],
+                            "prerequisites": [],
+                            "task_schema_id": "t10",
+                            "research_needed": false
+                        }
+                    },
+                    {
+                        "id": "a82eb63d-1300-47f4-a6ea-110ddc151da3",
+                        "day": "498e5a54-ecb8-4b5c-82e3-fbbc221bb1f5",
+                        "order": 11,
+                        "task_type": "flashcards",
+                        "status": "pending",
+                        "title": "Polimorfismo, Sobrescrita e Classes Abstratas",
+                        "description": "Flashcards sobre polimorfismo, as regras para sobrescrever métodos, classes abstratas e interfaces (conceitos básicos de OCA).",
+                        "duration_minutes": 60,
+                        "resources": [],
+                        "section_id": "s4",
+                        "difficulty": 4,
+                        "research_needed": false,
+                        "content_type": "flashcards",
+                        "content": {
+                            "title": "Polimorfismo, Sobrescrita e Classes Abstratas",
+                            "description": "Flashcards sobre polimorfismo, as regras para sobrescrever métodos, classes abstratas e interfaces (conceitos básicos de OCA).",
+                            "tags": [],
+                            "cards": [{
+                                    "id": "96796733-80cb-43eb-b86a-ea8787427568",
+                                    "front": "O que é polimorfismo em Java?",
+                                    "back": "",
+                                    "hints": [],
+                                    "tags": [],
+                                    "difficulty": 1
+                                },
+                                {
+                                    "id": "be5fe303-0eff-4de3-b7a8-bf3310108f59",
+                                    "front": "Quais são as regras para sobrescrever um método?",
+                                    "back": "",
+                                    "hints": [],
+                                    "tags": [],
+                                    "difficulty": 1
+                                },
+                                {
+                                    "id": "24bd51f0-d95d-4ab3-b39b-3154f67ddc29",
+                                    "front": "Qual a diferença entre uma classe abstrata e uma interface (em Java 8)?",
+                                    "back": "",
+                                    "hints": [],
+                                    "tags": [],
+                                    "difficulty": 1
+                                },
+                                {
+                                    "id": "e1ee8777-6f29-4e8a-8ad7-a49b5e1b8392",
+                                    "front": "Quando usar a anotação @Override?",
+                                    "back": "",
+                                    "hints": [],
+                                    "tags": [],
+                                    "difficulty": 1
+                                }
+                            ]
+                        },
+                        "metadata": {
+                            "content": {
+                                "cards": [{
+                                        "front": "O que é polimorfismo em Java?"
+                                    },
+                                    {
+                                        "front": "Quais são as regras para sobrescrever um método?"
+                                    },
+                                    {
+                                        "front": "Qual a diferença entre uma classe abstrata e uma interface (em Java 8)?"
+                                    },
+                                    {
+                                        "front": "Quando usar a anotação @Override?"
+                                    }
+                                ]
+                            },
+                            "difficulty": 4,
+                            "section_id": "s4",
+                            "dependencies": [],
+                            "prerequisites": [],
+                            "task_schema_id": "t11",
+                            "research_needed": false
+                        }
+                    },
+                    {
+                        "id": "34fe7fd4-95c6-4358-9c72-5b894d102892",
+                        "day": "498e5a54-ecb8-4b5c-82e3-fbbc221bb1f5",
+                        "order": 12,
+                        "task_type": "assessment",
+                        "status": "pending",
+                        "title": "Quiz: final, static e Casting de Objetos",
+                        "description": "Testar o conhecimento sobre a palavra-chave 'final' (para classes, métodos e variáveis), membros 'static' (variáveis, métodos, blocos) e as regras de casting entre tipos de objetos polimórficos.",
+                        "duration_minutes": 60,
+                        "resources": [],
+                        "section_id": "s4",
+                        "difficulty": 4,
+                        "research_needed": false,
+                        "content_type": "assessment",
+                        "content": {
+                            "title": "Quiz: final, static e Casting de Objetos",
+                            "description": "Testar o conhecimento sobre a palavra-chave 'final' (para classes, métodos e variáveis), membros 'static' (variáveis, métodos, blocos) e as regras de casting entre tipos de objetos polimórficos.",
+                            "assessment_type": "quiz",
+                            "passing_score": null,
+                            "time_limit_minutes": null,
+                            "metadata": {},
+                            "items": [{
+                                    "id": "75a28816-e4a0-46ce-946c-016c0d214d9b",
+                                    "item_type": "mcq",
+                                    "prompt": "Qual é a principal característica de uma variável 'final'?",
+                                    "choices": [],
+                                    "answer": {
+                                        "answer": null,
+                                        "explanation": null
+                                    },
+                                    "explanation": "",
+                                    "difficulty": 1,
+                                    "metadata": {}
+                                },
+                                {
+                                    "id": "3185a67e-4405-4bd8-8df5-df8b205307fa",
+                                    "item_type": "mcq",
+                                    "prompt": "O que acontece se você tentar estender uma classe 'final'?",
+                                    "choices": [],
+                                    "answer": {
+                                        "answer": null,
+                                        "explanation": null
+                                    },
+                                    "explanation": "",
+                                    "difficulty": 1,
+                                    "metadata": {}
+                                },
+                                {
+                                    "id": "85d76935-4a16-411c-a858-c70c8144832f",
+                                    "item_type": "mcq",
+                                    "prompt": "Quando um método deve ser declarado como 'static'?",
+                                    "choices": [],
+                                    "answer": {
+                                        "answer": null,
+                                        "explanation": null
+                                    },
+                                    "explanation": "",
+                                    "difficulty": 1,
+                                    "metadata": {}
+                                },
+                                {
+                                    "id": "cb1e32a1-344f-4d94-a004-a9043c3263a1",
+                                    "item_type": "mcq",
+                                    "prompt": "É permitido fazer casting de uma superclasse para uma subclasse sem uma verificação? Explique.",
+                                    "choices": [],
+                                    "answer": {
+                                        "answer": null,
+                                        "explanation": null
+                                    },
+                                    "explanation": "",
+                                    "difficulty": 1,
+                                    "metadata": {}
+                                }
+                            ]
+                        },
+                        "metadata": {
+                            "content": {
+                                "items": [{
+                                        "prompt": "Qual é a principal característica de uma variável 'final'?"
+                                    },
+                                    {
+                                        "prompt": "O que acontece se você tentar estender uma classe 'final'?"
+                                    },
+                                    {
+                                        "prompt": "Quando um método deve ser declarado como 'static'?"
+                                    },
+                                    {
+                                        "prompt": "É permitido fazer casting de uma superclasse para uma subclasse sem uma verificação? Explique."
+                                    }
+                                ]
+                            },
+                            "difficulty": 4,
+                            "section_id": "s4",
+                            "dependencies": [],
+                            "prerequisites": [],
+                            "task_schema_id": "t12",
+                            "research_needed": false,
+                            "assessment_target": "s4"
+                        }
+                    }
+                ],
+                "metadata": {
+                    "section_id": "s4",
+                    "prerequisites": [
+                        "s3"
+                    ]
+                }
+            },
+            {
+                "id": "19c33d78-3158-4f71-b1fc-9bfa4f36f963",
+                "day_index": 5,
+                "scheduled_date": null,
+                "title": "Exceções e APIs Comuns",
+                "focus": "Saber como tratar exceções (checked vs. unchecked) e utilizar classes comuns da API Java como String, StringBuilder, Wrapper classes e ArrayList.",
+                "target_minutes": 0,
+                "status": "ready",
+                "section_id": "s5",
+                "prerequisites": [
+                    "s4"
+                ],
+                "week_index": 1,
+                "tasks": [{
+                        "id": "53c2a00d-c214-419b-9e48-3867bfb5b062",
+                        "day": "19c33d78-3158-4f71-b1fc-9bfa4f36f963",
+                        "order": 13,
+                        "task_type": "lesson",
+                        "status": "pending",
+                        "title": "Manipulação de Exceções",
+                        "description": "Estudar o mecanismo de tratamento de exceções em Java, incluindo blocos 'try-catch-finally', tipos de exceções (checked vs. unchecked) e as palavras-chave 'throw' e 'throws'.",
+                        "duration_minutes": 90,
+                        "resources": [],
+                        "section_id": "s5",
+                        "difficulty": 3,
+                        "research_needed": false,
+                        "content_type": "lesson",
+                        "content": {
+                            "summary": "Como Java lida com erros em tempo de execução e como escrever código robusto.",
+                            "body": "Nesta aula, diferenciaremos 'Error', 'Exception' e 'RuntimeException'. Exploraremos a hierarquia de exceções, como criar e lançar exceções personalizadas, e as melhores práticas para o tratamento de exceções na OCA.",
+                            "key_points": [],
+                            "source_refs": []
+                        },
+                        "metadata": {
+                            "content": {
+                                "body": "Nesta aula, diferenciaremos 'Error', 'Exception' e 'RuntimeException'. Exploraremos a hierarquia de exceções, como criar e lançar exceções personalizadas, e as melhores práticas para o tratamento de exceções na OCA.",
+                                "summary": "Como Java lida com erros em tempo de execução e como escrever código robusto."
+                            },
+                            "difficulty": 3,
+                            "section_id": "s5",
+                            "dependencies": [],
+                            "prerequisites": [],
+                            "task_schema_id": "t13",
+                            "research_needed": false
+                        }
+                    },
+                    {
+                        "id": "168325c6-79be-4873-a7af-d1f31356fa3b",
+                        "day": "19c33d78-3158-4f71-b1fc-9bfa4f36f963",
+                        "order": 14,
+                        "task_type": "flashcards",
+                        "status": "pending",
+                        "title": "Classes Comuns da API Java (String, StringBuilder)",
+                        "description": "Flashcards focados nos principais métodos das classes `String` e `StringBuilder`, e suas diferenças de performance e imutabilidade.",
+                        "duration_minutes": 60,
+                        "resources": [],
+                        "section_id": "s5",
+                        "difficulty": 3,
+                        "research_needed": false,
+                        "content_type": "flashcards",
+                        "content": {
+                            "title": "Classes Comuns da API Java (String, StringBuilder)",
+                            "description": "Flashcards focados nos principais métodos das classes `String` e `StringBuilder`, e suas diferenças de performance e imutabilidade.",
+                            "tags": [],
+                            "cards": [{
+                                    "id": "9a2c961a-b7a2-4393-b576-ff2aa967fac1",
+                                    "front": "Qual a diferença entre String e StringBuilder em termos de mutabilidade?",
+                                    "back": "",
+                                    "hints": [],
+                                    "tags": [],
+                                    "difficulty": 1
+                                },
+                                {
+                                    "id": "a7cbfb8d-a5a3-495d-8308-02e7269dbf18",
+                                    "front": "Qual método da classe String é usado para verificar se uma string contém uma sequência de caracteres específica?",
+                                    "back": "",
+                                    "hints": [],
+                                    "tags": [],
+                                    "difficulty": 1
+                                },
+                                {
+                                    "id": "e14684c1-30bf-4bc7-86fc-b07190ef883f",
+                                    "front": "Como você concatena duas Strings em Java?",
+                                    "back": "",
+                                    "hints": [],
+                                    "tags": [],
+                                    "difficulty": 1
+                                },
+                                {
+                                    "id": "8624013b-5a73-4897-ac66-26ccc89183de",
+                                    "front": "Qual o resultado de 'new String(\"hello\").equals(\"hello\")'?",
+                                    "back": "",
+                                    "hints": [],
+                                    "tags": [],
+                                    "difficulty": 1
+                                }
+                            ]
+                        },
+                        "metadata": {
+                            "content": {
+                                "cards": [{
+                                        "front": "Qual a diferença entre String e StringBuilder em termos de mutabilidade?"
+                                    },
+                                    {
+                                        "front": "Qual método da classe String é usado para verificar se uma string contém uma sequência de caracteres específica?"
+                                    },
+                                    {
+                                        "front": "Como você concatena duas Strings em Java?"
+                                    },
+                                    {
+                                        "front": "Qual o resultado de 'new String(\"hello\").equals(\"hello\")'?"
+                                    }
+                                ]
+                            },
+                            "difficulty": 3,
+                            "section_id": "s5",
+                            "dependencies": [],
+                            "prerequisites": [],
+                            "task_schema_id": "t14",
+                            "research_needed": false
+                        }
+                    },
+                    {
+                        "id": "cac002a1-cc01-4fa5-9a14-3232a24d401d",
+                        "day": "19c33d78-3158-4f71-b1fc-9bfa4f36f963",
+                        "order": 15,
+                        "task_type": "assessment",
+                        "status": "pending",
+                        "title": "Quiz: Wrapper Classes e ArrayList",
+                        "description": "Questões sobre o uso das classes Wrapper (Integer, Double, Boolean, etc.) e a classe `ArrayList` para manipulação de coleções.",
+                        "duration_minutes": 60,
+                        "resources": [],
+                        "section_id": "s5",
+                        "difficulty": 4,
+                        "research_needed": false,
+                        "content_type": "assessment",
+                        "content": {
+                            "title": "Quiz: Wrapper Classes e ArrayList",
+                            "description": "Questões sobre o uso das classes Wrapper (Integer, Double, Boolean, etc.) e a classe `ArrayList` para manipulação de coleções.",
+                            "assessment_type": "quiz",
+                            "passing_score": null,
+                            "time_limit_minutes": null,
+                            "metadata": {},
+                            "items": [{
+                                    "id": "0d7a0ea8-b616-45f7-987f-9ec2b223163f",
+                                    "item_type": "mcq",
+                                    "prompt": "Qual é a classe Wrapper para o tipo primitivo 'int'?",
+                                    "choices": [],
+                                    "answer": {
+                                        "answer": null,
+                                        "explanation": null
+                                    },
+                                    "explanation": "",
+                                    "difficulty": 1,
+                                    "metadata": {}
+                                },
+                                {
+                                    "id": "9072c0a6-0ba7-4175-ae13-fd3a8e79b904",
+                                    "item_type": "mcq",
+                                    "prompt": "Como você cria um `ArrayList` que armazena objetos `String`?",
+                                    "choices": [],
+                                    "answer": {
+                                        "answer": null,
+                                        "explanation": null
+                                    },
+                                    "explanation": "",
+                                    "difficulty": 1,
+                                    "metadata": {}
+                                },
+                                {
+                                    "id": "e02eef94-4445-4e10-98ab-b76a5eb3a572",
+                                    "item_type": "mcq",
+                                    "prompt": "Qual método é usado para adicionar um elemento a um `ArrayList`?",
+                                    "choices": [],
+                                    "answer": {
+                                        "answer": null,
+                                        "explanation": null
+                                    },
+                                    "explanation": "",
+                                    "difficulty": 1,
+                                    "metadata": {}
+                                },
+                                {
+                                    "id": "0ab95045-9c06-4a7d-948a-cd062b8f8e4a",
+                                    "item_type": "mcq",
+                                    "prompt": "O que acontece se você tentar acessar um índice fora dos limites de um `ArrayList`?",
+                                    "choices": [],
+                                    "answer": {
+                                        "answer": null,
+                                        "explanation": null
+                                    },
+                                    "explanation": "",
+                                    "difficulty": 1,
+                                    "metadata": {}
+                                }
+                            ]
+                        },
+                        "metadata": {
+                            "content": {
+                                "items": [{
+                                        "prompt": "Qual é a classe Wrapper para o tipo primitivo 'int'?"
+                                    },
+                                    {
+                                        "prompt": "Como você cria um `ArrayList` que armazena objetos `String`?"
+                                    },
+                                    {
+                                        "prompt": "Qual método é usado para adicionar um elemento a um `ArrayList`?"
+                                    },
+                                    {
+                                        "prompt": "O que acontece se você tentar acessar um índice fora dos limites de um `ArrayList`?"
+                                    }
+                                ]
+                            },
+                            "difficulty": 4,
+                            "section_id": "s5",
+                            "dependencies": [],
+                            "prerequisites": [],
+                            "task_schema_id": "t15",
+                            "research_needed": false,
+                            "assessment_target": "s5"
+                        }
+                    },
+                    {
+                        "id": "57ad74a8-f114-495d-9c9e-efe0b8b1f32c",
+                        "day": "19c33d78-3158-4f71-b1fc-9bfa4f36f963",
+                        "order": 16,
+                        "task_type": "other",
+                        "status": "pending",
+                        "title": "Documentação Oficial de Exceções Java",
+                        "description": "Explore a documentação oficial da Oracle sobre o tratamento de exceções para aprofundar seu conhecimento. **URL:** https://docs.oracle.com/javase/tutorial/essential/exceptions/index.html. **Racional:** Fonte primária e mais autoritativa. **Como usar:** Leia os tutoriais e experimente os exemplos de código. **Fallback:** Artigos de tratamento de exceções em sites como Baeldung ou GeeksforGeeks.",
+                        "duration_minutes": 75,
+                        "resources": [],
+                        "section_id": "s5",
+                        "difficulty": 3,
+                        "research_needed": true,
+                        "content_type": "reading",
+                        "content": {
+                            "overview": "Explore a documentação oficial da Oracle sobre o tratamento de exceções para aprofundar seu conhecimento. **URL:** https://docs.oracle.com/javase/tutorial/essential/exceptions/index.html. **Racional:** Fonte primária e mais autoritativa. **Como usar:** Leia os tutoriais e experimente os exemplos de código. **Fallback:** Artigos de tratamento de exceções em sites como Baeldung ou GeeksforGeeks.",
+                            "instructions": "",
+                            "resources": [{
+                                "title": "Oracle Java SE Tutorials - Exceptions"
+                            }],
+                            "generated_text": ""
+                        },
+                        "metadata": {
+                            "content": {
+                                "resources": [{
+                                    "title": "Oracle Java SE Tutorials - Exceptions"
+                                }]
+                            },
+                            "difficulty": 3,
+                            "section_id": "s5",
+                            "dependencies": [],
+                            "prerequisites": [],
+                            "task_schema_id": "t16",
+                            "research_needed": true
+                        }
+                    }
+                ],
+                "metadata": {
+                    "section_id": "s5",
+                    "prerequisites": [
+                        "s4"
+                    ]
+                }
+            },
+            {
+                "id": "3e7d174f-9de3-4220-9db2-bd4d476d9ca2",
+                "day_index": 6,
+                "scheduled_date": null,
+                "title": "Revisão Geral e Simulado Final",
+                "focus": "Revisão completa de todos os tópicos e prática intensiva com simulados para solidificar o conhecimento e identificar áreas fracas antes do exame.",
+                "target_minutes": 0,
+                "status": "ready",
+                "section_id": "s6",
+                "prerequisites": [
+                    "s5"
+                ],
+                "week_index": 1,
+                "tasks": [{
+                        "id": "5e7bbb54-75a4-4a98-8cbb-96cdf5a473be",
+                        "day": "3e7d174f-9de3-4220-9db2-bd4d476d9ca2",
+                        "order": 17,
+                        "task_type": "lesson",
+                        "status": "pending",
+                        "title": "Revisão dos Tópicos Chave da OCA Java SE 8",
+                        "description": "Um resumo consolidado de todos os tópicos essenciais para a certificação, destacando os pontos mais importantes e frequentemente testados.",
+                        "duration_minutes": 120,
+                        "resources": [],
+                        "section_id": "s6",
+                        "difficulty": 3,
+                        "research_needed": false,
+                        "content_type": "lesson",
+                        "content": {
+                            "summary": "Revisão geral e focada nos pontos críticos para a aprovação.",
+                            "body": "Este resumo serve como um guia final para a revisão. Relembraremos as regras de identificadores, precedência de operadores, nuances de controle de fluxo, comportamento de arrays, hierarquia de classes, polimorfismo, tratamento de exceções e o uso das principais classes da API. Concentre-se nas áreas onde você ainda tem dúvidas.",
+                            "key_points": [],
+                            "source_refs": []
+                        },
+                        "metadata": {
+                            "content": {
+                                "body": "Este resumo serve como um guia final para a revisão. Relembraremos as regras de identificadores, precedência de operadores, nuances de controle de fluxo, comportamento de arrays, hierarquia de classes, polimorfismo, tratamento de exceções e o uso das principais classes da API. Concentre-se nas áreas onde você ainda tem dúvidas.",
+                                "summary": "Revisão geral e focada nos pontos críticos para a aprovação."
+                            },
+                            "difficulty": 3,
+                            "section_id": "s6",
+                            "dependencies": [],
+                            "prerequisites": [],
+                            "task_schema_id": "t17",
+                            "research_needed": false
+                        }
+                    },
+                    {
+                        "id": "1f621a2b-0992-497e-b8f3-dc115ed56c90",
+                        "day": "3e7d174f-9de3-4220-9db2-bd4d476d9ca2",
+                        "order": 18,
+                        "task_type": "assessment",
+                        "status": "pending",
+                        "title": "Simulado Completo OCA Java SE 8 Programmer I",
+                        "description": "Um simulado completo (70-75 questões, 150 minutos) para simular as condições do exame real e avaliar sua prontidão. Tente fazê-lo em um ambiente tranquilo e sem interrupções.",
+                        "duration_minutes": 150,
+                        "resources": [],
+                        "section_id": "s6",
+                        "difficulty": 5,
+                        "research_needed": true,
+                        "content_type": "assessment",
+                        "content": {
+                            "title": "Simulado Completo OCA Java SE 8 Programmer I",
+                            "description": "Um simulado completo (70-75 questões, 150 minutos) para simular as condições do exame real e avaliar sua prontidão. Tente fazê-lo em um ambiente tranquilo e sem interrupções.",
+                            "assessment_type": "quiz",
+                            "passing_score": null,
+                            "time_limit_minutes": null,
+                            "metadata": {},
+                            "items": [{
+                                    "id": "f5eca4f6-c38d-443a-ba4f-caa5d9e98540",
+                                    "item_type": "mcq",
+                                    "prompt": "Qual será a saída do seguinte código Java? [código complexo com herança e polimorfismo]",
+                                    "choices": [],
+                                    "answer": {
+                                        "answer": null,
+                                        "explanation": null
+                                    },
+                                    "explanation": "",
+                                    "difficulty": 1,
+                                    "metadata": {}
+                                },
+                                {
+                                    "id": "d7a06797-ca34-4fba-8c82-59255322e5c2",
+                                    "item_type": "mcq",
+                                    "prompt": "Qual o resultado de 'Integer i = 10; Integer j = 10; System.out.println(i == j);' e por que?",
+                                    "choices": [],
+                                    "answer": {
+                                        "answer": null,
+                                        "explanation": null
+                                    },
+                                    "explanation": "",
+                                    "difficulty": 1,
+                                    "metadata": {}
+                                },
+                                {
+                                    "id": "9cf5be21-74e3-4022-a1e1-8c180f41863f",
+                                    "item_type": "mcq",
+                                    "prompt": "Qual o principal benefício de usar a interface List em vez da classe concreta ArrayList diretamente?",
+                                    "choices": [],
+                                    "answer": {
+                                        "answer": null,
+                                        "explanation": null
+                                    },
+                                    "explanation": "",
+                                    "difficulty": 1,
+                                    "metadata": {}
+                                }
+                            ]
+                        },
+                        "metadata": {
+                            "content": {
+                                "items": [{
+                                        "prompt": "Qual será a saída do seguinte código Java? [código complexo com herança e polimorfismo]"
+                                    },
+                                    {
+                                        "prompt": "Qual o resultado de 'Integer i = 10; Integer j = 10; System.out.println(i == j);' e por que?"
+                                    },
+                                    {
+                                        "prompt": "Qual o principal benefício de usar a interface List em vez da classe concreta ArrayList diretamente?"
+                                    }
+                                ]
+                            },
+                            "difficulty": 5,
+                            "section_id": "s6",
+                            "dependencies": [],
+                            "prerequisites": [],
+                            "task_schema_id": "t18",
+                            "research_needed": true,
+                            "assessment_target": "s6"
+                        }
+                    },
+                    {
+                        "id": "337f7e44-39e3-4abc-b3a2-f9ec2c3f70f6",
+                        "day": "3e7d174f-9de3-4220-9db2-bd4d476d9ca2",
+                        "order": 19,
+                        "task_type": "flashcards",
+                        "status": "pending",
+                        "title": "Pontos Críticos e Dúvidas Frequentes da OCA",
+                        "description": "Flashcards específicos para as pegadinhas e conceitos que mais causam confusão nos exames OCA, com base em feedback de outros estudantes e áreas de dificuldade comum.",
+                        "duration_minutes": 60,
+                        "resources": [],
+                        "section_id": "s6",
+                        "difficulty": 4,
+                        "research_needed": false,
+                        "content_type": "flashcards",
+                        "content": {
+                            "title": "Pontos Críticos e Dúvidas Frequentes da OCA",
+                            "description": "Flashcards específicos para as pegadinhas e conceitos que mais causam confusão nos exames OCA, com base em feedback de outros estudantes e áreas de dificuldade comum.",
+                            "tags": [],
+                            "cards": [{
+                                    "id": "8e273d58-7f7e-41e9-9cd5-70691fb8d2c9",
+                                    "front": "Explique a diferença entre 'instanceof' e casting em tempo de compilação/execução.",
+                                    "back": "",
+                                    "hints": [],
+                                    "tags": [],
+                                    "difficulty": 1
+                                },
+                                {
+                                    "id": "c2e6681a-27ac-4c8e-9ebb-e4a3dac772d5",
+                                    "front": "Quais modificadores de acesso são permitidos para métodos em uma interface (Java 8)?",
+                                    "back": "",
+                                    "hints": [],
+                                    "tags": [],
+                                    "difficulty": 1
+                                },
+                                {
+                                    "id": "7b0f837d-1723-482a-85eb-6d00a7dee50a",
+                                    "front": "O que é 'NPE' e como evitá-la?",
+                                    "back": "",
+                                    "hints": [],
+                                    "tags": [],
+                                    "difficulty": 1
+                                },
+                                {
+                                    "id": "3c339bc4-cc47-42f9-99be-ff1845b84c36",
+                                    "front": "Quando um bloco 'finally' não será executado?",
+                                    "back": "",
+                                    "hints": [],
+                                    "tags": [],
+                                    "difficulty": 1
+                                }
+                            ]
+                        },
+                        "metadata": {
+                            "content": {
+                                "cards": [{
+                                        "front": "Explique a diferença entre 'instanceof' e casting em tempo de compilação/execução."
+                                    },
+                                    {
+                                        "front": "Quais modificadores de acesso são permitidos para métodos em uma interface (Java 8)?"
+                                    },
+                                    {
+                                        "front": "O que é 'NPE' e como evitá-la?"
+                                    },
+                                    {
+                                        "front": "Quando um bloco 'finally' não será executado?"
+                                    }
+                                ]
+                            },
+                            "difficulty": 4,
+                            "section_id": "s6",
+                            "dependencies": [],
+                            "prerequisites": [],
+                            "task_schema_id": "t19",
+                            "research_needed": false
+                        }
+                    },
+                    {
+                        "id": "60a1234e-e437-4b04-aeb3-8fe4db2793c5",
+                        "day": "3e7d174f-9de3-4220-9db2-bd4d476d9ca2",
+                        "order": 20,
+                        "task_type": "other",
+                        "status": "pending",
+                        "title": "Recursos Adicionais para Simulados e Questões",
+                        "description": "Plataformas com simulados e questões de prática adicionais para fortalecer seu conhecimento e testar sua velocidade. **URL:** (Exemplo) https://www.examtopics.com/exams/oracle/1z0-808/ **Racional:** Essencial para prática e familiarização com o formato da prova. **Como usar:** Faça mais simulados, revise as respostas erradas e entenda as explicações. **Fallback:** Livros de preparação para OCA ou outros sites de quizzes Java.",
+                        "duration_minutes": 90,
+                        "resources": [],
+                        "section_id": "s6",
+                        "difficulty": 4,
+                        "research_needed": true,
+                        "content_type": "reading",
+                        "content": {
+                            "overview": "Plataformas com simulados e questões de prática adicionais para fortalecer seu conhecimento e testar sua velocidade. **URL:** (Exemplo) https://www.examtopics.com/exams/oracle/1z0-808/ **Racional:** Essencial para prática e familiarização com o formato da prova. **Como usar:** Faça mais simulados, revise as respostas erradas e entenda as explicações. **Fallback:** Livros de preparação para OCA ou outros sites de quizzes Java.",
+                            "instructions": "",
+                            "resources": [{
+                                "title": "ExamTopics - Oracle 1Z0-808 Practice Questions"
+                            }],
+                            "generated_text": ""
+                        },
+                        "metadata": {
+                            "content": {
+                                "resources": [{
+                                    "title": "ExamTopics - Oracle 1Z0-808 Practice Questions"
+                                }]
+                            },
+                            "difficulty": 4,
+                            "section_id": "s6",
+                            "dependencies": [],
+                            "prerequisites": [],
+                            "task_schema_id": "t20",
+                            "research_needed": true
+                        }
+                    }
+                ],
+                "metadata": {
+                    "section_id": "s6",
+                    "prerequisites": [
+                        "s5"
+                    ]
+                }
+            }
+        ]
+    }],
+    "days": [{
+            "id": "bdac3b45-a93f-4408-89ec-f6d8e559abc5",
+            "day_index": 1,
+            "scheduled_date": null,
+            "title": "Fundamentos de Sintaxe e Estrutura Java para OCA",
+            "focus": "Dominar as regras de declaração, inicialização e escopo de variáveis, e a estrutura básica de classes conforme exigido pela OCA.",
+            "target_minutes": 0,
+            "status": "ready",
+            "section_id": "s1",
+            "prerequisites": [],
+            "week_index": 1,
+            "tasks": [{
+                    "id": "7a9d71d9-761a-4185-80bf-12881d15164b",
+                    "day": "bdac3b45-a93f-4408-89ec-f6d8e559abc5",
+                    "order": 1,
+                    "task_type": "lesson",
+                    "status": "pending",
+                    "title": "Estrutura Básica de Classes e o Método main()",
+                    "description": "Explorar a estrutura de classes Java, a sintaxe do método main, pacotes, importações e a compilação/execução básica de programas Java.",
+                    "duration_minutes": 75,
+                    "resources": [],
+                    "section_id": "s1",
+                    "difficulty": 3,
+                    "research_needed": false,
+                    "content_type": "lesson",
+                    "content": {
+                        "summary": "Introdução à anatomia de um programa Java, incluindo classes, métodos, pacotes e o ponto de entrada da aplicação.",
+                        "body": "Nesta aula, abordaremos os componentes essenciais de um programa Java: classes, o método 'main', como organizar seu código em pacotes e a importância das declarações 'import'. Foco nos detalhes exigidos pela certificação, como os modificadores de acesso do 'main' e a estrutura de pacotes.",
+                        "key_points": [],
+                        "source_refs": []
+                    },
+                    "metadata": {
+                        "content": {
+                            "body": "Nesta aula, abordaremos os componentes essenciais de um programa Java: classes, o método 'main', como organizar seu código em pacotes e a importância das declarações 'import'. Foco nos detalhes exigidos pela certificação, como os modificadores de acesso do 'main' e a estrutura de pacotes.",
+                            "summary": "Introdução à anatomia de um programa Java, incluindo classes, métodos, pacotes e o ponto de entrada da aplicação."
+                        },
+                        "difficulty": 3,
+                        "section_id": "s1",
+                        "dependencies": [],
+                        "prerequisites": [],
+                        "task_schema_id": "t1",
+                        "research_needed": false
+                    }
+                },
+                {
+                    "id": "08924678-ce83-4662-a041-38a7eb54ea71",
+                    "day": "bdac3b45-a93f-4408-89ec-f6d8e559abc5",
+                    "order": 2,
+                    "task_type": "flashcards",
+                    "status": "pending",
+                    "title": "Identificadores, Palavras-Chave e Tipos Primitivos",
+                    "description": "Flashcards para memorizar regras de identificadores, lista de palavras-chave reservadas, tipos primitivos e seus valores padrão.",
+                    "duration_minutes": 60,
+                    "resources": [],
+                    "section_id": "s1",
+                    "difficulty": 3,
+                    "research_needed": false,
+                    "content_type": "flashcards",
+                    "content": {
+                        "title": "Identificadores, Palavras-Chave e Tipos Primitivos",
+                        "description": "Flashcards para memorizar regras de identificadores, lista de palavras-chave reservadas, tipos primitivos e seus valores padrão.",
+                        "tags": [],
+                        "cards": [{
+                                "id": "daf5d945-9c46-46f6-8f95-a7b82d2e8879",
+                                "front": "Qual é a regra principal para o primeiro caractere de um identificador Java?",
+                                "back": "",
+                                "hints": [],
+                                "tags": [],
+                                "difficulty": 1
+                            },
+                            {
+                                "id": "e1e86e8f-300f-4296-b145-1a31c2f946b8",
+                                "front": "Dê três exemplos de palavras-chave reservadas em Java.",
+                                "back": "",
+                                "hints": [],
+                                "tags": [],
+                                "difficulty": 1
+                            },
+                            {
+                                "id": "d7537761-4a41-498a-9b6f-87102479fed1",
+                                "front": "Qual é o valor padrão de um 'boolean' em uma classe em Java?",
+                                "back": "",
+                                "hints": [],
+                                "tags": [],
+                                "difficulty": 1
+                            },
+                            {
+                                "id": "603951b7-84b7-48e0-b184-d0f8572b9e31",
+                                "front": "Qual é o valor padrão de um 'int' em uma classe em Java?",
+                                "back": "",
+                                "hints": [],
+                                "tags": [],
+                                "difficulty": 1
+                            },
+                            {
+                                "id": "97ce6ee3-85a8-4a6e-ae0e-cb37b840d448",
+                                "front": "Identificador '1abc' é válido? Por quê?",
+                                "back": "",
+                                "hints": [],
+                                "tags": [],
+                                "difficulty": 1
+                            }
+                        ]
+                    },
+                    "metadata": {
+                        "content": {
+                            "cards": [{
+                                    "front": "Qual é a regra principal para o primeiro caractere de um identificador Java?"
+                                },
+                                {
+                                    "front": "Dê três exemplos de palavras-chave reservadas em Java."
+                                },
+                                {
+                                    "front": "Qual é o valor padrão de um 'boolean' em uma classe em Java?"
+                                },
+                                {
+                                    "front": "Qual é o valor padrão de um 'int' em uma classe em Java?"
+                                },
+                                {
+                                    "front": "Identificador '1abc' é válido? Por quê?"
+                                }
+                            ]
+                        },
+                        "difficulty": 3,
+                        "section_id": "s1",
+                        "dependencies": [],
+                        "prerequisites": [],
+                        "task_schema_id": "t2",
+                        "research_needed": false
+                    }
+                },
+                {
+                    "id": "e03bcc2f-e85d-42e2-a600-a97e2baa9a74",
+                    "day": "bdac3b45-a93f-4408-89ec-f6d8e559abc5",
+                    "order": 3,
+                    "task_type": "assessment",
+                    "status": "pending",
+                    "title": "Quiz: Fundamentos de Sintaxe Java",
+                    "description": "Teste rápido sobre a sintaxe básica de classes, métodos, variáveis e identificadores, focando em pegadinhas comuns da prova OCA.",
+                    "duration_minutes": 45,
+                    "resources": [],
+                    "section_id": "s1",
+                    "difficulty": 4,
+                    "research_needed": false,
+                    "content_type": "assessment",
+                    "content": {
+                        "title": "Quiz: Fundamentos de Sintaxe Java",
+                        "description": "Teste rápido sobre a sintaxe básica de classes, métodos, variáveis e identificadores, focando em pegadinhas comuns da prova OCA.",
+                        "assessment_type": "quiz",
+                        "passing_score": null,
+                        "time_limit_minutes": null,
+                        "metadata": {},
+                        "items": [{
+                                "id": "b18c591c-c41f-4817-a7b1-e55d1da7fbcd",
+                                "item_type": "mcq",
+                                "prompt": "Qual das seguintes linhas de código não compila? (A) int i=10; (B) boolean b=true; (C) String s='hello'; (D) double d=10.0;",
+                                "choices": [],
+                                "answer": {
+                                    "answer": null,
+                                    "explanation": null
+                                },
+                                "explanation": "",
+                                "difficulty": 1,
+                                "metadata": {}
+                            },
+                            {
+                                "id": "ef84277d-e6b0-46be-bd05-571dd961a72c",
+                                "item_type": "mcq",
+                                "prompt": "Qual é o modificador de acesso mais restritivo em Java?",
+                                "choices": [],
+                                "answer": {
+                                    "answer": null,
+                                    "explanation": null
+                                },
+                                "explanation": "",
+                                "difficulty": 1,
+                                "metadata": {}
+                            },
+                            {
+                                "id": "e3120c05-7b57-4ca4-aeda-1d652db7dafe",
+                                "item_type": "mcq",
+                                "prompt": "Qual palavra-chave é usada para indicar que uma variável não pode ser alterada após a inicialização?",
+                                "choices": [],
+                                "answer": {
+                                    "answer": null,
+                                    "explanation": null
+                                },
+                                "explanation": "",
+                                "difficulty": 1,
+                                "metadata": {}
+                            },
+                            {
+                                "id": "596d7206-3e09-4573-ad8d-4f10c2dae8a6",
+                                "item_type": "mcq",
+                                "prompt": "O que acontece se você não inicializar uma variável local?",
+                                "choices": [],
+                                "answer": {
+                                    "answer": null,
+                                    "explanation": null
+                                },
+                                "explanation": "",
+                                "difficulty": 1,
+                                "metadata": {}
+                            }
+                        ]
+                    },
+                    "metadata": {
+                        "content": {
+                            "items": [{
+                                    "prompt": "Qual das seguintes linhas de código não compila? (A) int i=10; (B) boolean b=true; (C) String s='hello'; (D) double d=10.0;"
+                                },
+                                {
+                                    "prompt": "Qual é o modificador de acesso mais restritivo em Java?"
+                                },
+                                {
+                                    "prompt": "Qual palavra-chave é usada para indicar que uma variável não pode ser alterada após a inicialização?"
+                                },
+                                {
+                                    "prompt": "O que acontece se você não inicializar uma variável local?"
+                                }
+                            ]
+                        },
+                        "difficulty": 4,
+                        "section_id": "s1",
+                        "dependencies": [],
+                        "prerequisites": [],
+                        "task_schema_id": "t3",
+                        "research_needed": false,
+                        "assessment_target": "s1"
+                    }
+                }
+            ],
+            "metadata": {
+                "section_id": "s1",
+                "prerequisites": []
+            }
+        },
+        {
+            "id": "8250ddf6-9e4a-4572-b170-8c2cd776bab7",
+            "day_index": 2,
+            "scheduled_date": null,
+            "title": "Tipos de Dados, Operadores e Controle de Fluxo",
+            "focus": "Entender e aplicar tipos primitivos e de referência, precedência de operadores e estruturas de controle (if/else, switch, loops) com foco em detalhes da certificação.",
+            "target_minutes": 0,
+            "status": "ready",
+            "section_id": "s2",
+            "prerequisites": [
+                "s1"
+            ],
+            "week_index": 1,
+            "tasks": [{
+                    "id": "711bf9e3-e36d-4252-9432-b98041ff3dd3",
+                    "day": "8250ddf6-9e4a-4572-b170-8c2cd776bab7",
+                    "order": 4,
+                    "task_type": "lesson",
+                    "status": "pending",
+                    "title": "Tipos Primitivos e de Referência, Wrappers e Casting",
+                    "description": "Entender a diferença entre tipos primitivos e de referência, o uso de classes Wrapper, autoboxing/unboxing e as regras de casting numérico e de objetos.",
+                    "duration_minutes": 90,
+                    "resources": [],
+                    "section_id": "s2",
+                    "difficulty": 3,
+                    "research_needed": false,
+                    "content_type": "lesson",
+                    "content": {
+                        "summary": "Diferenças fundamentais entre tipos de dados em Java, conversão entre eles e o papel das classes Wrapper.",
+                        "body": "Esta aula detalha os 8 tipos primitivos de Java, como eles se comportam em memória versus tipos de referência (objetos). Abordaremos o autoboxing e unboxing, essenciais para a interação entre primitivos e Wrappers, e as complexas regras de casting que são frequentemente testadas na OCA.",
+                        "key_points": [],
+                        "source_refs": []
+                    },
+                    "metadata": {
+                        "content": {
+                            "body": "Esta aula detalha os 8 tipos primitivos de Java, como eles se comportam em memória versus tipos de referência (objetos). Abordaremos o autoboxing e unboxing, essenciais para a interação entre primitivos e Wrappers, e as complexas regras de casting que são frequentemente testadas na OCA.",
+                            "summary": "Diferenças fundamentais entre tipos de dados em Java, conversão entre eles e o papel das classes Wrapper."
+                        },
+                        "difficulty": 3,
+                        "section_id": "s2",
+                        "dependencies": [],
+                        "prerequisites": [],
+                        "task_schema_id": "t4",
+                        "research_needed": false
+                    }
+                },
+                {
+                    "id": "fd5074f1-7dd8-4786-8085-17cd672fde22",
+                    "day": "8250ddf6-9e4a-4572-b170-8c2cd776bab7",
+                    "order": 5,
+                    "task_type": "flashcards",
+                    "status": "pending",
+                    "title": "Precedência de Operadores e Expressões",
+                    "description": "Flashcards para revisar a precedência de operadores aritméticos, lógicos, de atribuição e condicionais, e como eles afetam o resultado de expressões.",
+                    "duration_minutes": 60,
+                    "resources": [],
+                    "section_id": "s2",
+                    "difficulty": 4,
+                    "research_needed": false,
+                    "content_type": "flashcards",
+                    "content": {
+                        "title": "Precedência de Operadores e Expressões",
+                        "description": "Flashcards para revisar a precedência de operadores aritméticos, lógicos, de atribuição e condicionais, e como eles afetam o resultado de expressões.",
+                        "tags": [],
+                        "cards": [{
+                                "id": "8c8b3de3-890d-4816-9bfb-4642214f8a64",
+                                "front": "Qual operador tem maior precedência: '++' ou '*'?",
+                                "back": "",
+                                "hints": [],
+                                "tags": [],
+                                "difficulty": 1
+                            },
+                            {
+                                "id": "64ffb88f-e382-4f79-ba6f-5054119363b8",
+                                "front": "Qual é o resultado de '5 + 2 * 3'?",
+                                "back": "",
+                                "hints": [],
+                                "tags": [],
+                                "difficulty": 1
+                            },
+                            {
+                                "id": "b1f130b3-d2ad-4255-84fd-82f36e9bb9c6",
+                                "front": "Qual é a diferença entre '==' e '.equals()' para objetos String?",
+                                "back": "",
+                                "hints": [],
+                                "tags": [],
+                                "difficulty": 1
+                            },
+                            {
+                                "id": "f5b62305-bf11-4e3c-9af1-b0f1c41903f8",
+                                "front": "Qual o efeito do operador ternário (?:)?",
+                                "back": "",
+                                "hints": [],
+                                "tags": [],
+                                "difficulty": 1
+                            }
+                        ]
+                    },
+                    "metadata": {
+                        "content": {
+                            "cards": [{
+                                    "front": "Qual operador tem maior precedência: '++' ou '*'?"
+                                },
+                                {
+                                    "front": "Qual é o resultado de '5 + 2 * 3'?"
+                                },
+                                {
+                                    "front": "Qual é a diferença entre '==' e '.equals()' para objetos String?"
+                                },
+                                {
+                                    "front": "Qual o efeito do operador ternário (?:)?"
+                                }
+                            ]
+                        },
+                        "difficulty": 4,
+                        "section_id": "s2",
+                        "dependencies": [],
+                        "prerequisites": [],
+                        "task_schema_id": "t5",
+                        "research_needed": false
+                    }
+                },
+                {
+                    "id": "c7eebfae-8b48-4b1f-9f41-bbdbed8434ea",
+                    "day": "8250ddf6-9e4a-4572-b170-8c2cd776bab7",
+                    "order": 6,
+                    "task_type": "assessment",
+                    "status": "pending",
+                    "title": "Quiz: Controle de Fluxo (if/else, switch, loops)",
+                    "description": "Questões sobre o uso correto de 'if/else', 'switch' (incluindo fall-through e tipos suportados), e todas as variações de loops ('for', 'while', 'do/while', 'for-each').",
+                    "duration_minutes": 60,
+                    "resources": [],
+                    "section_id": "s2",
+                    "difficulty": 4,
+                    "research_needed": false,
+                    "content_type": "assessment",
+                    "content": {
+                        "title": "Quiz: Controle de Fluxo (if/else, switch, loops)",
+                        "description": "Questões sobre o uso correto de 'if/else', 'switch' (incluindo fall-through e tipos suportados), e todas as variações de loops ('for', 'while', 'do/while', 'for-each').",
+                        "assessment_type": "quiz",
+                        "passing_score": null,
+                        "time_limit_minutes": null,
+                        "metadata": {},
+                        "items": [{
+                                "id": "d1b60b59-019f-4d76-8a66-4462a3cda422",
+                                "item_type": "mcq",
+                                "prompt": "Qual é o tipo de dado que pode ser usado em uma declaração 'switch'?",
+                                "choices": [],
+                                "answer": {
+                                    "answer": null,
+                                    "explanation": null
+                                },
+                                "explanation": "",
+                                "difficulty": 1,
+                                "metadata": {}
+                            },
+                            {
+                                "id": "4855bc6a-1442-4a04-88e0-aa564b67e59c",
+                                "item_type": "mcq",
+                                "prompt": "Qual a diferença entre 'break' e 'continue' em um loop?",
+                                "choices": [],
+                                "answer": {
+                                    "answer": null,
+                                    "explanation": null
+                                },
+                                "explanation": "",
+                                "difficulty": 1,
+                                "metadata": {}
+                            },
+                            {
+                                "id": "51d9aecc-3393-45e4-b9dc-891c239920fe",
+                                "item_type": "mcq",
+                                "prompt": "O que acontece se uma expressão 'switch' não tiver um 'break' em um 'case'?",
+                                "choices": [],
+                                "answer": {
+                                    "answer": null,
+                                    "explanation": null
+                                },
+                                "explanation": "",
+                                "difficulty": 1,
+                                "metadata": {}
+                            },
+                            {
+                                "id": "2700e385-3e86-432b-9cd9-505a0a4198b3",
+                                "item_type": "mcq",
+                                "prompt": "Considere o código: `for (int i=0; i<10; i++) { if (i==5) break; System.out.print(i); }`. Qual será a saída?",
+                                "choices": [],
+                                "answer": {
+                                    "answer": null,
+                                    "explanation": null
+                                },
+                                "explanation": "",
+                                "difficulty": 1,
+                                "metadata": {}
+                            }
+                        ]
+                    },
+                    "metadata": {
+                        "content": {
+                            "items": [{
+                                    "prompt": "Qual é o tipo de dado que pode ser usado em uma declaração 'switch'?"
+                                },
+                                {
+                                    "prompt": "Qual a diferença entre 'break' e 'continue' em um loop?"
+                                },
+                                {
+                                    "prompt": "O que acontece se uma expressão 'switch' não tiver um 'break' em um 'case'?"
+                                },
+                                {
+                                    "prompt": "Considere o código: `for (int i=0; i<10; i++) { if (i==5) break; System.out.print(i); }`. Qual será a saída?"
+                                }
+                            ]
+                        },
+                        "difficulty": 4,
+                        "section_id": "s2",
+                        "dependencies": [],
+                        "prerequisites": [],
+                        "task_schema_id": "t6",
+                        "research_needed": false,
+                        "assessment_target": "s2"
+                    }
+                }
+            ],
+            "metadata": {
+                "section_id": "s2",
+                "prerequisites": [
+                    "s1"
+                ]
+            }
+        },
+        {
+            "id": "e94e8dd1-98be-4172-99cc-36a22c610e57",
+            "day_index": 3,
+            "scheduled_date": null,
+            "title": "Arrays, Métodos e Encapsulamento",
+            "focus": "Habilidade de usar arrays unidimensionais, criar métodos (incluindo sobrecarga) e aplicar encapsulamento, compreendendo as nuances da linguagem.",
+            "target_minutes": 0,
+            "status": "ready",
+            "section_id": "s3",
+            "prerequisites": [
+                "s2"
+            ],
+            "week_index": 1,
+            "tasks": [{
+                    "id": "a4092add-196d-4386-a3e9-e146d5a03c3c",
+                    "day": "e94e8dd1-98be-4172-99cc-36a22c610e57",
+                    "order": 7,
+                    "task_type": "lesson",
+                    "status": "pending",
+                    "title": "Arrays Unidimensionais",
+                    "description": "Explorar a declaração, inicialização e manipulação de arrays unidimensionais em Java, incluindo seus comportamentos e armadilhas da OCA.",
+                    "duration_minutes": 75,
+                    "resources": [],
+                    "section_id": "s3",
+                    "difficulty": 3,
+                    "research_needed": false,
+                    "content_type": "lesson",
+                    "content": {
+                        "summary": "Fundamentos sobre arrays: criação, acesso a elementos e iteração.",
+                        "body": "Nesta aula, cobriremos a sintaxe para declarar e instanciar arrays, como acessar seus elementos e a propriedade `length`. Atenção especial será dada aos valores padrão de arrays de tipos primitivos e de referência, e como arrays são tratados como objetos em Java.",
+                        "key_points": [],
+                        "source_refs": []
+                    },
+                    "metadata": {
+                        "content": {
+                            "body": "Nesta aula, cobriremos a sintaxe para declarar e instanciar arrays, como acessar seus elementos e a propriedade `length`. Atenção especial será dada aos valores padrão de arrays de tipos primitivos e de referência, e como arrays são tratados como objetos em Java.",
+                            "summary": "Fundamentos sobre arrays: criação, acesso a elementos e iteração."
+                        },
+                        "difficulty": 3,
+                        "section_id": "s3",
+                        "dependencies": [],
+                        "prerequisites": [],
+                        "task_schema_id": "t7",
+                        "research_needed": false
+                    }
+                },
+                {
+                    "id": "ff764251-08af-4f0f-966f-aa9b006c37e0",
+                    "day": "e94e8dd1-98be-4172-99cc-36a22c610e57",
+                    "order": 8,
+                    "task_type": "flashcards",
+                    "status": "pending",
+                    "title": "Métodos e Sobrecarga",
+                    "description": "Flashcards sobre a estrutura de métodos, parâmetros, retorno, modificadores de acesso e as regras de sobrecarga de métodos.",
+                    "duration_minutes": 60,
+                    "resources": [],
+                    "section_id": "s3",
+                    "difficulty": 3,
+                    "research_needed": false,
+                    "content_type": "flashcards",
+                    "content": {
+                        "title": "Métodos e Sobrecarga",
+                        "description": "Flashcards sobre a estrutura de métodos, parâmetros, retorno, modificadores de acesso e as regras de sobrecarga de métodos.",
+                        "tags": [],
+                        "cards": [{
+                                "id": "8f8eeaea-f5c9-4165-b9ee-5f5875b94851",
+                                "front": "Quais são os requisitos para sobrecarregar um método?",
+                                "back": "",
+                                "hints": [],
+                                "tags": [],
+                                "difficulty": 1
+                            },
+                            {
+                                "id": "b5e3a6d8-65d5-4190-9d67-a0bfbc406d01",
+                                "front": "Qual a diferença entre 'public', 'protected', 'default' e 'private'?",
+                                "back": "",
+                                "hints": [],
+                                "tags": [],
+                                "difficulty": 1
+                            },
+                            {
+                                "id": "c841ec66-7745-447a-b758-02efeaaa5a4f",
+                                "front": "Um método que não retorna nada deve ter qual tipo de retorno?",
+                                "back": "",
+                                "hints": [],
+                                "tags": [],
+                                "difficulty": 1
+                            },
+                            {
+                                "id": "8e9b68f2-6fe0-4410-87fc-1809d3ac88f2",
+                                "front": "O que é um argumento de tipo varargs?",
+                                "back": "",
+                                "hints": [],
+                                "tags": [],
+                                "difficulty": 1
+                            }
+                        ]
+                    },
+                    "metadata": {
+                        "content": {
+                            "cards": [{
+                                    "front": "Quais são os requisitos para sobrecarregar um método?"
+                                },
+                                {
+                                    "front": "Qual a diferença entre 'public', 'protected', 'default' e 'private'?"
+                                },
+                                {
+                                    "front": "Um método que não retorna nada deve ter qual tipo de retorno?"
+                                },
+                                {
+                                    "front": "O que é um argumento de tipo varargs?"
+                                }
+                            ]
+                        },
+                        "difficulty": 3,
+                        "section_id": "s3",
+                        "dependencies": [],
+                        "prerequisites": [],
+                        "task_schema_id": "t8",
+                        "research_needed": false
+                    }
+                },
+                {
+                    "id": "355b9ed3-7523-419c-8054-e75655bf915a",
+                    "day": "e94e8dd1-98be-4172-99cc-36a22c610e57",
+                    "order": 9,
+                    "task_type": "assessment",
+                    "status": "pending",
+                    "title": "Quiz: Encapsulamento, Construtores e o 'this'",
+                    "description": "Avaliar o entendimento sobre encapsulamento, a criação e uso de construtores (incluindo o construtor padrão) e a utilização da palavra-chave 'this'.",
+                    "duration_minutes": 60,
+                    "resources": [],
+                    "section_id": "s3",
+                    "difficulty": 4,
+                    "research_needed": false,
+                    "content_type": "assessment",
+                    "content": {
+                        "title": "Quiz: Encapsulamento, Construtores e o 'this'",
+                        "description": "Avaliar o entendimento sobre encapsulamento, a criação e uso de construtores (incluindo o construtor padrão) e a utilização da palavra-chave 'this'.",
+                        "assessment_type": "quiz",
+                        "passing_score": null,
+                        "time_limit_minutes": null,
+                        "metadata": {},
+                        "items": [{
+                                "id": "974f4fb1-9bd7-4a85-9598-a73b8317d0c1",
+                                "item_type": "mcq",
+                                "prompt": "Qual é o principal objetivo do encapsulamento em Java?",
+                                "choices": [],
+                                "answer": {
+                                    "answer": null,
+                                    "explanation": null
+                                },
+                                "explanation": "",
+                                "difficulty": 1,
+                                "metadata": {}
+                            },
+                            {
+                                "id": "8291837a-ab9f-405c-911e-a67d940d1ce0",
+                                "item_type": "mcq",
+                                "prompt": "Quando um construtor padrão é fornecido automaticamente pelo compilador?",
+                                "choices": [],
+                                "answer": {
+                                    "answer": null,
+                                    "explanation": null
+                                },
+                                "explanation": "",
+                                "difficulty": 1,
+                                "metadata": {}
+                            },
+                            {
+                                "id": "332ff931-f1c6-47a0-9d48-11491c3efac0",
+                                "item_type": "mcq",
+                                "prompt": "Como 'this' é usado para referenciar membros da instância dentro de uma classe?",
+                                "choices": [],
+                                "answer": {
+                                    "answer": null,
+                                    "explanation": null
+                                },
+                                "explanation": "",
+                                "difficulty": 1,
+                                "metadata": {}
+                            },
+                            {
+                                "id": "8b21167a-6138-4804-849e-7c8526fd6e1b",
+                                "item_type": "mcq",
+                                "prompt": "Qual é a diferença entre um 'setter' e um 'getter'?",
+                                "choices": [],
+                                "answer": {
+                                    "answer": null,
+                                    "explanation": null
+                                },
+                                "explanation": "",
+                                "difficulty": 1,
+                                "metadata": {}
+                            }
+                        ]
+                    },
+                    "metadata": {
+                        "content": {
+                            "items": [{
+                                    "prompt": "Qual é o principal objetivo do encapsulamento em Java?"
+                                },
+                                {
+                                    "prompt": "Quando um construtor padrão é fornecido automaticamente pelo compilador?"
+                                },
+                                {
+                                    "prompt": "Como 'this' é usado para referenciar membros da instância dentro de uma classe?"
+                                },
+                                {
+                                    "prompt": "Qual é a diferença entre um 'setter' e um 'getter'?"
+                                }
+                            ]
+                        },
+                        "difficulty": 4,
+                        "section_id": "s3",
+                        "dependencies": [],
+                        "prerequisites": [],
+                        "task_schema_id": "t9",
+                        "research_needed": false,
+                        "assessment_target": "s3"
+                    }
+                }
+            ],
+            "metadata": {
+                "section_id": "s3",
+                "prerequisites": [
+                    "s2"
+                ]
+            }
+        },
+        {
+            "id": "498e5a54-ecb8-4b5c-82e3-fbbc221bb1f5",
+            "day_index": 4,
+            "scheduled_date": null,
+            "title": "Herança e Polimorfismo",
+            "focus": "Compreender profundamente os conceitos de herança, polimorfismo, sobrescrita e sobrecarga de métodos, além de modificadores de acesso e o uso de 'final' e 'static'.",
+            "target_minutes": 0,
+            "status": "ready",
+            "section_id": "s4",
+            "prerequisites": [
+                "s3"
+            ],
+            "week_index": 1,
+            "tasks": [{
+                    "id": "acf7546e-702d-4c3e-bec6-0a7da82d49f4",
+                    "day": "498e5a54-ecb8-4b5c-82e3-fbbc221bb1f5",
+                    "order": 10,
+                    "task_type": "lesson",
+                    "status": "pending",
+                    "title": "Introdução à Herança e a Palavra-Chave 'super'",
+                    "description": "Explorar os conceitos de herança, como classes filhas estendem classes pai, e o uso da palavra-chave 'super' para acessar membros da classe pai.",
+                    "duration_minutes": 75,
+                    "resources": [],
+                    "section_id": "s4",
+                    "difficulty": 3,
+                    "research_needed": false,
+                    "content_type": "lesson",
+                    "content": {
+                        "summary": "Fundamentos da herança em Java e como classes se relacionam em uma hierarquia.",
+                        "body": "Esta aula aborda a palavra-chave 'extends', o conceito de classes pai e filho, e como a herança permite a reutilização de código. Daremos atenção especial à inicialização de classes (ordem de execução de blocos de instância, construtores) e ao uso de 'super()' para chamar construtores da superclasse.",
+                        "key_points": [],
+                        "source_refs": []
+                    },
+                    "metadata": {
+                        "content": {
+                            "body": "Esta aula aborda a palavra-chave 'extends', o conceito de classes pai e filho, e como a herança permite a reutilização de código. Daremos atenção especial à inicialização de classes (ordem de execução de blocos de instância, construtores) e ao uso de 'super()' para chamar construtores da superclasse.",
+                            "summary": "Fundamentos da herança em Java e como classes se relacionam em uma hierarquia."
+                        },
+                        "difficulty": 3,
+                        "section_id": "s4",
+                        "dependencies": [],
+                        "prerequisites": [],
+                        "task_schema_id": "t10",
+                        "research_needed": false
+                    }
+                },
+                {
+                    "id": "a82eb63d-1300-47f4-a6ea-110ddc151da3",
+                    "day": "498e5a54-ecb8-4b5c-82e3-fbbc221bb1f5",
+                    "order": 11,
+                    "task_type": "flashcards",
+                    "status": "pending",
+                    "title": "Polimorfismo, Sobrescrita e Classes Abstratas",
+                    "description": "Flashcards sobre polimorfismo, as regras para sobrescrever métodos, classes abstratas e interfaces (conceitos básicos de OCA).",
+                    "duration_minutes": 60,
+                    "resources": [],
+                    "section_id": "s4",
+                    "difficulty": 4,
+                    "research_needed": false,
+                    "content_type": "flashcards",
+                    "content": {
+                        "title": "Polimorfismo, Sobrescrita e Classes Abstratas",
+                        "description": "Flashcards sobre polimorfismo, as regras para sobrescrever métodos, classes abstratas e interfaces (conceitos básicos de OCA).",
+                        "tags": [],
+                        "cards": [{
+                                "id": "96796733-80cb-43eb-b86a-ea8787427568",
+                                "front": "O que é polimorfismo em Java?",
+                                "back": "",
+                                "hints": [],
+                                "tags": [],
+                                "difficulty": 1
+                            },
+                            {
+                                "id": "be5fe303-0eff-4de3-b7a8-bf3310108f59",
+                                "front": "Quais são as regras para sobrescrever um método?",
+                                "back": "",
+                                "hints": [],
+                                "tags": [],
+                                "difficulty": 1
+                            },
+                            {
+                                "id": "24bd51f0-d95d-4ab3-b39b-3154f67ddc29",
+                                "front": "Qual a diferença entre uma classe abstrata e uma interface (em Java 8)?",
+                                "back": "",
+                                "hints": [],
+                                "tags": [],
+                                "difficulty": 1
+                            },
+                            {
+                                "id": "e1ee8777-6f29-4e8a-8ad7-a49b5e1b8392",
+                                "front": "Quando usar a anotação @Override?",
+                                "back": "",
+                                "hints": [],
+                                "tags": [],
+                                "difficulty": 1
+                            }
+                        ]
+                    },
+                    "metadata": {
+                        "content": {
+                            "cards": [{
+                                    "front": "O que é polimorfismo em Java?"
+                                },
+                                {
+                                    "front": "Quais são as regras para sobrescrever um método?"
+                                },
+                                {
+                                    "front": "Qual a diferença entre uma classe abstrata e uma interface (em Java 8)?"
+                                },
+                                {
+                                    "front": "Quando usar a anotação @Override?"
+                                }
+                            ]
+                        },
+                        "difficulty": 4,
+                        "section_id": "s4",
+                        "dependencies": [],
+                        "prerequisites": [],
+                        "task_schema_id": "t11",
+                        "research_needed": false
+                    }
+                },
+                {
+                    "id": "34fe7fd4-95c6-4358-9c72-5b894d102892",
+                    "day": "498e5a54-ecb8-4b5c-82e3-fbbc221bb1f5",
+                    "order": 12,
+                    "task_type": "assessment",
+                    "status": "pending",
+                    "title": "Quiz: final, static e Casting de Objetos",
+                    "description": "Testar o conhecimento sobre a palavra-chave 'final' (para classes, métodos e variáveis), membros 'static' (variáveis, métodos, blocos) e as regras de casting entre tipos de objetos polimórficos.",
+                    "duration_minutes": 60,
+                    "resources": [],
+                    "section_id": "s4",
+                    "difficulty": 4,
+                    "research_needed": false,
+                    "content_type": "assessment",
+                    "content": {
+                        "title": "Quiz: final, static e Casting de Objetos",
+                        "description": "Testar o conhecimento sobre a palavra-chave 'final' (para classes, métodos e variáveis), membros 'static' (variáveis, métodos, blocos) e as regras de casting entre tipos de objetos polimórficos.",
+                        "assessment_type": "quiz",
+                        "passing_score": null,
+                        "time_limit_minutes": null,
+                        "metadata": {},
+                        "items": [{
+                                "id": "75a28816-e4a0-46ce-946c-016c0d214d9b",
+                                "item_type": "mcq",
+                                "prompt": "Qual é a principal característica de uma variável 'final'?",
+                                "choices": [],
+                                "answer": {
+                                    "answer": null,
+                                    "explanation": null
+                                },
+                                "explanation": "",
+                                "difficulty": 1,
+                                "metadata": {}
+                            },
+                            {
+                                "id": "3185a67e-4405-4bd8-8df5-df8b205307fa",
+                                "item_type": "mcq",
+                                "prompt": "O que acontece se você tentar estender uma classe 'final'?",
+                                "choices": [],
+                                "answer": {
+                                    "answer": null,
+                                    "explanation": null
+                                },
+                                "explanation": "",
+                                "difficulty": 1,
+                                "metadata": {}
+                            },
+                            {
+                                "id": "85d76935-4a16-411c-a858-c70c8144832f",
+                                "item_type": "mcq",
+                                "prompt": "Quando um método deve ser declarado como 'static'?",
+                                "choices": [],
+                                "answer": {
+                                    "answer": null,
+                                    "explanation": null
+                                },
+                                "explanation": "",
+                                "difficulty": 1,
+                                "metadata": {}
+                            },
+                            {
+                                "id": "cb1e32a1-344f-4d94-a004-a9043c3263a1",
+                                "item_type": "mcq",
+                                "prompt": "É permitido fazer casting de uma superclasse para uma subclasse sem uma verificação? Explique.",
+                                "choices": [],
+                                "answer": {
+                                    "answer": null,
+                                    "explanation": null
+                                },
+                                "explanation": "",
+                                "difficulty": 1,
+                                "metadata": {}
+                            }
+                        ]
+                    },
+                    "metadata": {
+                        "content": {
+                            "items": [{
+                                    "prompt": "Qual é a principal característica de uma variável 'final'?"
+                                },
+                                {
+                                    "prompt": "O que acontece se você tentar estender uma classe 'final'?"
+                                },
+                                {
+                                    "prompt": "Quando um método deve ser declarado como 'static'?"
+                                },
+                                {
+                                    "prompt": "É permitido fazer casting de uma superclasse para uma subclasse sem uma verificação? Explique."
+                                }
+                            ]
+                        },
+                        "difficulty": 4,
+                        "section_id": "s4",
+                        "dependencies": [],
+                        "prerequisites": [],
+                        "task_schema_id": "t12",
+                        "research_needed": false,
+                        "assessment_target": "s4"
+                    }
+                }
+            ],
+            "metadata": {
+                "section_id": "s4",
+                "prerequisites": [
+                    "s3"
+                ]
+            }
+        },
+        {
+            "id": "19c33d78-3158-4f71-b1fc-9bfa4f36f963",
+            "day_index": 5,
+            "scheduled_date": null,
+            "title": "Exceções e APIs Comuns",
+            "focus": "Saber como tratar exceções (checked vs. unchecked) e utilizar classes comuns da API Java como String, StringBuilder, Wrapper classes e ArrayList.",
+            "target_minutes": 0,
+            "status": "ready",
+            "section_id": "s5",
+            "prerequisites": [
+                "s4"
+            ],
+            "week_index": 1,
+            "tasks": [{
+                    "id": "53c2a00d-c214-419b-9e48-3867bfb5b062",
+                    "day": "19c33d78-3158-4f71-b1fc-9bfa4f36f963",
+                    "order": 13,
+                    "task_type": "lesson",
+                    "status": "pending",
+                    "title": "Manipulação de Exceções",
+                    "description": "Estudar o mecanismo de tratamento de exceções em Java, incluindo blocos 'try-catch-finally', tipos de exceções (checked vs. unchecked) e as palavras-chave 'throw' e 'throws'.",
+                    "duration_minutes": 90,
+                    "resources": [],
+                    "section_id": "s5",
+                    "difficulty": 3,
+                    "research_needed": false,
+                    "content_type": "lesson",
+                    "content": {
+                        "summary": "Como Java lida com erros em tempo de execução e como escrever código robusto.",
+                        "body": "Nesta aula, diferenciaremos 'Error', 'Exception' e 'RuntimeException'. Exploraremos a hierarquia de exceções, como criar e lançar exceções personalizadas, e as melhores práticas para o tratamento de exceções na OCA.",
+                        "key_points": [],
+                        "source_refs": []
+                    },
+                    "metadata": {
+                        "content": {
+                            "body": "Nesta aula, diferenciaremos 'Error', 'Exception' e 'RuntimeException'. Exploraremos a hierarquia de exceções, como criar e lançar exceções personalizadas, e as melhores práticas para o tratamento de exceções na OCA.",
+                            "summary": "Como Java lida com erros em tempo de execução e como escrever código robusto."
+                        },
+                        "difficulty": 3,
+                        "section_id": "s5",
+                        "dependencies": [],
+                        "prerequisites": [],
+                        "task_schema_id": "t13",
+                        "research_needed": false
+                    }
+                },
+                {
+                    "id": "168325c6-79be-4873-a7af-d1f31356fa3b",
+                    "day": "19c33d78-3158-4f71-b1fc-9bfa4f36f963",
+                    "order": 14,
+                    "task_type": "flashcards",
+                    "status": "pending",
+                    "title": "Classes Comuns da API Java (String, StringBuilder)",
+                    "description": "Flashcards focados nos principais métodos das classes `String` e `StringBuilder`, e suas diferenças de performance e imutabilidade.",
+                    "duration_minutes": 60,
+                    "resources": [],
+                    "section_id": "s5",
+                    "difficulty": 3,
+                    "research_needed": false,
+                    "content_type": "flashcards",
+                    "content": {
+                        "title": "Classes Comuns da API Java (String, StringBuilder)",
+                        "description": "Flashcards focados nos principais métodos das classes `String` e `StringBuilder`, e suas diferenças de performance e imutabilidade.",
+                        "tags": [],
+                        "cards": [{
+                                "id": "9a2c961a-b7a2-4393-b576-ff2aa967fac1",
+                                "front": "Qual a diferença entre String e StringBuilder em termos de mutabilidade?",
+                                "back": "",
+                                "hints": [],
+                                "tags": [],
+                                "difficulty": 1
+                            },
+                            {
+                                "id": "a7cbfb8d-a5a3-495d-8308-02e7269dbf18",
+                                "front": "Qual método da classe String é usado para verificar se uma string contém uma sequência de caracteres específica?",
+                                "back": "",
+                                "hints": [],
+                                "tags": [],
+                                "difficulty": 1
+                            },
+                            {
+                                "id": "e14684c1-30bf-4bc7-86fc-b07190ef883f",
+                                "front": "Como você concatena duas Strings em Java?",
+                                "back": "",
+                                "hints": [],
+                                "tags": [],
+                                "difficulty": 1
+                            },
+                            {
+                                "id": "8624013b-5a73-4897-ac66-26ccc89183de",
+                                "front": "Qual o resultado de 'new String(\"hello\").equals(\"hello\")'?",
+                                "back": "",
+                                "hints": [],
+                                "tags": [],
+                                "difficulty": 1
+                            }
+                        ]
+                    },
+                    "metadata": {
+                        "content": {
+                            "cards": [{
+                                    "front": "Qual a diferença entre String e StringBuilder em termos de mutabilidade?"
+                                },
+                                {
+                                    "front": "Qual método da classe String é usado para verificar se uma string contém uma sequência de caracteres específica?"
+                                },
+                                {
+                                    "front": "Como você concatena duas Strings em Java?"
+                                },
+                                {
+                                    "front": "Qual o resultado de 'new String(\"hello\").equals(\"hello\")'?"
+                                }
+                            ]
+                        },
+                        "difficulty": 3,
+                        "section_id": "s5",
+                        "dependencies": [],
+                        "prerequisites": [],
+                        "task_schema_id": "t14",
+                        "research_needed": false
+                    }
+                },
+                {
+                    "id": "cac002a1-cc01-4fa5-9a14-3232a24d401d",
+                    "day": "19c33d78-3158-4f71-b1fc-9bfa4f36f963",
+                    "order": 15,
+                    "task_type": "assessment",
+                    "status": "pending",
+                    "title": "Quiz: Wrapper Classes e ArrayList",
+                    "description": "Questões sobre o uso das classes Wrapper (Integer, Double, Boolean, etc.) e a classe `ArrayList` para manipulação de coleções.",
+                    "duration_minutes": 60,
+                    "resources": [],
+                    "section_id": "s5",
+                    "difficulty": 4,
+                    "research_needed": false,
+                    "content_type": "assessment",
+                    "content": {
+                        "title": "Quiz: Wrapper Classes e ArrayList",
+                        "description": "Questões sobre o uso das classes Wrapper (Integer, Double, Boolean, etc.) e a classe `ArrayList` para manipulação de coleções.",
+                        "assessment_type": "quiz",
+                        "passing_score": null,
+                        "time_limit_minutes": null,
+                        "metadata": {},
+                        "items": [{
+                                "id": "0d7a0ea8-b616-45f7-987f-9ec2b223163f",
+                                "item_type": "mcq",
+                                "prompt": "Qual é a classe Wrapper para o tipo primitivo 'int'?",
+                                "choices": [],
+                                "answer": {
+                                    "answer": null,
+                                    "explanation": null
+                                },
+                                "explanation": "",
+                                "difficulty": 1,
+                                "metadata": {}
+                            },
+                            {
+                                "id": "9072c0a6-0ba7-4175-ae13-fd3a8e79b904",
+                                "item_type": "mcq",
+                                "prompt": "Como você cria um `ArrayList` que armazena objetos `String`?",
+                                "choices": [],
+                                "answer": {
+                                    "answer": null,
+                                    "explanation": null
+                                },
+                                "explanation": "",
+                                "difficulty": 1,
+                                "metadata": {}
+                            },
+                            {
+                                "id": "e02eef94-4445-4e10-98ab-b76a5eb3a572",
+                                "item_type": "mcq",
+                                "prompt": "Qual método é usado para adicionar um elemento a um `ArrayList`?",
+                                "choices": [],
+                                "answer": {
+                                    "answer": null,
+                                    "explanation": null
+                                },
+                                "explanation": "",
+                                "difficulty": 1,
+                                "metadata": {}
+                            },
+                            {
+                                "id": "0ab95045-9c06-4a7d-948a-cd062b8f8e4a",
+                                "item_type": "mcq",
+                                "prompt": "O que acontece se você tentar acessar um índice fora dos limites de um `ArrayList`?",
+                                "choices": [],
+                                "answer": {
+                                    "answer": null,
+                                    "explanation": null
+                                },
+                                "explanation": "",
+                                "difficulty": 1,
+                                "metadata": {}
+                            }
+                        ]
+                    },
+                    "metadata": {
+                        "content": {
+                            "items": [{
+                                    "prompt": "Qual é a classe Wrapper para o tipo primitivo 'int'?"
+                                },
+                                {
+                                    "prompt": "Como você cria um `ArrayList` que armazena objetos `String`?"
+                                },
+                                {
+                                    "prompt": "Qual método é usado para adicionar um elemento a um `ArrayList`?"
+                                },
+                                {
+                                    "prompt": "O que acontece se você tentar acessar um índice fora dos limites de um `ArrayList`?"
+                                }
+                            ]
+                        },
+                        "difficulty": 4,
+                        "section_id": "s5",
+                        "dependencies": [],
+                        "prerequisites": [],
+                        "task_schema_id": "t15",
+                        "research_needed": false,
+                        "assessment_target": "s5"
+                    }
+                },
+                {
+                    "id": "57ad74a8-f114-495d-9c9e-efe0b8b1f32c",
+                    "day": "19c33d78-3158-4f71-b1fc-9bfa4f36f963",
+                    "order": 16,
+                    "task_type": "other",
+                    "status": "pending",
+                    "title": "Documentação Oficial de Exceções Java",
+                    "description": "Explore a documentação oficial da Oracle sobre o tratamento de exceções para aprofundar seu conhecimento. **URL:** https://docs.oracle.com/javase/tutorial/essential/exceptions/index.html. **Racional:** Fonte primária e mais autoritativa. **Como usar:** Leia os tutoriais e experimente os exemplos de código. **Fallback:** Artigos de tratamento de exceções em sites como Baeldung ou GeeksforGeeks.",
+                    "duration_minutes": 75,
+                    "resources": [],
+                    "section_id": "s5",
+                    "difficulty": 3,
+                    "research_needed": true,
+                    "content_type": "reading",
+                    "content": {
+                        "overview": "Explore a documentação oficial da Oracle sobre o tratamento de exceções para aprofundar seu conhecimento. **URL:** https://docs.oracle.com/javase/tutorial/essential/exceptions/index.html. **Racional:** Fonte primária e mais autoritativa. **Como usar:** Leia os tutoriais e experimente os exemplos de código. **Fallback:** Artigos de tratamento de exceções em sites como Baeldung ou GeeksforGeeks.",
+                        "instructions": "",
+                        "resources": [{
+                            "title": "Oracle Java SE Tutorials - Exceptions"
+                        }],
+                        "generated_text": ""
+                    },
+                    "metadata": {
+                        "content": {
+                            "resources": [{
+                                "title": "Oracle Java SE Tutorials - Exceptions"
+                            }]
+                        },
+                        "difficulty": 3,
+                        "section_id": "s5",
+                        "dependencies": [],
+                        "prerequisites": [],
+                        "task_schema_id": "t16",
+                        "research_needed": true
+                    }
+                }
+            ],
+            "metadata": {
+                "section_id": "s5",
+                "prerequisites": [
+                    "s4"
+                ]
+            }
+        },
+        {
+            "id": "3e7d174f-9de3-4220-9db2-bd4d476d9ca2",
+            "day_index": 6,
+            "scheduled_date": null,
+            "title": "Revisão Geral e Simulado Final",
+            "focus": "Revisão completa de todos os tópicos e prática intensiva com simulados para solidificar o conhecimento e identificar áreas fracas antes do exame.",
+            "target_minutes": 0,
+            "status": "ready",
+            "section_id": "s6",
+            "prerequisites": [
+                "s5"
+            ],
+            "week_index": 1,
+            "tasks": [{
+                    "id": "5e7bbb54-75a4-4a98-8cbb-96cdf5a473be",
+                    "day": "3e7d174f-9de3-4220-9db2-bd4d476d9ca2",
+                    "order": 17,
+                    "task_type": "lesson",
+                    "status": "pending",
+                    "title": "Revisão dos Tópicos Chave da OCA Java SE 8",
+                    "description": "Um resumo consolidado de todos os tópicos essenciais para a certificação, destacando os pontos mais importantes e frequentemente testados.",
+                    "duration_minutes": 120,
+                    "resources": [],
+                    "section_id": "s6",
+                    "difficulty": 3,
+                    "research_needed": false,
+                    "content_type": "lesson",
+                    "content": {
+                        "summary": "Revisão geral e focada nos pontos críticos para a aprovação.",
+                        "body": "Este resumo serve como um guia final para a revisão. Relembraremos as regras de identificadores, precedência de operadores, nuances de controle de fluxo, comportamento de arrays, hierarquia de classes, polimorfismo, tratamento de exceções e o uso das principais classes da API. Concentre-se nas áreas onde você ainda tem dúvidas.",
+                        "key_points": [],
+                        "source_refs": []
+                    },
+                    "metadata": {
+                        "content": {
+                            "body": "Este resumo serve como um guia final para a revisão. Relembraremos as regras de identificadores, precedência de operadores, nuances de controle de fluxo, comportamento de arrays, hierarquia de classes, polimorfismo, tratamento de exceções e o uso das principais classes da API. Concentre-se nas áreas onde você ainda tem dúvidas.",
+                            "summary": "Revisão geral e focada nos pontos críticos para a aprovação."
+                        },
+                        "difficulty": 3,
+                        "section_id": "s6",
+                        "dependencies": [],
+                        "prerequisites": [],
+                        "task_schema_id": "t17",
+                        "research_needed": false
+                    }
+                },
+                {
+                    "id": "1f621a2b-0992-497e-b8f3-dc115ed56c90",
+                    "day": "3e7d174f-9de3-4220-9db2-bd4d476d9ca2",
+                    "order": 18,
+                    "task_type": "assessment",
+                    "status": "pending",
+                    "title": "Simulado Completo OCA Java SE 8 Programmer I",
+                    "description": "Um simulado completo (70-75 questões, 150 minutos) para simular as condições do exame real e avaliar sua prontidão. Tente fazê-lo em um ambiente tranquilo e sem interrupções.",
+                    "duration_minutes": 150,
+                    "resources": [],
+                    "section_id": "s6",
+                    "difficulty": 5,
+                    "research_needed": true,
+                    "content_type": "assessment",
+                    "content": {
+                        "title": "Simulado Completo OCA Java SE 8 Programmer I",
+                        "description": "Um simulado completo (70-75 questões, 150 minutos) para simular as condições do exame real e avaliar sua prontidão. Tente fazê-lo em um ambiente tranquilo e sem interrupções.",
+                        "assessment_type": "quiz",
+                        "passing_score": null,
+                        "time_limit_minutes": null,
+                        "metadata": {},
+                        "items": [{
+                                "id": "f5eca4f6-c38d-443a-ba4f-caa5d9e98540",
+                                "item_type": "mcq",
+                                "prompt": "Qual será a saída do seguinte código Java? [código complexo com herança e polimorfismo]",
+                                "choices": [],
+                                "answer": {
+                                    "answer": null,
+                                    "explanation": null
+                                },
+                                "explanation": "",
+                                "difficulty": 1,
+                                "metadata": {}
+                            },
+                            {
+                                "id": "d7a06797-ca34-4fba-8c82-59255322e5c2",
+                                "item_type": "mcq",
+                                "prompt": "Qual o resultado de 'Integer i = 10; Integer j = 10; System.out.println(i == j);' e por que?",
+                                "choices": [],
+                                "answer": {
+                                    "answer": null,
+                                    "explanation": null
+                                },
+                                "explanation": "",
+                                "difficulty": 1,
+                                "metadata": {}
+                            },
+                            {
+                                "id": "9cf5be21-74e3-4022-a1e1-8c180f41863f",
+                                "item_type": "mcq",
+                                "prompt": "Qual o principal benefício de usar a interface List em vez da classe concreta ArrayList diretamente?",
+                                "choices": [],
+                                "answer": {
+                                    "answer": null,
+                                    "explanation": null
+                                },
+                                "explanation": "",
+                                "difficulty": 1,
+                                "metadata": {}
+                            }
+                        ]
+                    },
+                    "metadata": {
+                        "content": {
+                            "items": [{
+                                    "prompt": "Qual será a saída do seguinte código Java? [código complexo com herança e polimorfismo]"
+                                },
+                                {
+                                    "prompt": "Qual o resultado de 'Integer i = 10; Integer j = 10; System.out.println(i == j);' e por que?"
+                                },
+                                {
+                                    "prompt": "Qual o principal benefício de usar a interface List em vez da classe concreta ArrayList diretamente?"
+                                }
+                            ]
+                        },
+                        "difficulty": 5,
+                        "section_id": "s6",
+                        "dependencies": [],
+                        "prerequisites": [],
+                        "task_schema_id": "t18",
+                        "research_needed": true,
+                        "assessment_target": "s6"
+                    }
+                },
+                {
+                    "id": "337f7e44-39e3-4abc-b3a2-f9ec2c3f70f6",
+                    "day": "3e7d174f-9de3-4220-9db2-bd4d476d9ca2",
+                    "order": 19,
+                    "task_type": "flashcards",
+                    "status": "pending",
+                    "title": "Pontos Críticos e Dúvidas Frequentes da OCA",
+                    "description": "Flashcards específicos para as pegadinhas e conceitos que mais causam confusão nos exames OCA, com base em feedback de outros estudantes e áreas de dificuldade comum.",
+                    "duration_minutes": 60,
+                    "resources": [],
+                    "section_id": "s6",
+                    "difficulty": 4,
+                    "research_needed": false,
+                    "content_type": "flashcards",
+                    "content": {
+                        "title": "Pontos Críticos e Dúvidas Frequentes da OCA",
+                        "description": "Flashcards específicos para as pegadinhas e conceitos que mais causam confusão nos exames OCA, com base em feedback de outros estudantes e áreas de dificuldade comum.",
+                        "tags": [],
+                        "cards": [{
+                                "id": "8e273d58-7f7e-41e9-9cd5-70691fb8d2c9",
+                                "front": "Explique a diferença entre 'instanceof' e casting em tempo de compilação/execução.",
+                                "back": "",
+                                "hints": [],
+                                "tags": [],
+                                "difficulty": 1
+                            },
+                            {
+                                "id": "c2e6681a-27ac-4c8e-9ebb-e4a3dac772d5",
+                                "front": "Quais modificadores de acesso são permitidos para métodos em uma interface (Java 8)?",
+                                "back": "",
+                                "hints": [],
+                                "tags": [],
+                                "difficulty": 1
+                            },
+                            {
+                                "id": "7b0f837d-1723-482a-85eb-6d00a7dee50a",
+                                "front": "O que é 'NPE' e como evitá-la?",
+                                "back": "",
+                                "hints": [],
+                                "tags": [],
+                                "difficulty": 1
+                            },
+                            {
+                                "id": "3c339bc4-cc47-42f9-99be-ff1845b84c36",
+                                "front": "Quando um bloco 'finally' não será executado?",
+                                "back": "",
+                                "hints": [],
+                                "tags": [],
+                                "difficulty": 1
+                            }
+                        ]
+                    },
+                    "metadata": {
+                        "content": {
+                            "cards": [{
+                                    "front": "Explique a diferença entre 'instanceof' e casting em tempo de compilação/execução."
+                                },
+                                {
+                                    "front": "Quais modificadores de acesso são permitidos para métodos em uma interface (Java 8)?"
+                                },
+                                {
+                                    "front": "O que é 'NPE' e como evitá-la?"
+                                },
+                                {
+                                    "front": "Quando um bloco 'finally' não será executado?"
+                                }
+                            ]
+                        },
+                        "difficulty": 4,
+                        "section_id": "s6",
+                        "dependencies": [],
+                        "prerequisites": [],
+                        "task_schema_id": "t19",
+                        "research_needed": false
+                    }
+                },
+                {
+                    "id": "60a1234e-e437-4b04-aeb3-8fe4db2793c5",
+                    "day": "3e7d174f-9de3-4220-9db2-bd4d476d9ca2",
+                    "order": 20,
+                    "task_type": "other",
+                    "status": "pending",
+                    "title": "Recursos Adicionais para Simulados e Questões",
+                    "description": "Plataformas com simulados e questões de prática adicionais para fortalecer seu conhecimento e testar sua velocidade. **URL:** (Exemplo) https://www.examtopics.com/exams/oracle/1z0-808/ **Racional:** Essencial para prática e familiarização com o formato da prova. **Como usar:** Faça mais simulados, revise as respostas erradas e entenda as explicações. **Fallback:** Livros de preparação para OCA ou outros sites de quizzes Java.",
+                    "duration_minutes": 90,
+                    "resources": [],
+                    "section_id": "s6",
+                    "difficulty": 4,
+                    "research_needed": true,
+                    "content_type": "reading",
+                    "content": {
+                        "overview": "Plataformas com simulados e questões de prática adicionais para fortalecer seu conhecimento e testar sua velocidade. **URL:** (Exemplo) https://www.examtopics.com/exams/oracle/1z0-808/ **Racional:** Essencial para prática e familiarização com o formato da prova. **Como usar:** Faça mais simulados, revise as respostas erradas e entenda as explicações. **Fallback:** Livros de preparação para OCA ou outros sites de quizzes Java.",
+                        "instructions": "",
+                        "resources": [{
+                            "title": "ExamTopics - Oracle 1Z0-808 Practice Questions"
+                        }],
+                        "generated_text": ""
+                    },
+                    "metadata": {
+                        "content": {
+                            "resources": [{
+                                "title": "ExamTopics - Oracle 1Z0-808 Practice Questions"
+                            }]
+                        },
+                        "difficulty": 4,
+                        "section_id": "s6",
+                        "dependencies": [],
+                        "prerequisites": [],
+                        "task_schema_id": "t20",
+                        "research_needed": true
+                    }
+                }
+            ],
+            "metadata": {
+                "section_id": "s6",
+                "prerequisites": [
+                    "s5"
+                ]
+            }
+        }
+    ],
+    "rag_document_ids": [],
+    "generation_status": "succeeded",
+    "last_error": "",
+    "job_id": "813ef847-69e7-405a-894a-e80e0c6ac48f"
+}

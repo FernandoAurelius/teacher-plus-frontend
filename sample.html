@@ -1,0 +1,1627 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Study Roadmap · Prototype</title>
+
+    <!-- Fonte Space Grotesk -->
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS v4 (Play CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <style type="text/tailwindcss">
+      @theme {
+        --color-brand: oklch(0.78 0.16 140);
+        --color-brand-soft: oklch(0.86 0.08 140);
+        --color-brand-strong: oklch(0.7 0.2 140);
+      }
+
+      body {
+        font-family: "Space Grotesk", system-ui, -apple-system,
+          BlinkMacSystemFont, "SF Pro Text", sans-serif;
+        @apply bg-slate-950 text-slate-50;
+      }
+
+      .scrollbar-thin::-webkit-scrollbar {
+        width: 6px;
+      }
+      .scrollbar-thin::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .scrollbar-thin::-webkit-scrollbar-thumb {
+        background: rgba(148, 163, 184, 0.5);
+        border-radius: 999px;
+      }
+
+      /* Placeholder para o editor de anotações */
+      .notes-editable:empty::before {
+        content: attr(data-placeholder);
+        color: rgb(100 116 139);
+      }
+    </style>
+  </head>
+
+  <body class="min-h-screen">
+    <div
+      id="app"
+      class="min-h-screen flex flex-col bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900"
+    >
+      <!-- Header -->
+      <header
+        class="sticky top-0 z-20 border-b border-slate-800/80 bg-slate-950/85 backdrop-blur"
+      >
+        <div
+          class="max-w-6xl mx-auto flex items-center justify-between px-4 py-3 gap-4"
+        >
+          <div class="flex items-center gap-3">
+            <div
+              class="size-9 rounded-3xl bg-gradient-to-tr from-lime-400 to-emerald-400 flex items-center justify-center shadow-lg shadow-emerald-500/40"
+            >
+              <span class="text-slate-900 font-black text-xl">S</span>
+            </div>
+            <div>
+              <p class="text-sm font-semibold tracking-tight">
+                Study Roadmap
+              </p>
+              <p class="text-xs text-slate-400">
+                Trilha baseada no
+                <span class="font-mono text-xs">StudyPlanSerializer</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3 text-[11px]">
+            <div
+              class="hidden sm:flex items-center gap-2 rounded-full border border-emerald-500/50 bg-emerald-500/10 px-3 py-1"
+            >
+              <span
+                class="inline-block size-2 rounded-full bg-emerald-400 animate-pulse"
+              ></span>
+              <span class="font-medium text-emerald-200">
+                Sessão de hoje · {{ todayLabel }}
+              </span>
+            </div>
+            <button
+              type="button"
+              class="rounded-full border border-slate-700/80 bg-slate-900/70 px-3 py-1.5 font-medium text-slate-200 hover:border-emerald-500/60 hover:bg-slate-900 transition-all duration-300"
+              @click="resetSelection"
+            >
+              Reset mock
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main -->
+      <main class="flex-1">
+        <div class="max-w-6xl mx-auto px-4 py-6 lg:py-8 space-y-6">
+          <!-- Info + semanas -->
+          <section class="space-y-4">
+            <div class="flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <p
+                  class="text-[11px] uppercase tracking-[0.18em] text-emerald-400 mb-1"
+                >
+                  Roadmap de estudo
+                </p>
+                <h1
+                  class="text-xl sm:text-2xl font-semibold tracking-tight"
+                >
+                  {{ activeWeek?.title || "Semana atual" }}
+                </h1>
+                <p class="text-xs text-slate-400 max-w-xl mt-2 leading-relaxed">
+                  Cada nó circular abaixo representa um dia da semana. Clique
+                  para abrir um painel detalhado com as atividades, conteúdo e
+                  um espaço de anotações para você registrar o que aprendeu.
+                </p>
+              </div>
+
+              <div class="flex flex-col items-end gap-1 text-[11px]">
+                <span
+                  class="inline-flex items-center rounded-full border border-slate-700/80 bg-slate-900/80 px-3 py-1 text-slate-200"
+                >
+                  Progresso da semana:
+                  <span
+                    class="ml-1 font-semibold text-emerald-300"
+                  >
+                    {{ weekProgressLabel }}
+                  </span>
+                </span>
+                <span
+                  v-if="activeDay"
+                  class="inline-flex items-center rounded-full bg-slate-900/80 px-3 py-1 text-slate-400"
+                >
+                  Dia {{ activeDayIndex + 1 }} ·
+                  {{ activeDay.tasks.length }} atividades
+                </span>
+              </div>
+            </div>
+
+            <!-- Weeks chips -->
+            <div class="flex flex-wrap gap-2">
+              <button
+                v-for="(week, wIndex) in studyPlan.weeks"
+                :key="week.week_index"
+                type="button"
+                @click="selectWeek(wIndex)"
+                class="group inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium border transition-all duration-200"
+                :class="[
+                  wIndex === selected.weekIndex
+                    ? 'border-emerald-400/80 bg-emerald-500/15 text-emerald-100 shadow-sm shadow-emerald-500/40'
+                    : 'border-slate-700/80 bg-slate-900/80 text-slate-300 hover:border-emerald-500/50 hover:bg-slate-900',
+                ]"
+              >
+                <span
+                  class="size-2 rounded-full"
+                  :class="statusDotClass(week.status)"
+                ></span>
+                <span>Semana {{ week.week_index }}</span>
+                <span
+                  class="hidden sm:inline text-[10px] uppercase tracking-wide text-slate-400 group-hover:text-slate-200"
+                >
+                  {{ week.status }}
+                </span>
+              </button>
+            </div>
+          </section>
+
+          <!-- Roadmap vertical de dias -->
+          <section class="mt-2">
+            <div
+              v-if="activeWeek"
+              class="relative rounded-3xl border border-slate-800 bg-slate-950/90 shadow-[0_20px_70px_rgba(0,0,0,0.9)] px-5 py-6 sm:px-7 sm:py-7"
+            >
+              <div
+                class="max-h-[70vh] overflow-y-auto scrollbar-thin pr-2"
+              >
+                <div
+                  v-for="(day, dIndex) in activeWeek.days"
+                  :key="day.section_id"
+                  class="relative pl-14 sm:pl-20"
+                >
+                  <!-- Linha vertical + nó -->
+                  <div
+                    class="absolute left-6 sm:left-8 top-0 bottom-0 flex flex-col items-center"
+                  >
+                    <!-- linha acima -->
+                    <div
+                      v-if="dIndex !== 0"
+                      class="flex-1 w-px bg-slate-800"
+                    ></div>
+
+                    <!-- nó do dia -->
+                    <button
+                      type="button"
+                      @click="openDayDialog(dIndex)"
+                      class="relative mb-2 flex items-center justify-center rounded-full border-2 size-12 sm:size-14 transition-all duration-300"
+                      :class="dayNodeClass(day, dIndex)"
+                    >
+                      <span
+                        class="text-sm font-semibold text-slate-950"
+                      >
+                        {{ dIndex + 1 }}
+                      </span>
+                    </button>
+
+                    <span
+                      class="mb-4 text-[11px] text-slate-400 whitespace-nowrap"
+                    >
+                      Dia {{ dIndex + 1 }}
+                    </span>
+
+                    <!-- linha abaixo -->
+                    <div
+                      v-if="dIndex !== activeWeek.days.length - 1"
+                      class="flex-1 w-px bg-slate-800"
+                    ></div>
+                  </div>
+
+                  <!-- Card do dia -->
+                  <button
+                    type="button"
+                    @click="openDayDialog(dIndex)"
+                    class="mb-9 w-full text-left rounded-3xl border px-4 py-4 sm:px-6 sm:py-5 transition-all duration-200 flex flex-col gap-3"
+                    :class="[
+                      dIndex === selected.dayIndex
+                        ? 'border-emerald-400/80 bg-slate-900/95 shadow-[0_0_0_1px_rgba(45,212,191,0.35),0_18px_40px_rgba(0,0,0,0.85)]'
+                        : 'border-slate-800 bg-slate-950/90 hover:border-emerald-400/60 hover:bg-slate-900',
+                    ]"
+                  >
+                    <div class="flex items-center justify-between gap-2">
+                      <div class="flex flex-col gap-1">
+                        <div class="flex items-center gap-2">
+                          <span
+                            class="inline-flex items-center rounded-full bg-slate-900/90 px-3 py-[4px] text-[11px] text-slate-200"
+                          >
+                            Bloco
+                            <span
+                              class="ml-1 font-semibold text-slate-50"
+                            >
+                              {{ dIndex + 1 }}
+                            </span>
+                          </span>
+                          <span
+                            class="hidden sm:inline text-[11px] text-slate-400"
+                          >
+                            Pré-requisitos:
+                            <span class="font-mono">{{
+                              day.prerequisites?.length
+                                ? day.prerequisites.join(", ")
+                                : "—"
+                            }}</span>
+                          </span>
+                        </div>
+                        <span
+                          class="sm:hidden text-[11px] text-slate-500"
+                          v-if="day.prerequisites?.length"
+                        >
+                          Pré-requisitos:
+                          <span class="font-mono">
+                            {{ day.prerequisites.join(", ") }}
+                          </span>
+                        </span>
+                      </div>
+
+                      <span
+                        class="inline-flex items-center rounded-full bg-slate-900/90 px-3 py-[4px] text-[11px] text-slate-300"
+                      >
+                        {{ day.tasks.length }} atividades
+                      </span>
+                    </div>
+
+                    <!-- Mini resumo de tasks do dia -->
+                    <div class="mt-1 flex flex-wrap gap-1.5">
+                      <span
+                        v-for="(task, tIndex) in day.tasks"
+                        :key="task.id"
+                        class="inline-flex items-center gap-1 rounded-full px-2.5 py-[4px] text-[11px] border"
+                        :class="badgeForTask(task).class"
+                      >
+                        <span
+                          class="font-mono text-[10px] opacity-80"
+                        >
+                          {{ taskIcon(task) }}
+                        </span>
+                        <span class="truncate max-w-[140px] sm:max-w-[200px]">
+                          {{ task.title }}
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <p
+              v-else
+              class="text-sm text-slate-500 italic mt-4"
+            >
+              Selecione uma semana para visualizar o roadmap de dias.
+            </p>
+          </section>
+        </div>
+      </main>
+
+      <!-- Dialog grande de conteúdo -->
+      <div
+        v-show="dialogOpen"
+        class="fixed inset-0 z-30 flex items-center justify-center bg-slate-950/70 backdrop-blur-sm transition-opacity duration-300"
+        :class="dialogOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'"
+        @click.self="closeDialog"
+      >
+        <div
+          class="w-full max-w-5xl max-h-[88vh] bg-slate-950 border border-slate-800 rounded-3xl shadow-[0_0_80px_rgba(0,0,0,0.95)] flex flex-col overflow-hidden"
+        >
+          <!-- header dialog -->
+          <div
+            class="px-5 sm:px-6 py-4 border-b border-slate-800 bg-slate-950/95 flex items-center justify-between gap-3"
+          >
+            <div>
+              <p
+                class="text-[11px] uppercase tracking-[0.18em] text-emerald-400 mb-1"
+              >
+                Dia {{ activeDayIndex + 1 }} · Semana
+                {{ activeWeek?.week_index || "?" }}
+              </p>
+              <h2
+                class="text-sm sm:text-base font-semibold tracking-tight"
+              >
+                {{ activeDayTitle }}
+              </h2>
+            </div>
+            <button
+              type="button"
+              class="rounded-full border border-slate-700/80 bg-slate-900/80 px-3 py-1.5 text-[11px] text-slate-200 hover:border-emerald-400/70 hover:text-emerald-200 transition-all"
+              @click="closeDialog"
+            >
+              Fechar
+            </button>
+          </div>
+
+          <!-- conteúdo dialog -->
+          <div
+            class="flex-1 overflow-y-auto px-5 sm:px-6 py-4 space-y-4 scrollbar-thin"
+          >
+            <!-- lista de tasks -->
+            <div
+              v-if="activeDay"
+              class="rounded-2xl border border-slate-800 bg-slate-950/90 p-4 space-y-3"
+            >
+              <p
+                class="text-[11px] text-slate-400 uppercase tracking-[0.18em] mb-1"
+              >
+                Atividades do dia
+              </p>
+
+              <div class="space-y-1.5 max-h-52 overflow-y-auto scrollbar-thin">
+                <button
+                  v-for="(task, tIndex) in activeDay.tasks"
+                  :key="task.id"
+                  type="button"
+                  @click.stop="selectTask(tIndex)"
+                  class="w-full text-left rounded-2xl border px-3.5 py-2.5 text-[12px] flex items-start gap-2.5 transition-all"
+                  :class="[
+                    tIndex === selected.taskIndex
+                      ? 'border-emerald-400/80 bg-emerald-500/10 shadow-sm shadow-emerald-500/30'
+                      : 'border-slate-800 bg-slate-950 hover:border-emerald-400/60 hover:bg-slate-900',
+                  ]"
+                >
+                  <div
+                    class="mt-0.5 size-8 rounded-xl flex items-center justify-center text-[11px] font-semibold text-slate-950 shrink-0"
+                    :class="taskIconClass(task)"
+                  >
+                    {{ taskIcon(task) }}
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between gap-2">
+                      <p class="truncate text-[12px] font-medium">
+                        {{ task.title }}
+                      </p>
+                      <span
+                        class="hidden sm:inline-flex items-center rounded-full border px-2 py-[2px] text-[10px]"
+                        :class="badgeForTask(task).class"
+                      >
+                        {{ badgeForTask(task).label }}
+                      </span>
+                    </div>
+                    <p
+                      v-if="task.short_description"
+                      class="mt-0.5 text-[11px] text-slate-400 line-clamp-2"
+                    >
+                      {{ task.short_description }}
+                    </p>
+                    <div class="mt-1 flex items-center gap-2 text-[10px]">
+                      <span
+                        class="inline-flex items-center rounded-full bg-slate-900/90 px-2 py-[2px] text-slate-400"
+                      >
+                        Dificuldade:
+                        <span
+                          class="ml-1 font-semibold"
+                          :class="difficultyClass(task.difficulty)"
+                        >
+                          {{ difficultyLabel(task.difficulty) }}
+                        </span>
+                      </span>
+                      <span
+                        v-if="task.metadata?.estimated_minutes"
+                        class="inline-flex items-center rounded-full bg-slate-900/90 px-2 py-[2px] text-slate-400"
+                      >
+                        ⏱ {{ task.metadata.estimated_minutes }} min
+                      </span>
+                    </div>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <!-- painel de conteúdo + anotações -->
+            <div
+              v-if="activeTask"
+              class="rounded-2xl border border-slate-800 bg-slate-950/95 p-4 sm:p-5 flex flex-col gap-3"
+            >
+              <div class="flex flex-col gap-1">
+                <p
+                  class="text-[11px] uppercase tracking-[0.18em] text-emerald-400"
+                >
+                  {{ activeTask.task_type }} ·
+                  {{ activeTask.content_type }}
+                </p>
+                <h3 class="text-sm sm:text-base font-semibold">
+                  {{ activeTask.title }}
+                </h3>
+                <p
+                  v-if="activeTask.short_description"
+                  class="text-xs text-slate-400"
+                >
+                  {{ activeTask.short_description }}
+                </p>
+              </div>
+
+              <!-- Grid: conteúdo + anotações -->
+              <div
+                class="mt-3 grid grid-cols-1 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] gap-4 lg:gap-5"
+              >
+                <!-- Conteúdo principal -->
+                <component
+                  :is="activeComponentName"
+                  :task="activeTask"
+                ></component>
+
+                <!-- Anotações (exceto em flashcards/assessment) -->
+                <NotesEditor
+                  v-if="showNotes"
+                  :task-id="activeTask.id"
+                  v-model="notes[activeTask.id]"
+                />
+              </div>
+
+              <!-- metadados técnicos, sem job_id -->
+              <div
+                class="mt-3 pt-3 border-t border-slate-800/90 flex flex-wrap gap-2 text-[11px]"
+              >
+                <span
+                  v-if="activeTask.rag_document_ids?.length"
+                  class="inline-flex items-center rounded-full bg-slate-900/80 px-2.5 py-1 text-slate-300 border border-emerald-500/60"
+                >
+                  RAG docs:
+                  {{ activeTask.rag_document_ids.length }}
+                </span>
+                <span
+                  v-if="activeTask.generation_status"
+                  class="inline-flex items-center rounded-full bg-slate-900/80 px-2.5 py-1 text-slate-300 border border-slate-700/80"
+                >
+                  status:
+                  <span
+                    class="ml-1 font-semibold"
+                    :class="generationStatusClass(activeTask.generation_status)"
+                  >
+                    {{ activeTask.generation_status }}
+                  </span>
+                </span>
+                <span
+                  v-if="activeTask.research_needed"
+                  class="inline-flex items-center rounded-full bg-amber-500/10 px-2.5 py-1 text-amber-300 border border-amber-400/60"
+                >
+                  ⚠ exige pesquisa adicional
+                </span>
+              </div>
+
+              <p
+                v-if="activeTask.last_error"
+                class="mt-1 text-[11px] text-rose-400"
+              >
+                Erro recente:
+                <span class="font-mono">
+                  {{ activeTask.last_error }}
+                </span>
+              </p>
+            </div>
+
+            <p
+              v-else
+              class="text-xs text-slate-500 italic"
+            >
+              Selecione uma atividade na lista acima para ver o conteúdo
+              detalhado.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+
+    <script type="module">
+      const { createApp, ref, computed } = Vue;
+
+      // Mock alinhado ao StudyPlanSerializer
+      const mockStudyPlan = {
+        weeks: [
+          {
+            week_index: 1,
+            status: "active",
+            title: "Semana 1 · Fundamentos",
+            days: [
+              {
+                section_id: "w1-d1",
+                week_index: 1,
+                prerequisites: [],
+                tasks: [
+                  {
+                    id: "w1d1-t1",
+                    task_type: "lesson",
+                    content_type: "lesson",
+                    title: "Introdução ao curso",
+                    short_description:
+                      "Visão geral dos objetivos, formato e expectativas da trilha.",
+                    difficulty: "easy",
+                    research_needed: false,
+                    metadata: {
+                      estimated_minutes: 15,
+                      internal_ref: "L1",
+                    },
+                    rag_document_ids: [],
+                    generation_status: "ready",
+                    last_error: null,
+                    content: {
+                      summary:
+                        "Panorama geral do que será estudado ao longo das semanas.",
+                      body:
+                        "Nesta lição você entende a lógica do plano de estudos: blocos curtos, feedback rápido e ciclos de revisão. A ideia é manter constância diária, não esforço extremo.",
+                      key_points: [
+                        "Estudo dividido em dias curtos e consistentes.",
+                        "Atividades variadas: leitura, prática, flashcards e reflexão.",
+                        "Revisões distribuídas ao longo da semana.",
+                      ],
+                      source_refs: [
+                        {
+                          label: "Guia interno de onboarding",
+                          url: "#",
+                        },
+                      ],
+                    },
+                  },
+                  {
+                    id: "w1d1-t2",
+                    task_type: "reading",
+                    content_type: "reading",
+                    title: "Leitura: por que estudar todos os dias?",
+                    short_description:
+                      "Artigo curto sobre hábito de estudo e consolidação de memória.",
+                    difficulty: "easy",
+                    research_needed: true,
+                    metadata: {
+                      estimated_minutes: 10,
+                    },
+                    rag_document_ids: ["doc-a1"],
+                    generation_status: "pending",
+                    last_error: null,
+                    content: {
+                      overview:
+                        "Leitura externa para dar contexto sobre consistência diária.",
+                      instructions:
+                        "Abra os links na ordem sugerida, faça anotações rápidas e marque as ideias principais.",
+                      resources: [
+                        {
+                          label: "Artigo: The power of small daily habits",
+                          url: "https://example.com/habits",
+                        },
+                        {
+                          label: "Trecho de livro sobre memória",
+                          url: "https://example.com/memory",
+                        },
+                      ],
+                    },
+                  },
+                  {
+                    id: "w1d1-t3",
+                    task_type: "flashcards",
+                    content_type: "flashcards",
+                    title: "Flashcards: conceitos básicos",
+                    short_description:
+                      "Termos fundamentais para você fixar a terminologia do curso.",
+                    difficulty: "easy",
+                    research_needed: false,
+                    metadata: {
+                      estimated_minutes: 8,
+                    },
+                    rag_document_ids: [],
+                    generation_status: "ready",
+                    last_error: null,
+                    content: {
+                      set_title: "Vocabulário essencial",
+                      cards: [
+                        {
+                          front: "Estudo deliberado",
+                          back:
+                            "Prática feita com intenção clara de melhorar um aspecto específico.",
+                          hints: ["Contraste com estudo passivo."],
+                          difficulty: "medium",
+                        },
+                        {
+                          front: "Revisão espaçada",
+                          back:
+                            "Estratégia de revisar o conteúdo em intervalos crescentes.",
+                          hints: ["Ligada à curva do esquecimento."],
+                          difficulty: "medium",
+                        },
+                      ],
+                    },
+                  },
+                ],
+              },
+              {
+                section_id: "w1-d2",
+                week_index: 1,
+                prerequisites: ["w1-d1"],
+                tasks: [
+                  {
+                    id: "w1d2-t1",
+                    task_type: "practice",
+                    content_type: "practice",
+                    title: "Prática guiada 1",
+                    short_description:
+                      "Aplicar o que foi lido em um mini exercício prático.",
+                    difficulty: "medium",
+                    research_needed: false,
+                    metadata: {
+                      estimated_minutes: 20,
+                    },
+                    rag_document_ids: ["doc-a1"],
+                    generation_status: "ready",
+                    last_error: null,
+                    content: {
+                      prompt:
+                        "Implemente um mini plano de estudo de 3 dias para um tópico que você domina.",
+                      expected_output:
+                        "Uma lista de 3 dias com 2–3 tarefas por dia, variando leitura, prática e revisão.",
+                      rubric: [
+                        "Clareza das tarefas.",
+                        "Equilíbrio entre leitura e prática.",
+                        "Viabilidade em termos de tempo.",
+                      ],
+                      hints: [
+                        "Evite tarefas genéricas demais.",
+                        "Tente limitar cada dia a 30–40 minutos.",
+                      ],
+                    },
+                  },
+                  {
+                    id: "w1d2-t2",
+                    task_type: "reflection",
+                    content_type: "reflection",
+                    title: "Reflexão: como você aprende melhor?",
+                    short_description:
+                      "Registro rápido sobre estratégias que funcionam pra você.",
+                    difficulty: "easy",
+                    research_needed: false,
+                    metadata: {
+                      estimated_minutes: 10,
+                    },
+                    rag_document_ids: [],
+                    generation_status: "ready",
+                    last_error: null,
+                    content: {
+                      prompts: [
+                        "Quais tipos de atividade te deixam mais engajado?",
+                        "Você aprende melhor lendo, explicando, escrevendo ou praticando?",
+                        "Que tipo de obstáculo costuma te fazer abandonar um plano?",
+                      ],
+                      suggestions: [
+                        "Escreva respostas curtas, em 3–4 linhas cada.",
+                        "Pense em situações reais, não em respostas ideais.",
+                      ],
+                    },
+                  },
+                ],
+              },
+              {
+                section_id: "w1-d3",
+                week_index: 1,
+                prerequisites: ["w1-d1", "w1-d2"],
+                tasks: [
+                  {
+                    id: "w1d3-t1",
+                    task_type: "assessment",
+                    content_type: "assessment",
+                    title: "Mini assessment",
+                    short_description:
+                      "Checagem rápida dos conceitos da semana 1.",
+                    difficulty: "medium",
+                    research_needed: false,
+                    metadata: {
+                      estimated_minutes: 15,
+                    },
+                    rag_document_ids: [],
+                    generation_status: "ready",
+                    last_error: null,
+                    content: {
+                      items: [
+                        {
+                          type: "mcq",
+                          prompt:
+                            "Qual a principal vantagem da revisão espaçada?",
+                          choices: [
+                            "Permitir estudar menos dias.",
+                            "Reduzir o esforço cognitivo.",
+                            "Aumentar a retenção ao longo do tempo.",
+                            "Evitar completamente o esquecimento.",
+                          ],
+                          answer: 2,
+                          explanation:
+                            "Revisão espaçada otimiza os intervalos para reforçar a memória antes que o esquecimento seja completo.",
+                        },
+                        {
+                          type: "tf",
+                          prompt:
+                            "Verdadeiro ou falso: estudar muitas horas em um único dia é melhor do que estudar um pouco por vários dias.",
+                          answer: false,
+                          explanation:
+                            "Distribuir o estudo em vários dias é melhor para consolidação de memória.",
+                        },
+                      ],
+                    },
+                  },
+                  {
+                    id: "w1d3-t2",
+                    task_type: "review",
+                    content_type: "review",
+                    title: "Revisão guiada da semana 1",
+                    short_description:
+                      "Consolidar o que foi visto em lições, leituras e prática.",
+                    difficulty: "medium",
+                    research_needed: false,
+                    metadata: {
+                      estimated_minutes: 20,
+                    },
+                    rag_document_ids: [],
+                    generation_status: "ready",
+                    last_error: null,
+                    content: {
+                      focus_points: [
+                        "Rever as definições principais.",
+                        "Refazer 1–2 exercícios que você errou.",
+                        "Passar pelos flashcards de vocabulário.",
+                      ],
+                      tips: [
+                        "Marque os itens que ainda soam confusos.",
+                        "Use um temporizador para manter o ritmo.",
+                      ],
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            week_index: 2,
+            status: "upcoming",
+            title: "Semana 2 · Aplicação e projetos",
+            days: [
+              {
+                section_id: "w2-d1",
+                week_index: 2,
+                prerequisites: ["w1-d3"],
+                tasks: [
+                  {
+                    id: "w2d1-t1",
+                    task_type: "project",
+                    content_type: "project",
+                    title: "Mini projeto: plano de 2 semanas",
+                    short_description:
+                      "Projeto leve para aplicar o framework de planejamento.",
+                    difficulty: "hard",
+                    research_needed: true,
+                    metadata: {
+                      estimated_minutes: 40,
+                    },
+                    rag_document_ids: ["doc-proj-1"],
+                    generation_status: "draft",
+                    last_error: null,
+                    content: {
+                      brief:
+                        "Crie um plano de estudo de 2 semanas para um objetivo real seu (prova, certificação, projeto pessoal).",
+                      deliverables: [
+                        "Cronograma de 14 dias com atividades diárias.",
+                        "Descrição curta do objetivo final.",
+                        "Critérios de sucesso mensuráveis.",
+                      ],
+                      evaluation: [
+                        "Coerência entre objetivo e cronograma.",
+                        "Distribuição equilibrada de carga.",
+                        "Clareza das tarefas.",
+                      ],
+                      resources: [
+                        {
+                          label: "Template de plano em branco",
+                          url: "#",
+                        },
+                      ],
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+
+      // --- Componentes de conteúdo ---
+
+      const LessonContentView = {
+        props: ["task"],
+        template: `
+          <div class="flex flex-col gap-4">
+            <div class="rounded-2xl bg-slate-900/80 border border-slate-800 p-4">
+              <p v-if="task.content?.summary" class="text-sm text-slate-200">
+                {{ task.content.summary }}
+              </p>
+              <p v-if="task.content?.body" class="mt-3 text-[13px] leading-relaxed text-slate-200">
+                {{ task.content.body }}
+              </p>
+
+              <ul v-if="task.content?.key_points?.length" class="mt-4 space-y-1.5 text-[13px]">
+                <li
+                  v-for="(point, idx) in task.content.key_points"
+                  :key="idx"
+                  class="flex items-start gap-2 text-slate-100"
+                >
+                  <span class="mt-[6px] inline-block size-1.5 rounded-full bg-emerald-400/90"></span>
+                  <span>{{ point }}</span>
+                </li>
+              </ul>
+            </div>
+
+            <div
+              v-if="task.content?.source_refs?.length"
+              class="rounded-2xl bg-slate-900/70 border border-slate-800 p-3"
+            >
+              <p class="text-[11px] text-slate-400 uppercase tracking-[0.16em] mb-2">
+                Fontes
+              </p>
+              <ul class="space-y-1.5 text-xs">
+                <li
+                  v-for="(src, idx) in task.content.source_refs"
+                  :key="idx"
+                >
+                  <a
+                    :href="src.url"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="text-emerald-300 hover:text-emerald-200 underline underline-offset-2"
+                  >
+                    {{ src.label || src.url }}
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        `,
+      };
+
+      const ReadingContentView = {
+        props: ["task"],
+        template: `
+          <div class="space-y-4">
+            <div class="rounded-2xl bg-slate-900/80 border border-slate-800 p-4">
+              <p v-if="task.content?.overview" class="text-sm text-slate-200">
+                {{ task.content.overview }}
+              </p>
+              <p v-if="task.content?.instructions" class="mt-3 text-[13px] text-slate-300">
+                {{ task.content.instructions }}
+              </p>
+            </div>
+
+            <div
+              v-if="task.content?.resources?.length"
+              class="rounded-2xl bg-slate-900/70 border border-slate-800 p-3"
+            >
+              <p class="text-[11px] text-slate-400 uppercase tracking-[0.16em] mb-2">
+                Recursos externos
+              </p>
+              <ul class="space-y-1.5 text-xs">
+                <li
+                  v-for="(res, idx) in task.content.resources"
+                  :key="idx"
+                >
+                  <a
+                    :href="res.url"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="inline-flex items-center gap-1 text-emerald-300 hover:text-emerald-200 underline underline-offset-2"
+                  >
+                    <span>{{ res.label || res.url }}</span>
+                    <span class="text-[10px] text-slate-400">↗</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        `,
+      };
+
+      const PracticeContentView = {
+        props: ["task"],
+        template: `
+          <div class="space-y-4">
+            <div class="rounded-2xl bg-slate-900/80 border border-slate-800 p-4">
+              <p v-if="task.content?.prompt" class="text-sm text-slate-200">
+                {{ task.content.prompt }}
+              </p>
+              <p v-if="task.content?.expected_output" class="mt-3 text-[13px] text-slate-300">
+                <span class="font-semibold text-slate-100">Saída esperada:</span>
+                {{ task.content.expected_output }}
+              </p>
+            </div>
+
+            <div
+              v-if="task.content?.rubric?.length"
+              class="rounded-2xl bg-slate-900/70 border border-slate-800 p-3"
+            >
+              <p class="text-[11px] text-slate-400 uppercase tracking-[0.16em] mb-2">
+                Rubrica de correção
+              </p>
+              <ul class="space-y-1.5 text-[13px] text-slate-200">
+                <li v-for="(item, idx) in task.content.rubric" :key="idx">
+                  • {{ item }}
+                </li>
+              </ul>
+            </div>
+
+            <div
+              v-if="task.content?.hints?.length"
+              class="rounded-2xl bg-slate-900/70 border border-slate-800 p-3"
+            >
+              <p class="text-[11px] text-slate-400 uppercase tracking-[0.16em] mb-2">
+                Dicas
+              </p>
+              <ul class="space-y-1.5 text-[13px] text-slate-200">
+                <li v-for="(hint, idx) in task.content.hints" :key="idx">
+                  • {{ hint }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        `,
+      };
+
+      const FlashcardSetView = {
+        props: ["task"],
+        data() {
+          return {
+            currentIndex: 0,
+            showBack: false,
+          };
+        },
+        computed: {
+          cards() {
+            return this.task.content?.cards || [];
+          },
+          currentCard() {
+            return this.cards[this.currentIndex] || null;
+          },
+        },
+        methods: {
+          next() {
+            if (!this.cards.length) return;
+            this.currentIndex =
+              (this.currentIndex + 1) % this.cards.length;
+            this.showBack = false;
+          },
+          prev() {
+            if (!this.cards.length) return;
+            this.currentIndex =
+              (this.currentIndex - 1 + this.cards.length) %
+              this.cards.length;
+            this.showBack = false;
+          },
+          flip() {
+            this.showBack = !this.showBack;
+          },
+        },
+        template: `
+          <div class="flex flex-col items-center gap-4">
+            <div
+              v-if="currentCard"
+              class="w-full max-w-md aspect-[4/3] rounded-3xl border border-emerald-500/40 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center px-6 text-center cursor-pointer select-none transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_45px_rgba(16,185,129,0.35)]"
+              @click="flip"
+            >
+              <div class="space-y-2">
+                <p class="text-[11px] text-emerald-300 uppercase tracking-[0.16em]">
+                  {{ showBack ? "Resposta" : "Frente" }}
+                </p>
+                <p class="text-sm sm:text-base text-slate-50 leading-relaxed">
+                  {{ showBack ? currentCard.back : currentCard.front }}
+                </p>
+              </div>
+            </div>
+
+            <div
+              v-if="currentCard"
+              class="flex items-center justify-between w-full max-w-md text-xs text-slate-400"
+            >
+              <button
+                type="button"
+                class="px-3 py-1.5 rounded-full bg-slate-900/80 border border-slate-700/80 hover:border-emerald-400/60 hover:text-emerald-200 transition-all"
+                @click="prev"
+              >
+                Anterior
+              </button>
+              <span>
+                Cartão {{ currentIndex + 1 }} de {{ cards.length }}
+              </span>
+              <button
+                type="button"
+                class="px-3 py-1.5 rounded-full bg-slate-900/80 border border-slate-700/80 hover:border-emerald-400/60 hover:text-emerald-200 transition-all"
+                @click="next"
+              >
+                Próximo
+              </button>
+            </div>
+
+            <div
+              v-if="currentCard?.hints?.length"
+              class="w-full max-w-md text-[11px] text-slate-300"
+            >
+              <p class="uppercase tracking-[0.16em] text-slate-500 mb-1">
+                Dicas
+              </p>
+              <ul class="space-y-1">
+                <li v-for="(hint, idx) in currentCard.hints" :key="idx">
+                  • {{ hint }}
+                </li>
+              </ul>
+            </div>
+
+            <p v-if="!currentCard" class="text-sm text-slate-500 mt-4">
+              Nenhum cartão configurado.
+            </p>
+          </div>
+        `,
+      };
+
+      const AssessmentView = {
+        props: ["task"],
+        template: `
+          <div class="space-y-4">
+            <div
+              v-for="(item, idx) in task.content?.items || []"
+              :key="idx"
+              class="rounded-2xl bg-slate-900/80 border border-slate-800 p-4"
+            >
+              <p class="text-[11px] text-slate-400 uppercase tracking-[0.16em] mb-2">
+                Questão {{ idx + 1 }} · {{ item.type.toUpperCase() }}
+              </p>
+              <p class="text-sm text-slate-100 mb-3">
+                {{ item.prompt }}
+              </p>
+
+              <div v-if="item.type === 'mcq'" class="space-y-1.5 text-[13px]">
+                <p
+                  v-for="(choice, cIdx) in item.choices"
+                  :key="cIdx"
+                  class="rounded-xl bg-slate-900/80 border border-slate-800 px-3 py-2"
+                >
+                  <span class="font-mono mr-2 text-slate-500">
+                    {{ String.fromCharCode(65 + cIdx) }}.
+                  </span>
+                  <span>{{ choice }}</span>
+                </p>
+              </div>
+
+              <p v-if="item.type === 'tf'" class="text-[13px] text-slate-300">
+                (V/F) Escreva se a afirmação é verdadeira ou falsa e explique.
+              </p>
+
+              <p v-if="item.explanation" class="mt-3 text-[12px] text-slate-400">
+                <span class="font-semibold text-slate-300">
+                  Explicação esperada:
+                </span>
+                {{ item.explanation }}
+              </p>
+            </div>
+          </div>
+        `,
+      };
+
+      const ReflectionView = {
+        props: ["task"],
+        template: `
+          <div class="space-y-4">
+            <div class="rounded-2xl bg-slate-900/80 border border-slate-800 p-4">
+              <p class="text-[11px] text-slate-400 uppercase tracking-[0.16em] mb-2">
+                Perguntas de reflexão
+              </p>
+              <ul
+                v-if="task.content?.prompts?.length"
+                class="space-y-2 text-[13px] text-slate-200"
+              >
+                <li v-for="(p, idx) in task.content.prompts" :key="idx">
+                  • {{ p }}
+                </li>
+              </ul>
+              <p v-else class="text-xs text-slate-500 italic">
+                Nenhuma pergunta configurada.
+              </p>
+            </div>
+
+            <div
+              v-if="task.content?.suggestions?.length"
+              class="rounded-2xl bg-slate-900/70 border border-slate-800 p-3"
+            >
+              <p class="text-[11px] text-slate-400 uppercase tracking-[0.16em] mb-2">
+                Sugestões de escrita
+              </p>
+              <ul class="space-y-1.5 text-[13px] text-slate-200">
+                <li
+                  v-for="(suggestion, idx) in task.content.suggestions"
+                  :key="idx"
+                >
+                  • {{ suggestion }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        `,
+      };
+
+      const ReviewSessionView = {
+        props: ["task"],
+        template: `
+          <div class="space-y-4">
+            <div class="rounded-2xl bg-slate-900/80 border border-slate-800 p-4">
+              <p class="text-[11px] text-slate-400 uppercase tracking-[0.16em] mb-2">
+                Pontos de foco
+              </p>
+              <ul
+                v-if="task.content?.focus_points?.length"
+                class="space-y-1.5 text-[13px] text-slate-200"
+              >
+                <li v-for="(fp, idx) in task.content.focus_points" :key="idx">
+                  • {{ fp }}
+                </li>
+              </ul>
+            </div>
+
+            <div
+              v-if="task.content?.tips?.length"
+              class="rounded-2xl bg-slate-900/70 border border-slate-800 p-3"
+            >
+              <p class="text-[11px] text-slate-400 uppercase tracking-[0.16em] mb-2">
+                Dicas práticas
+              </p>
+              <ul class="space-y-1.5 text-[13px] text-slate-200">
+                <li v-for="(tip, idx) in task.content.tips" :key="idx">
+                  • {{ tip }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        `,
+      };
+
+      const ProjectContentView = {
+        props: ["task"],
+        template: `
+          <div class="space-y-4">
+            <div class="rounded-2xl bg-slate-900/80 border border-slate-800 p-4">
+              <p class="text-[11px] text-slate-400 uppercase tracking-[0.16em] mb-2">
+                Brief do projeto
+              </p>
+              <p v-if="task.content?.brief" class="text-sm text-slate-200">
+                {{ task.content.brief }}
+              </p>
+            </div>
+
+            <div
+              v-if="task.content?.deliverables?.length"
+              class="rounded-2xl bg-slate-900/70 border border-slate-800 p-3"
+            >
+              <p class="text-[11px] text-slate-400 uppercase tracking-[0.16em] mb-2">
+                Entregáveis
+              </p>
+              <ul class="space-y-1.5 text-[13px] text-slate-200">
+                <li v-for="(d, idx) in task.content.deliverables" :key="idx">
+                  • {{ d }}
+                </li>
+              </ul>
+            </div>
+
+            <div
+              v-if="task.content?.evaluation?.length"
+              class="rounded-2xl bg-slate-900/70 border border-slate-800 p-3"
+            >
+              <p class="text-[11px] text-slate-400 uppercase tracking-[0.16em] mb-2">
+                Critérios de avaliação
+              </p>
+              <ul class="space-y-1.5 text-[13px] text-slate-200">
+                <li v-for="(ev, idx) in task.content.evaluation" :key="idx">
+                  • {{ ev }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        `,
+      };
+
+      const GenericContentView = {
+        props: ["task"],
+        template: `
+          <div class="rounded-2xl bg-slate-900/80 border border-slate-800 p-4">
+            <p class="text-sm text-slate-200">
+              Tipo de conteúdo ainda não tem uma UI dedicada:
+              <span class="font-mono">{{ task.content_type }}</span>.
+            </p>
+          </div>
+        `,
+      };
+
+      // Editor de anotações (texto livre, estilo Notion-lite)
+      const NotesEditor = {
+        props: ["modelValue", "taskId"],
+        emits: ["update:modelValue"],
+        methods: {
+          syncFromModel() {
+            const el = this.$refs.editable;
+            if (!el) return;
+            const value = this.modelValue || "";
+            if (el.innerHTML !== value) {
+              el.innerHTML = value;
+            }
+          },
+          onInput(e) {
+            this.$emit("update:modelValue", e.target.innerHTML);
+          },
+        },
+        mounted() {
+          this.syncFromModel();
+        },
+        watch: {
+          modelValue() {
+            this.syncFromModel();
+          },
+        },
+        template: `
+          <div class="rounded-2xl border border-slate-800 bg-slate-950/95 p-3 sm:p-4 flex flex-col h-full">
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <div>
+                <p class="text-[11px] uppercase tracking-[0.18em] text-slate-400">
+                  Anotações
+                </p>
+                <p class="text-[11px] text-slate-500 mt-0.5">
+                  Use como caderno livre · Ctrl+Enter quebra parágrafo
+                </p>
+              </div>
+            </div>
+            <div
+              ref="editable"
+              class="notes-editable flex-1 rounded-xl border border-slate-800/80 bg-slate-950/90 px-3 py-2 text-[13px] text-slate-200 leading-relaxed outline-none overflow-y-auto scrollbar-thin"
+              contenteditable="true"
+              data-placeholder="Escreva aqui suas anotações, insights, resumos..."
+              @input="onInput"
+            ></div>
+          </div>
+        `,
+      };
+
+      const app = createApp({
+        components: {
+          LessonContentView,
+          ReadingContentView,
+          PracticeContentView,
+          FlashcardSetView,
+          AssessmentView,
+          ReflectionView,
+          ReviewSessionView,
+          ProjectContentView,
+          GenericContentView,
+          NotesEditor,
+        },
+        setup() {
+          const studyPlan = ref(mockStudyPlan);
+          const selected = ref({
+            weekIndex: 0,
+            dayIndex: 0,
+            taskIndex: 0,
+          });
+
+          const dialogOpen = ref(false);
+          const notes = ref({}); // mapa task_id -> HTML
+
+          const todayLabel = computed(() => "Hoje");
+
+          const activeWeek = computed(
+            () => studyPlan.value.weeks[selected.value.weekIndex]
+          );
+
+          const activeDay = computed(() => {
+            const week = activeWeek.value;
+            if (!week) return null;
+            return week.days[selected.value.dayIndex] || null;
+          });
+
+          const activeTask = computed(() => {
+            const day = activeDay.value;
+            if (!day) return null;
+            return day.tasks[selected.value.taskIndex] || null;
+          });
+
+          const activeDayIndex = computed(
+            () => selected.value.dayIndex
+          );
+
+          const activeDayTitle = computed(() => {
+            const day = activeDay.value;
+            if (!day) return "Bloco de estudo";
+            return `Bloco ${activeDayIndex.value + 1} · ${
+              day.tasks.length
+            } atividades`;
+          });
+
+          const weekProgressLabel = computed(() => {
+            const week = activeWeek.value;
+            if (!week) return "0%";
+            const totalTasks = week.days.reduce(
+              (acc, d) => acc + d.tasks.length,
+              0
+            );
+            const done = Math.round(totalTasks / 2);
+            const pct = Math.round((done / totalTasks) * 100);
+            return `${pct}%`;
+          });
+
+          const activeComponentName = computed(() => {
+            const task = activeTask.value;
+            if (!task) return null;
+            const type = task.content_type;
+            switch (type) {
+              case "lesson":
+                return "LessonContentView";
+              case "reading":
+                return "ReadingContentView";
+              case "practice":
+                return "PracticeContentView";
+              case "flashcards":
+                return "FlashcardSetView";
+              case "assessment":
+                return "AssessmentView";
+              case "reflection":
+                return "ReflectionView";
+              case "review":
+                return "ReviewSessionView";
+              case "project":
+                return "ProjectContentView";
+              default:
+                return "GenericContentView";
+            }
+          });
+
+          const showNotes = computed(() => {
+            const task = activeTask.value;
+            if (!task) return false;
+            const noNotesTypes = ["flashcards", "assessment"];
+            return !noNotesTypes.includes(task.content_type);
+          });
+
+          function selectWeek(weekIndex) {
+            selected.value.weekIndex = weekIndex;
+            selected.value.dayIndex = 0;
+            selected.value.taskIndex = 0;
+            dialogOpen.value = false;
+          }
+
+          function openDayDialog(dayIndex) {
+            selected.value.dayIndex = dayIndex;
+            selected.value.taskIndex = 0;
+            dialogOpen.value = true;
+          }
+
+          function selectTask(taskIndex) {
+            selected.value.taskIndex = taskIndex;
+          }
+
+          function closeDialog() {
+            dialogOpen.value = false;
+          }
+
+          function resetSelection() {
+            selected.value.weekIndex = 0;
+            selected.value.dayIndex = 0;
+            selected.value.taskIndex = 0;
+            dialogOpen.value = false;
+          }
+
+          function statusDotClass(status) {
+            switch (status) {
+              case "completed":
+                return "bg-emerald-400";
+              case "active":
+                return "bg-lime-400";
+              case "upcoming":
+              default:
+                return "bg-slate-600";
+            }
+          }
+
+          function dayNodeClass(day, dIndex) {
+            const isActive = dIndex === selected.value.dayIndex;
+            const isPast = dIndex < selected.value.dayIndex;
+            const baseGradient = isPast
+              ? "from-emerald-400 to-lime-300"
+              : "from-slate-700 to-slate-500";
+            const activeRing = isActive
+              ? "ring-2 ring-emerald-400/80 ring-offset-2 ring-offset-slate-950 scale-105"
+              : "hover:scale-105";
+            return `bg-gradient-to-br ${baseGradient} ${activeRing}`;
+          }
+
+          function taskIcon(task) {
+            const map = {
+              lesson: "L",
+              reading: "R",
+              practice: "P",
+              project: "PJ",
+              flashcards: "F",
+              assessment: "A",
+              reflection: "RF",
+              review: "RV",
+            };
+            return map[task.task_type] || "·";
+          }
+
+          function taskIconClass(task) {
+            switch (task.task_type) {
+              case "lesson":
+                return "bg-emerald-400";
+              case "reading":
+                return "bg-sky-400";
+              case "practice":
+                return "bg-blue-500";
+              case "project":
+                return "bg-purple-500";
+              case "flashcards":
+                return "bg-amber-400";
+              case "assessment":
+                return "bg-rose-500";
+              case "reflection":
+                return "bg-fuchsia-500";
+              case "review":
+                return "bg-cyan-400";
+              default:
+                return "bg-slate-500";
+            }
+          }
+
+          function badgeForTask(task) {
+            switch (task.task_type) {
+              case "lesson":
+                return {
+                  label: "Lição",
+                  class:
+                    "border-emerald-500/60 bg-emerald-500/10 text-emerald-200",
+                };
+              case "reading":
+                return {
+                  label: "Leitura",
+                  class:
+                    "border-sky-500/60 bg-sky-500/10 text-sky-200",
+                };
+              case "practice":
+                return {
+                  label: "Prática",
+                  class:
+                    "border-blue-500/60 bg-blue-500/10 text-blue-200",
+                };
+              case "project":
+                return {
+                  label: "Projeto",
+                  class:
+                    "border-purple-500/60 bg-purple-500/10 text-purple-200",
+                };
+              case "flashcards":
+                return {
+                  label: "Flashcards",
+                  class:
+                    "border-amber-500/60 bg-amber-500/10 text-amber-200",
+                };
+              case "assessment":
+                return {
+                  label: "Assessment",
+                  class:
+                    "border-rose-500/60 bg-rose-500/10 text-rose-200",
+                };
+              case "reflection":
+                return {
+                  label: "Reflexão",
+                  class:
+                    "border-fuchsia-500/60 bg-fuchsia-500/10 text-fuchsia-200",
+                };
+              case "review":
+                return {
+                  label: "Revisão",
+                  class:
+                    "border-cyan-500/60 bg-cyan-500/10 text-cyan-200",
+                };
+              default:
+                return {
+                  label: task.task_type || "Atividade",
+                  class:
+                    "border-slate-500/60 bg-slate-500/10 text-slate-200",
+                };
+            }
+          }
+
+          function difficultyLabel(diff) {
+            switch (diff) {
+              case "easy":
+                return "Fácil";
+              case "medium":
+                return "Médio";
+              case "hard":
+                return "Difícil";
+              default:
+                return "—";
+            }
+          }
+
+          function difficultyClass(diff) {
+            switch (diff) {
+              case "easy":
+                return "text-emerald-300";
+              case "medium":
+                return "text-amber-300";
+              case "hard":
+                return "text-rose-300";
+              default:
+                return "text-slate-400";
+            }
+          }
+
+          function generationStatusClass(status) {
+            switch (status) {
+              case "ready":
+                return "text-emerald-300";
+              case "pending":
+              case "draft":
+                return "text-amber-300";
+              case "failed":
+                return "text-rose-300";
+              default:
+                return "text-slate-400";
+            }
+          }
+
+          return {
+            studyPlan,
+            selected,
+            dialogOpen,
+            notes,
+            todayLabel,
+            activeWeek,
+            activeDay,
+            activeTask,
+            activeDayIndex,
+            activeDayTitle,
+            activeComponentName,
+            weekProgressLabel,
+            showNotes,
+            selectWeek,
+            openDayDialog,
+            selectTask,
+            closeDialog,
+            resetSelection,
+            statusDotClass,
+            dayNodeClass,
+            taskIcon,
+            taskIconClass,
+            badgeForTask,
+            difficultyLabel,
+            difficultyClass,
+            generationStatusClass,
+          };
+        },
+      });
+
+      app.mount("#app");
+    </script>
+  </body>
+</html>
+

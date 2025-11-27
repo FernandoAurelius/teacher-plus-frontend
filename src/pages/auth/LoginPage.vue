@@ -29,7 +29,7 @@ const handleLogin = async () => {
     if (userData && has_user_context === false) {
       router.push('/wizard')
     } else {
-      router.push('/') // ou dashboard
+      router.push('/portal')
     }
   } catch {
     // erro já tratado no useAuth

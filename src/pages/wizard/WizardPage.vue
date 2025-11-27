@@ -1,17 +1,11 @@
 <script setup lang="ts">
-import WizardChat from '@/features/wizard-chat/ui/WizardChat.vue'
+import UserContextWizard from '@/features/user-context-wizard/ui/UserContextWizard.vue'
 </script>
 
 <template>
   <section class="min-h-[70vh] py-10">
-    <div class="max-w-3xl mx-auto px-4">
-      <div class="mb-4">
-        <h1 class="text-3xl font-bold">Cadastro</h1>
-        <p class="text-muted-foreground">
-          Conversa de onboarding com o agente para criar seu perfil personalizado.
-        </p>
-      </div>
-      <WizardChat />
+    <div class="mx-auto max-w-4xl px-4">
+      <UserContextWizard />
     </div>
   </section>
 </template>
