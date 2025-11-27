@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue"
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue"
 import { ChevronLeft, ChevronRight } from "lucide-vue-next"
 
 import QuestionCard from "./QuestionCard.vue"
@@ -10,9 +10,15 @@ import { Button } from "@/shared/ui/button"
 import { Progress } from "@/shared/ui/progress"
 import { StatusBadge } from "@/shared/ui/status-badge"
 
-const props = defineProps<{
-  test: QuickTest
-}>()
+const props = withDefaults(
+  defineProps<{
+    test: QuickTest
+    mode?: "practice" | "exam"
+  }>(),
+  {
+    mode: "exam",
+  },
+)
 
 const emit = defineEmits<{
   (e: "submit", result: QuickTestResult): void
@@ -20,6 +26,7 @@ const emit = defineEmits<{
 
 const session = useQuickTestSession(props.test)
 const result = ref<QuickTestResult | null>(null)
+const isPracticeMode = computed(() => props.mode === "practice")
 
 const currentValue = computed(() => {
   const questionId = session.currentQuestion.value?.id
@@ -29,6 +36,7 @@ const currentValue = computed(() => {
 
 const canPrev = computed(() => session.currentIndex.value > 0)
 const canNext = computed(() => session.currentIndex.value < props.test.questions.length - 1)
+const shouldShowFeedback = computed(() => isPracticeMode.value && !!currentValue.value)
 
 const handleSelect = (value: string | string[] | undefined) => {
   const questionId = session.currentQuestion.value?.id
@@ -37,8 +45,24 @@ const handleSelect = (value: string | string[] | undefined) => {
   session.selectAnswer(questionId, value)
 }
 
+/**
+ * Temporarily stores quick-test attempts locally because backend endpoints for submissions are not ready yet.
+ * TODO(tp-backend): replace localStorage fallback with real API persistence once available.
+ */
+const persistAttempt = (value: QuickTestResult) => {
+  if (typeof window === "undefined") return
+  const payload = {
+    result: value,
+    answers: session.answers.value,
+    testId: props.test.id,
+    savedAt: new Date().toISOString(),
+  }
+  window.localStorage.setItem(`tp_quicktest_${props.test.id}`, JSON.stringify(payload))
+}
+
 const handleSubmit = () => {
   result.value = session.submit()
+  if (result.value) persistAttempt(result.value)
   emit("submit", result.value)
 }
 
@@ -52,10 +76,60 @@ watch(
   (finished) => {
     if (finished && !result.value) {
       result.value = session.submit()
+      if (result.value) persistAttempt(result.value)
       emit("submit", result.value)
     }
   },
 )
+
+const isTypingTarget = (event: KeyboardEvent) => {
+  const target = event.target as HTMLElement | null
+  if (!target) return false
+  const tag = target.tagName
+  return (
+    tag === "INPUT" ||
+    tag === "TEXTAREA" ||
+    target.getAttribute("role") === "textbox" ||
+    target.getAttribute("contenteditable") === "true"
+  )
+}
+
+const handleShortcut = (event: KeyboardEvent) => {
+  if (result.value || !session.currentQuestion.value) return
+  if (isTypingTarget(event)) return
+
+  const options = session.currentQuestion.value.options ?? []
+
+  if (/^[1-5]$/.test(event.key)) {
+    const index = Number(event.key) - 1
+    const option = options[index]
+    if (option) {
+      event.preventDefault()
+      handleSelect(option.id)
+      if (!session.currentQuestion.value.kind?.includes("multiple")) {
+        session.next()
+      }
+    }
+  }
+
+  if (event.key === "Enter" && !event.shiftKey) {
+    event.preventDefault()
+    handleSubmit()
+  }
+
+  if (event.key === "Enter" && event.shiftKey) {
+    event.preventDefault()
+    if (canNext.value) session.next()
+  }
+}
+
+onMounted(() => {
+  window.addEventListener("keydown", handleShortcut)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener("keydown", handleShortcut)
+})
 </script>
 
 <div class="flex w-full flex-col items-center gap-4">
@@ -83,6 +157,7 @@ watch(
     v-if="session.currentQuestion.value && !result"
     :question="session.currentQuestion.value"
     :value="currentValue"
+    :show-feedback="shouldShowFeedback"
     @select="handleSelect"
   />
 

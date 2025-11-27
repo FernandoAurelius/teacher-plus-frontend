@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, watch } from "vue"
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue"
+import { useSwipe } from "@vueuse/core"
 
 import FlashcardCard from "./FlashcardCard.vue"
 import FlashcardControls from "./FlashcardControls.vue"
@@ -28,6 +29,10 @@ const emit = defineEmits<{
 
 const snapshotKey = (deckId: string) => `tp_flashcards_${deckId}`
 
+/**
+ * Temporarily persists flashcard sessions client-side until the backend submission endpoints exist.
+ * TODO(tp-backend): replace localStorage usage with API persistence once endpoints are available.
+ */
 const loadSnapshot = (deckId: string): FlashcardSessionSnapshot | null => {
   if (typeof window === "undefined") return null
   const raw = window.localStorage.getItem(snapshotKey(deckId))
@@ -46,6 +51,7 @@ const persistSnapshot = (deckId: string, value: FlashcardSessionSnapshot) => {
 
 const persistedSnapshot = loadSnapshot(props.deck.id)
 const session = useFlashcardSession(props.deck, { snapshot: persistedSnapshot })
+const cardRef = ref<HTMLElement | null>(null)
 
 const canPrev = computed(() => session.currentIndex.value > 0)
 const canNext = computed(() => session.currentIndex.value < session.total.value - 1)
@@ -59,6 +65,63 @@ const handleAnswer = (difficulty: FlashcardDifficulty) => {
     emit("complete", session.snapshot.value)
   }
 }
+
+const isTypingTarget = (event: KeyboardEvent) => {
+  const target = event.target as HTMLElement | null
+  if (!target) return false
+  const tag = target.tagName
+  return (
+    tag === "INPUT" ||
+    tag === "TEXTAREA" ||
+    target.getAttribute("role") === "textbox" ||
+    target.getAttribute("contenteditable") === "true"
+  )
+}
+
+const handleKeydown = (event: KeyboardEvent) => {
+  if (isTypingTarget(event) || isFinished.value) return
+  if (event.code === "Space") {
+    event.preventDefault()
+    session.flip()
+  }
+  if (event.key === "ArrowRight") {
+    event.preventDefault()
+    session.next()
+  }
+  if (event.key === "ArrowLeft") {
+    event.preventDefault()
+    session.prev()
+  }
+  if (event.key === "1") {
+    event.preventDefault()
+    handleAnswer("easy")
+  }
+  if (event.key === "2") {
+    event.preventDefault()
+    handleAnswer("medium")
+  }
+  if (event.key === "3") {
+    event.preventDefault()
+    handleAnswer("hard")
+  }
+}
+
+onMounted(() => {
+  window.addEventListener("keydown", handleKeydown)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener("keydown", handleKeydown)
+})
+
+useSwipe(cardRef, {
+  onSwipeEnd: (_evt, direction) => {
+    if (isFinished.value) return
+    if (direction === "left") session.next()
+    if (direction === "right") session.prev()
+    if (direction === "up" || direction === "down") session.flip()
+  },
+})
 
 watch(
   () => session.snapshot.value,
@@ -86,7 +149,13 @@ onMounted(() => {
     <StatusBadge :status="deck.status" />
   </header>
 
-  <FlashcardCard v-if="session.currentCard.value" :card="session.currentCard.value" :side="session.side.value" @flip="session.flip" />
+  <div v-if="session.currentCard.value" ref="cardRef" class="w-full">
+    <FlashcardCard
+      :card="session.currentCard.value"
+      :side="session.side.value"
+      @flip="session.flip"
+    />
+  </div>
 
   <FlashcardControls
     v-if="!isFinished"

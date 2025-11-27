@@ -2,6 +2,10 @@ import { computed, ref } from "vue"
 
 import type { ReadingItem } from "./types"
 
+/**
+ * Tracks reading progress locally until dedicated backend endpoints are available.
+ * TODO(tp-backend): migrate persistence from localStorage to API once the service exists.
+ */
 interface ReadingProgressOptions {
   notes?: string
   autoPersist?: boolean
