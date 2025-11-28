@@ -1,2 +1,6 @@
 export * from "./model/types"
 export * from "./model/useFlashcardSession"
+export { default as FlashcardSession } from "./ui/FlashcardSession.vue"
+export { default as FlashcardCard } from "./ui/FlashcardCard.vue"
+export { default as FlashcardControls } from "./ui/FlashcardControls.vue"
+export { default as FlashcardSummary } from "./ui/FlashcardSummary.vue"

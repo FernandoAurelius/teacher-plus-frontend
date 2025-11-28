@@ -24,10 +24,13 @@ const props = defineProps<{
   toneOverride?: Tone
 }>()
 
-const badgeTone = computed<Tone>(() => props.toneOverride ?? getContentBlockMeta(props.status).tone)
-const labelText = computed(() => props.label ?? getContentBlockMeta(props.status).label)
+const badgeMeta = computed(() => getContentBlockMeta(props.status))
+const badgeTone = computed<Tone>(() => props.toneOverride ?? badgeMeta.value.tone)
+const labelText = computed(() => props.label ?? badgeMeta.value.label)
 </script>
 
-<Badge :class="toneClassMap[badgeTone]" role="status" aria-live="polite">
-  <slot>{{ labelText }}</slot>
-</Badge>
+<template>
+  <Badge :class="toneClassMap[badgeTone]" role="status" aria-live="polite">
+    <slot>{{ labelText }}</slot>
+  </Badge>
+</template>

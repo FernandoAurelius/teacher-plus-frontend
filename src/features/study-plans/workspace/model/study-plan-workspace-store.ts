@@ -2,6 +2,8 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { toast } from 'vue-sonner'
 import { client } from '@/shared/api/client'
+import { schemas } from '@/shared/api/schemas'
+import type { z } from 'zod'
 import { useJobMonitor } from '@/shared/lib/jobs/useJobMonitor'
 import { groupDaysByWeek, parseTaskContent } from '@/entities/study-plan'
 import type { StudyPlan, StudyDay, StudyTask } from '@/entities/study-plan'
@@ -15,6 +17,8 @@ export const useStudyPlanWorkspaceStore = defineStore('studyPlanWorkspace', () =
   const activeWeekIndex = ref<number | null>(null)
   const activeDayId = ref<string | null>(null)
   const extendingDayId = ref<string | null>(null)
+  const generatingDayId = ref<string | null>(null)
+  const updatingTaskId = ref<string | null>(null)
   const uploadingMaterial = ref(false)
   const uploadMessage = ref('')
 
@@ -138,6 +142,58 @@ export const useStudyPlanWorkspaceStore = defineStore('studyPlanWorkspace', () =
     }
   }
 
+  const generateDay = async (dayId: string) => {
+    if (!planId.value) return
+    generatingDayId.value = dayId
+    try {
+      const response = await client.generateStudyDay(
+        { body: { reset_existing: false }, params: { day_id: dayId, plan_id: planId.value } },
+      )
+      if (response.job_id) {
+        jobMonitor.start(response.job_id)
+      }
+      toast.success('Solicitamos a geracao do dia', {
+        description: 'Atualizaremos quando a IA concluir.',
+      })
+    } catch (error) {
+      console.error('Erro ao gerar dia', error)
+      toast.error('Nao foi possivel gerar este dia.')
+    } finally {
+      generatingDayId.value = null
+    }
+  }
+
+  type TaskProgressPayload = z.input<typeof schemas.TaskProgressRequest>
+
+  const updateTaskProgress = async (
+    taskId: string,
+    payload: TaskProgressPayload | Partial<TaskProgressPayload>,
+  ) => {
+    updatingTaskId.value = taskId
+    try {
+      const body: TaskProgressPayload = {
+        status: (payload.status as TaskProgressPayload["status"]) ?? "completed",
+        minutes_spent: payload.minutes_spent ?? 0,
+        notes: payload.notes,
+        payload: payload.payload,
+      }
+      const response = await client.updateStudyTaskProgress(
+        { body, params: { task_id: taskId } },
+      )
+      toast.success('Tarefa atualizada', {
+        description: 'Sincronizamos o status com o plano.',
+      })
+      await loadPlan(plan.value?.id ?? undefined)
+      return response
+    } catch (error) {
+      console.error('Erro ao atualizar tarefa', error)
+      toast.error('Nao foi possivel salvar o progresso.')
+      return null
+    } finally {
+      updatingTaskId.value = null
+    }
+  }
+
   const uploadMaterial = async (formData: FormData) => {
     if (!planId.value) return
     uploadingMaterial.value = true
@@ -173,6 +229,8 @@ export const useStudyPlanWorkspaceStore = defineStore('studyPlanWorkspace', () =
     activeWeek,
     activeDay,
     extendingDayId,
+    generatingDayId,
+    updatingTaskId,
     uploadingMaterial,
     uploadMessage,
     jobState: jobMonitor.state,
@@ -183,6 +241,8 @@ export const useStudyPlanWorkspaceStore = defineStore('studyPlanWorkspace', () =
     selectWeek,
     selectDay,
     extendDay,
+    generateDay,
+    updateTaskProgress,
     uploadMaterial,
     taskContent,
     clearPlan,

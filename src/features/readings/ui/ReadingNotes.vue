@@ -19,13 +19,15 @@ const handleInput = (event: Event) => {
 }
 </script>
 
-<div>
-  <label class="text-sm font-medium text-foreground">Notas</label>
-  <Textarea
-    :value="props.value"
-    :placeholder="props.placeholder ?? 'Escreva ideias, links ou destaques...'"
-    class="mt-2 min-h-28"
-    :class="props.class"
-    @input="handleInput"
-  />
-</div>
+<template>
+  <div>
+    <label class="text-sm font-medium text-foreground">Notas</label>
+    <Textarea
+      :value="props.value"
+      :placeholder="props.placeholder ?? 'Escreva ideias, links ou destaques...'"
+      class="mt-2 min-h-28"
+      :class="props.class"
+      @input="handleInput"
+    />
+  </div>
+</template>

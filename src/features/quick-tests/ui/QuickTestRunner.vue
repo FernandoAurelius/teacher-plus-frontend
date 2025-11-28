@@ -132,49 +132,51 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<div class="flex w-full flex-col items-center gap-4">
-  <header class="flex w-full max-w-3xl flex-col gap-2">
-    <div class="flex items-center justify-between">
-      <div>
-        <p class="text-sm text-muted-foreground">Teste</p>
-        <h2 class="text-2xl font-semibold text-foreground">{{ test.title }}</h2>
-        <p v-if="test.summary" class="text-sm text-muted-foreground">{{ test.summary }}</p>
+<template>
+  <div class="flex w-full flex-col items-center gap-4">
+    <header class="flex w-full max-w-3xl flex-col gap-2">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-muted-foreground">Teste</p>
+          <h2 class="text-2xl font-semibold text-foreground">{{ test.title }}</h2>
+          <p v-if="test.summary" class="text-sm text-muted-foreground">{{ test.summary }}</p>
+        </div>
+        <StatusBadge :status="test.status" />
       </div>
-      <StatusBadge :status="test.status" />
-    </div>
-    <div class="flex items-center justify-between text-sm text-muted-foreground">
-      <span>
-        Questao {{ session.currentIndex.value + 1 }} / {{ test.questions.length }}
-      </span>
-      <span v-if="session.timeLeft.value !== null">
-        Tempo restante: {{ session.timeLeft.value }}s
-      </span>
-    </div>
-    <Progress :model-value="session.progress.value * 100" />
-  </header>
+      <div class="flex items-center justify-between text-sm text-muted-foreground">
+        <span>
+          Questao {{ session.currentIndex.value + 1 }} / {{ test.questions.length }}
+        </span>
+        <span v-if="session.timeLeft.value !== null">
+          Tempo restante: {{ session.timeLeft.value }}s
+        </span>
+      </div>
+      <Progress :model-value="session.progress.value * 100" />
+    </header>
 
-  <QuestionCard
-    v-if="session.currentQuestion.value && !result"
-    :question="session.currentQuestion.value"
-    :value="currentValue"
-    :show-feedback="shouldShowFeedback"
-    @select="handleSelect"
-  />
+    <QuestionCard
+      v-if="session.currentQuestion.value && !result"
+      :question="session.currentQuestion.value"
+      :value="currentValue"
+      :show-feedback="shouldShowFeedback"
+      @select="handleSelect"
+    />
 
-  <div v-if="!result" class="flex w-full max-w-3xl items-center justify-between gap-2">
-    <div class="flex gap-2">
-      <Button variant="outline" size="icon" :disabled="!canPrev" @click="session.prev">
-        <ChevronLeft class="size-4" />
-      </Button>
-      <Button variant="outline" size="icon" :disabled="!canNext" @click="session.next">
-        <ChevronRight class="size-4" />
-      </Button>
+    <div v-if="!result" class="flex w-full max-w-3xl items-center justify-between gap-2">
+      <div class="flex gap-2">
+        <Button variant="outline" size="icon" :disabled="!canPrev" @click="session.prev">
+          <ChevronLeft class="size-4" />
+        </Button>
+        <Button variant="outline" size="icon" :disabled="!canNext" @click="session.next">
+          <ChevronRight class="size-4" />
+        </Button>
+      </div>
+      <div class="flex gap-2">
+        <Button variant="ghost" @click="handleRetry">Reiniciar</Button>
+        <Button @click="handleSubmit">Enviar</Button>
+      </div>
     </div>
-    <div class="flex gap-2">
-      <Button variant="ghost" @click="handleRetry">Reiniciar</Button>
-      <Button @click="handleSubmit">Enviar</Button>
-    </div>
+
+    <ResultPanel v-else-if="result" :result="result" @retry="handleRetry" />
   </div>
-
-  <ResultPanel v-else-if="result" :result="result" @retry="handleRetry" />
-</div>
+</template>

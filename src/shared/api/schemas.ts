@@ -70,6 +70,9 @@ const StudyDay = z
     week_index: z.number().int().nullable(),
     tasks: z.array(StudyTask),
     metadata: z.object({}).partial().passthrough(),
+    generation_status: z.string().nullable(),
+    job_id: z.string().nullable(),
+    last_error: z.string().nullable(),
   })
   .passthrough()
 const StudyWeek = z
@@ -103,6 +106,10 @@ const StudyPlan = z
     job_id: z.string().nullable(),
   })
   .passthrough()
+const GenerateDayRequest = z
+  .object({ reset_existing: z.boolean().default(true) })
+  .partial()
+  .passthrough()
 const PlanMaterialUpload = z
   .object({ title: z.string().optional(), file: z.string().url() })
   .passthrough()
@@ -113,6 +120,15 @@ const GenerateTasksRequest = z.object({ section_id: z.string() }).passthrough()
 const GeneratePlanRequest = z
   .object({ title: z.string(), goal_override: z.string() })
   .partial()
+  .passthrough()
+const StatusEnum = z.enum(['pending', 'ready', 'in_progress', 'completed'])
+const TaskProgressRequest = z
+  .object({
+    status: StatusEnum,
+    minutes_spent: z.number().int().gte(0).optional().default(0),
+    notes: z.string().nullish(),
+    payload: z.object({}).partial().passthrough().optional(),
+  })
   .passthrough()
 const Login = z.object({ username: z.string(), password: z.string() }).passthrough()
 const LoginResponse = z.object({ detail: z.string(), has_user_context: z.boolean() }).passthrough()
@@ -178,10 +194,13 @@ export const schemas = {
   StudyDay,
   StudyWeek,
   StudyPlan,
+  GenerateDayRequest,
   PlanMaterialUpload,
   PlanMaterialUploadResponse,
   GenerateTasksRequest,
   GeneratePlanRequest,
+  StatusEnum,
+  TaskProgressRequest,
   Login,
   LoginResponse,
   UserRead,
@@ -351,6 +370,37 @@ export const endpoints = makeApi([
   },
   {
     method: 'post',
+    path: '/api/ai/study-plans/:plan_id/days/:day_id/generate/',
+    alias: 'generateStudyDay',
+    description: `Gera ou regenera as tarefas de um dia especifico do plano de forma assincrona.`,
+    requestFormat: 'json',
+    parameters: [
+      {
+        name: 'body',
+        type: 'Body',
+        schema: z
+          .object({ reset_existing: z.boolean().default(true) })
+          .partial()
+          .passthrough(),
+      },
+      {
+        name: 'day_id',
+        type: 'Path',
+        schema: z.string().uuid(),
+      },
+      {
+        name: 'plan_id',
+        type: 'Path',
+        schema: z.string().uuid(),
+      },
+    ],
+    response: z
+      .object({ job_id: z.string(), plan_id: z.string(), day_id: z.string() })
+      .partial()
+      .passthrough(),
+  },
+  {
+    method: 'post',
     path: '/api/ai/study-plans/:plan_id/materials/',
     alias: 'uploadStudyPlanMaterial',
     description: `Faz upload de arquivo, associa ao plano e o ingere no RAG (Document + chunks).`,
@@ -403,6 +453,36 @@ export const endpoints = makeApi([
       },
     ],
     response: StudyPlan,
+  },
+  {
+    method: 'post',
+    path: '/api/ai/study-tasks/:task_id/progress/',
+    alias: 'updateStudyTaskProgress',
+    description: `Atualiza status/progresso de uma tarefa (flashcards, quiz, leitura, etc.) e recalcula o status do dia.`,
+    requestFormat: 'json',
+    parameters: [
+      {
+        name: 'body',
+        type: 'Body',
+        schema: TaskProgressRequest,
+      },
+      {
+        name: 'task_id',
+        type: 'Path',
+        schema: z.string().uuid(),
+      },
+    ],
+    response: z
+      .object({
+        task_id: z.string(),
+        plan_id: z.string(),
+        day_id: z.string(),
+        status: z.string(),
+        day_status: z.string(),
+        metadata: z.object({}).partial().passthrough(),
+      })
+      .partial()
+      .passthrough(),
   },
   {
     method: 'post',

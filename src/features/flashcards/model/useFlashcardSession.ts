@@ -14,7 +14,7 @@ interface FlashcardSessionOptions {
 export const useFlashcardSession = (
   deck: FlashcardDeck,
   options: FlashcardSessionOptions = {},
-) => {
+s) => {
   const currentIndex = ref(0)
   const side = ref<"front" | "back">("front")
   const answers = ref<Record<string, FlashcardDifficulty>>({})

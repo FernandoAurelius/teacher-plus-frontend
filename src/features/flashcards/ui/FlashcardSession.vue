@@ -139,35 +139,39 @@ onMounted(() => {
 })
 </script>
 
-<div class="flex w-full flex-col items-center gap-4">
-  <header class="flex w-full max-w-2xl items-center justify-between">
-    <div class="flex flex-col gap-1">
-      <p class="text-sm text-muted-foreground">Deck</p>
-      <h2 class="text-2xl font-semibold text-foreground">{{ deck.title }}</h2>
-      <p v-if="deck.summary" class="text-sm text-muted-foreground">{{ deck.summary }}</p>
+<template>
+  <div class="flex w-full flex-col items-center gap-5">
+    <header class="flex w-full max-w-2xl items-center justify-between">
+      <div class="flex flex-col gap-1">
+        <p class="text-sm text-muted-foreground">Deck</p>
+        <h2 class="text-2xl font-semibold text-foreground">{{ deck.title }}</h2>
+        <p v-if="deck.summary" class="text-sm text-muted-foreground">{{ deck.summary }}</p>
+      </div>
+      <StatusBadge :status="deck.status" />
+    </header>
+
+    <div v-if="session.currentCard.value" ref="cardRef" class="w-full flex justify-center">
+      <FlashcardCard
+        :card="session.currentCard.value"
+        :side="session.side.value"
+        @flip="session.flip"
+      />
     </div>
-    <StatusBadge :status="deck.status" />
-  </header>
 
-  <div v-if="session.currentCard.value" ref="cardRef" class="w-full">
-    <FlashcardCard
-      :card="session.currentCard.value"
-      :side="session.side.value"
+    <FlashcardControls
+      v-if="!isFinished"
+      :can-prev="canPrev"
+      :can-next="canNext"
+      :progress="session.progress.value"
+      @prev="session.prev"
+      @next="session.next"
       @flip="session.flip"
+      @answer="handleAnswer"
+      @reset="session.reset"
     />
+
+    <div v-else class="w-full flex justify-center">
+      <FlashcardSummary :summary="session.summary.value" @reset="session.reset" />
+    </div>
   </div>
-
-  <FlashcardControls
-    v-if="!isFinished"
-    :can-prev="canPrev"
-    :can-next="canNext"
-    :progress="session.progress.value"
-    @prev="session.prev"
-    @next="session.next"
-    @flip="session.flip"
-    @answer="handleAnswer"
-    @reset="session.reset"
-  />
-
-  <FlashcardSummary v-else :summary="session.summary.value" @reset="session.reset" />
-</div>
+</template>

@@ -1,7 +1,9 @@
 export type ContentBlockStatus =
   | "new"
+  | "ready"
   | "in_progress"
   | "done"
+  | "completed"
   | "review"
   | "blocked"
 
@@ -23,11 +25,15 @@ export interface ContentBlockMeta {
 
 const statusMetaMap: Record<ContentBlockStatus, ContentBlockMeta> = {
   new: { label: "Novo", tone: "info" },
+  ready: { label: "Pronto", tone: "info" },
   in_progress: { label: "Em andamento", tone: "info" },
   review: { label: "Revisar", tone: "warning" },
   done: { label: "Concluido", tone: "success" },
+  completed: { label: "Concluido", tone: "success" },
   blocked: { label: "Bloqueado", tone: "danger" },
 }
 
-export const getContentBlockMeta = (status: ContentBlockStatus): ContentBlockMeta =>
-  statusMetaMap[status]
+const defaultMeta: ContentBlockMeta = { label: "Em progresso", tone: "info" }
+
+export const getContentBlockMeta = (status: ContentBlockStatus | string | undefined): ContentBlockMeta =>
+  statusMetaMap[(status as ContentBlockStatus) ?? "new"] ?? defaultMeta

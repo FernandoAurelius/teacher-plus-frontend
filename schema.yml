@@ -229,6 +229,53 @@ paths:
               schema:
                 $ref: '#/components/schemas/StudyPlan'
           description: ''
+  /api/ai/study-plans/{plan_id}/days/{day_id}/generate/:
+    post:
+      operationId: generateStudyDay
+      description: Gera ou regenera as tarefas de um dia especifico do plano de forma
+        assincrona.
+      parameters:
+      - in: path
+        name: day_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: plan_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateDayRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GenerateDayRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GenerateDayRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                  plan_id:
+                    type: string
+                  day_id:
+                    type: string
+          description: ''
   /api/ai/study-plans/{plan_id}/materials/:
     post:
       operationId: uploadStudyPlanMaterial
@@ -326,6 +373,54 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StudyPlan'
+          description: ''
+  /api/ai/study-tasks/{task_id}/progress/:
+    post:
+      operationId: updateStudyTaskProgress
+      description: Atualiza status/progresso de uma tarefa (flashcards, quiz, leitura,
+        etc.) e recalcula o status do dia.
+      parameters:
+      - in: path
+        name: task_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskProgressRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TaskProgressRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TaskProgressRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  task_id:
+                    type: string
+                  plan_id:
+                    type: string
+                  day_id:
+                    type: string
+                  status:
+                    type: string
+                  day_status:
+                    type: string
+                  metadata:
+                    type: object
           description: ''
   /api/login/:
     post:
@@ -655,6 +750,12 @@ components:
       required:
       - chunks
       - document_id
+    GenerateDayRequest:
+      type: object
+      properties:
+        reset_existing:
+          type: boolean
+          default: true
     GeneratePlanRequest:
       type: object
       properties:
@@ -758,6 +859,18 @@ components:
       required:
       - score
       - text
+    StatusEnum:
+      enum:
+      - pending
+      - ready
+      - in_progress
+      - completed
+      type: string
+      description: |-
+        * `pending` - pending
+        * `ready` - ready
+        * `in_progress` - in_progress
+        * `completed` - completed
     StudyDay:
       type: object
       properties:
@@ -798,10 +911,25 @@ components:
         metadata:
           type: object
           additionalProperties: {}
+        generation_status:
+          type: string
+          nullable: true
+          readOnly: true
+        job_id:
+          type: string
+          nullable: true
+          readOnly: true
+        last_error:
+          type: string
+          nullable: true
+          readOnly: true
       required:
       - day_index
       - focus
+      - generation_status
       - id
+      - job_id
+      - last_error
       - metadata
       - prerequisites
       - scheduled_date
@@ -1017,6 +1145,23 @@ components:
       - status
       - title
       - week_index
+    TaskProgressRequest:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        minutes_spent:
+          type: integer
+          minimum: 0
+          default: 0
+        notes:
+          type: string
+          nullable: true
+        payload:
+          type: object
+          additionalProperties: {}
+      required:
+      - status
     UserContext:
       type: object
       properties:
