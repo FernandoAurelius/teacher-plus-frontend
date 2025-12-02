@@ -71,6 +71,11 @@ const handleRetry = () => {
   session.reset()
 }
 
+const formatTime = (value: number) => {
+  const m = Math.floor(value / 60)
+  const s = value % 60
+  return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`
+}
 watch(
   () => session.isFinished.value,
   (finished) => {
@@ -134,8 +139,8 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="flex w-full flex-col items-center gap-4">
-    <header class="flex w-full max-w-3xl flex-col gap-2">
-      <div class="flex items-center justify-between">
+    <header class="flex w-full max-w-5xl flex-col gap-2">
+      <div class="flex flex-wrap items-center justify-between gap-3">
         <div>
           <p class="text-sm text-muted-foreground">Teste</p>
           <h2 class="text-2xl font-semibold text-foreground">{{ test.title }}</h2>
@@ -143,26 +148,29 @@ onBeforeUnmount(() => {
         </div>
         <StatusBadge :status="test.status" />
       </div>
-      <div class="flex items-center justify-between text-sm text-muted-foreground">
+      <div class="flex flex-wrap items-center justify-between gap-2 text-sm text-muted-foreground">
         <span>
           Questao {{ session.currentIndex.value + 1 }} / {{ test.questions.length }}
         </span>
         <span v-if="session.timeLeft.value !== null">
-          Tempo restante: {{ session.timeLeft.value }}s
+          Tempo restante: {{ formatTime(session.timeLeft.value) }}
         </span>
       </div>
       <Progress :model-value="session.progress.value * 100" />
     </header>
 
-    <QuestionCard
-      v-if="session.currentQuestion.value && !result"
-      :question="session.currentQuestion.value"
-      :value="currentValue"
-      :show-feedback="shouldShowFeedback"
-      @select="handleSelect"
-    />
+    <div class="w-full max-w-5xl">
+      <QuestionCard
+        v-if="session.currentQuestion.value && !result"
+        :question="session.currentQuestion.value"
+        :value="currentValue"
+        :show-feedback="shouldShowFeedback"
+        @select="handleSelect"
+      />
+      <ResultPanel v-else-if="result" :result="result" @retry="handleRetry" />
+    </div>
 
-    <div v-if="!result" class="flex w-full max-w-3xl items-center justify-between gap-2">
+    <div v-if="!result" class="flex w-full max-w-5xl items-center justify-between gap-2">
       <div class="flex gap-2">
         <Button variant="outline" size="icon" :disabled="!canPrev" @click="session.prev">
           <ChevronLeft class="size-4" />
@@ -176,7 +184,5 @@ onBeforeUnmount(() => {
         <Button @click="handleSubmit">Enviar</Button>
       </div>
     </div>
-
-    <ResultPanel v-else-if="result" :result="result" @retry="handleRetry" />
   </div>
 </template>

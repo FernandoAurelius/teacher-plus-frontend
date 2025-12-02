@@ -56,7 +56,7 @@ const handleText = (event: Event) => {
     <p class="text-sm text-muted-foreground">Questao</p>
     <h3 class="mt-1 text-xl font-semibold text-foreground">{{ question.prompt }}</h3>
 
-    <div v-if="question.kind !== 'text'" class="mt-4 grid gap-2">
+    <div v-if="question.kind !== 'text'" class="mt-4 grid gap-2 max-w-4xl">
       <button
         v-for="option in options"
         :key="option.id"
@@ -92,10 +92,10 @@ const handleText = (event: Event) => {
     </div>
 
     <div v-else class="mt-4">
-      <Textarea
+      <textarea
         :value="(value as string | undefined) ?? ''"
         placeholder="Digite sua resposta..."
-        class="min-h-28"
+        class="min-h-28 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-foreground shadow-inner outline-none focus:border-primary focus:ring-2 focus:ring-primary/30"
         @input="handleText"
       />
     </div>

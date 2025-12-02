@@ -60,8 +60,8 @@
 
             <div class="bg-muted/30 rounded-lg p-4 space-y-2">
               <div class="flex justify-between text-sm">
-                <span class="font-medium">Nome:</span>
-                <span class="text-right">{{ userData.first_name }} {{ userData.last_name }}</span>
+                <span class="font-medium">Nome completo:</span>
+                <span class="text-right">{{ userData.full_name }}</span>
               </div>
               <div class="flex justify-between text-sm">
                 <span class="font-medium">Email:</span>
@@ -159,6 +159,7 @@ const showPassword = ref(false)
 const showConfirmPassword = ref(false)
 
 const userData = ref({
+  full_name: '',
   first_name: '',
   last_name: '',
   email: '',
@@ -169,11 +170,17 @@ const userData = ref({
 
 // ⚠️ Removemos a pergunta "Confirme sua senha:"
 const questions = [
-  { key: 'first_name', question: 'Olá! Vamos começar seu cadastro. Qual é o seu primeiro nome?' },
-  { key: 'last_name', question: 'Nome bonito, {first_name}! Agora preciso do seu sobrenome...' },
+  { key: 'full_name', question: 'Olá! Vamos começar seu cadastro. Qual é o seu nome completo?' },
   { key: 'email', question: '{first_name}, qual é o seu endereço de email?' },
-  { key: 'username', question: '{first_name}, qual username você vai escolher? Você o utilizará para logar na sua conta' },
-  { key: 'password', question: 'Beleza, {first_name}! Pra fechar, uma caixa de diálogo vai aparecer em alguns instantes pra você preencher sua senha.' },
+  {
+    key: 'username',
+    question: '{first_name}, qual username você vai escolher? Você o utilizará para logar na sua conta'
+  },
+  {
+    key: 'password',
+    question:
+      'Beleza, {first_name}! Pra fechar, uma caixa de diálogo vai aparecer em alguns instantes pra você preencher sua senha.'
+  },
 ] as const
 
 let currentQuestionIndex = 0
@@ -205,6 +212,16 @@ function getQuestionText(question: string): string {
   return question.replace(/\{(\w+)\}/g, (_, k) => (userData.value as any)[k] || '')
 }
 
+function deriveNames(fullName: string) {
+  const parts = fullName.trim().split(/\s+/).filter(Boolean)
+  if (!parts.length) {
+    return { first_name: '', last_name: '' }
+  }
+  const first_name = parts.shift() || ''
+  const last_name = parts.join(' ')
+  return { first_name, last_name }
+}
+
 async function onSend() {
   const trimmed = input.value.trim()
   if (!trimmed) return
@@ -231,6 +248,12 @@ function processAnswer(answer: string) {
 
   // Guarda a resposta da pergunta atual
   userData.value[current.key as keyof typeof userData.value] = answer
+
+  if (current.key === 'full_name') {
+    const { first_name, last_name } = deriveNames(answer)
+    userData.value.first_name = first_name
+    userData.value.last_name = last_name
+  }
 
   // Avança para a próxima pergunta
   currentQuestionIndex++
@@ -261,8 +284,7 @@ function processAnswer(answer: string) {
 
 function validateData(): boolean {
   return (
-    userData.value.first_name.length > 0 &&
-    userData.value.last_name.length > 0 &&
+    userData.value.full_name.trim().length > 0 &&
     userData.value.email.includes('@') &&
     userData.value.username.length > 0 &&
     userData.value.password.length >= 6 &&
@@ -273,10 +295,12 @@ function validateData(): boolean {
 function resetFlowWithError() {
   messages.value.push({
     role: 'assistant',
-    content: 'Parece que há um problema com os dados fornecidos. Vamos tentar novamente. Qual é o seu primeiro nome?'
+    content:
+      'Parece que há um problema com os dados fornecidos. Vamos tentar novamente. Qual é o seu nome completo?'
   })
   currentQuestionIndex = 0
   userData.value = {
+    full_name: '',
     first_name: '',
     last_name: '',
     email: '',
@@ -295,6 +319,7 @@ function denyConfirmation() {
 function resetFlow() {
   currentQuestionIndex = 0
   userData.value = {
+    full_name: '',
     first_name: '',
     last_name: '',
     email: '',
@@ -338,11 +363,12 @@ function confirmPassword() {
 async function confirmAndSignup() {
   isSigningUp.value = true
   try {
+    const { first_name, last_name } = deriveNames(userData.value.full_name)
     await signup({
       username: userData.value.username,
       email: userData.value.email,
-      first_name: userData.value.first_name,
-      last_name: userData.value.last_name,
+      first_name,
+      last_name,
       password: userData.value.password
     })
     emit('signupComplete')

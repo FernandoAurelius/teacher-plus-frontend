@@ -106,8 +106,37 @@ const StudyPlan = z
     job_id: z.string().nullable(),
   })
   .passthrough()
+const CreateStudyDayRequest = z
+  .object({
+    week_id: z.string().uuid().nullable(),
+    scheduled_date: z.string().nullable(),
+    title: z.string(),
+    focus: z.string(),
+    target_minutes: z.number().int().gte(0),
+    goal_override: z.string(),
+    context_snapshot: z.object({}).partial().passthrough(),
+    metadata: z.object({}).partial().passthrough(),
+    auto_generate: z.boolean().default(true),
+    reset_existing: z.boolean().default(true),
+  })
+  .partial()
+  .passthrough()
+const CreateStudyDayResponse = z
+  .object({ plan_id: z.string().uuid(), job_id: z.string().nullish(), day: StudyDay })
+  .passthrough()
 const GenerateDayRequest = z
   .object({ reset_existing: z.boolean().default(true) })
+  .partial()
+  .passthrough()
+const StatusEnum = z.enum(['pending', 'ready', 'in_progress', 'completed'])
+const StudyDayResult = z
+  .object({
+    status: StatusEnum,
+    minutes_spent: z.number().int().gte(0),
+    score: z.number(),
+    notes: z.string(),
+    payload: z.object({}).partial().passthrough(),
+  })
   .partial()
   .passthrough()
 const PlanMaterialUpload = z
@@ -117,11 +146,13 @@ const PlanMaterialUploadResponse = z
   .object({ document_id: z.string().uuid(), chunks: z.number().int(), file_id: z.string().uuid() })
   .passthrough()
 const GenerateTasksRequest = z.object({ section_id: z.string() }).passthrough()
+const StudyPlanWeekOverview = z
+  .object({ plan_id: z.string().uuid(), weeks: z.array(StudyWeek) })
+  .passthrough()
 const GeneratePlanRequest = z
   .object({ title: z.string(), goal_override: z.string() })
   .partial()
   .passthrough()
-const StatusEnum = z.enum(['pending', 'ready', 'in_progress', 'completed'])
 const TaskProgressRequest = z
   .object({
     status: StatusEnum,
@@ -145,8 +176,11 @@ const UserRead = z
   })
   .passthrough()
 const RefreshResponse = z.object({ detail: z.string() }).passthrough()
-const UserContext = z
+const StudyContext = z
   .object({
+    plan_label: z.string().max(120).optional(),
+    start_date: z.string().nullish(),
+    end_date: z.string().nullish(),
     persona: z.string().max(20),
     goal: z.string().max(100),
     deadline: z.string(),
@@ -194,21 +228,25 @@ export const schemas = {
   StudyDay,
   StudyWeek,
   StudyPlan,
+  CreateStudyDayRequest,
+  CreateStudyDayResponse,
   GenerateDayRequest,
+  StatusEnum,
+  StudyDayResult,
   PlanMaterialUpload,
   PlanMaterialUploadResponse,
   GenerateTasksRequest,
+  StudyPlanWeekOverview,
   GeneratePlanRequest,
-  StatusEnum,
   TaskProgressRequest,
   Login,
   LoginResponse,
   UserRead,
   RefreshResponse,
-  UserContext,
+  StudyContext,
   UserWrite,
 }
-
+ 
 export const endpoints = makeApi([
   {
     method: 'post',
@@ -370,6 +408,26 @@ export const endpoints = makeApi([
   },
   {
     method: 'post',
+    path: '/api/ai/study-plans/:plan_id/days/',
+    alias: 'createStudyPlanDay',
+    description: `Cria um novo dia no plano e opcionalmente aciona a IA para gerar tarefas sob demanda.`,
+    requestFormat: 'json',
+    parameters: [
+      {
+        name: 'body',
+        type: 'Body',
+        schema: CreateStudyDayRequest,
+      },
+      {
+        name: 'plan_id',
+        type: 'Path',
+        schema: z.string().uuid(),
+      },
+    ],
+    response: CreateStudyDayResponse,
+  },
+  {
+    method: 'post',
     path: '/api/ai/study-plans/:plan_id/days/:day_id/generate/',
     alias: 'generateStudyDay',
     description: `Gera ou regenera as tarefas de um dia especifico do plano de forma assincrona.`,
@@ -398,6 +456,31 @@ export const endpoints = makeApi([
       .object({ job_id: z.string(), plan_id: z.string(), day_id: z.string() })
       .partial()
       .passthrough(),
+  },
+  {
+    method: 'post',
+    path: '/api/ai/study-plans/:plan_id/days/:day_id/results/',
+    alias: 'recordStudyDayResult',
+    description: `Persiste resultados agregados de um dia (status, notas, minutos, score).`,
+    requestFormat: 'json',
+    parameters: [
+      {
+        name: 'body',
+        type: 'Body',
+        schema: StudyDayResult,
+      },
+      {
+        name: 'day_id',
+        type: 'Path',
+        schema: z.string().uuid(),
+      },
+      {
+        name: 'plan_id',
+        type: 'Path',
+        schema: z.string().uuid(),
+      },
+    ],
+    response: StudyDay,
   },
   {
     method: 'post',
@@ -438,6 +521,21 @@ export const endpoints = makeApi([
       },
     ],
     response: z.array(StudyTask),
+  },
+  {
+    method: 'get',
+    path: '/api/ai/study-plans/:plan_id/weeks/',
+    alias: 'listStudyPlanWeeks',
+    description: `Retorna apenas o esqueleto semanal (foco/status/dias) de um plano de estudos.`,
+    requestFormat: 'json',
+    parameters: [
+      {
+        name: 'plan_id',
+        type: 'Path',
+        schema: z.string().uuid(),
+      },
+    ],
+    response: StudyPlanWeekOverview,
   },
   {
     method: 'post',
@@ -537,11 +635,46 @@ export const endpoints = makeApi([
   },
   {
     method: 'get',
-    path: '/api/user-context/',
-    alias: 'getUserContext',
+    path: '/api/study-context/',
+    alias: 'getStudyContext',
     description: `Retrieves the current authenticated user&#x27;s context if it exists.`,
     requestFormat: 'json',
-    response: UserContext,
+    response: StudyContext,
+    errors: [
+      {
+        status: 404,
+        schema: z.unknown(),
+      },
+    ],
+  },
+  {
+    method: 'post',
+    path: '/api/study-context/',
+    alias: 'upsertStudyContext',
+    description: `Updates or creates user context information.`,
+    requestFormat: 'json',
+    parameters: [
+      {
+        name: 'body',
+        type: 'Body',
+        schema: StudyContext,
+      },
+    ],
+    response: StudyContext,
+    errors: [
+      {
+        status: 400,
+        schema: StudyContext,
+      },
+    ],
+  },
+  {
+    method: 'get',
+    path: '/api/user-context/',
+    alias: 'getStudyContext_2',
+    description: `Retrieves the current authenticated user&#x27;s context if it exists.`,
+    requestFormat: 'json',
+    response: StudyContext,
     errors: [
       {
         status: 404,
@@ -552,21 +685,21 @@ export const endpoints = makeApi([
   {
     method: 'post',
     path: '/api/user-context/',
-    alias: 'updateUserContext',
+    alias: 'upsertStudyContext_2',
     description: `Updates or creates user context information.`,
     requestFormat: 'json',
     parameters: [
       {
         name: 'body',
         type: 'Body',
-        schema: UserContext,
+        schema: StudyContext,
       },
     ],
-    response: UserContext,
+    response: StudyContext,
     errors: [
       {
         status: 400,
-        schema: UserContext,
+        schema: StudyContext,
       },
     ],
   },

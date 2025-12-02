@@ -7,10 +7,13 @@ export type StudyDay = z.infer<typeof schemas.StudyDay>
 export type StudyTask = z.infer<typeof schemas.StudyTask>
 
 export type StudyWeek = {
+  id?: string | null
   weekIndex: number
   title: string
   status: StudyDay['status']
   summary?: string | null
+  startDate?: string | null
+  endDate?: string | null
   days: StudyDay[]
 }
 
@@ -105,6 +108,7 @@ export function groupDaysByWeek(days: StudyDay[] = []): StudyWeek[] {
   if (!days.length) {
     return [
       {
+        id: null,
         weekIndex: 1,
         title: 'Semana 1',
         status: 'pending',
@@ -118,11 +122,12 @@ export function groupDaysByWeek(days: StudyDay[] = []): StudyWeek[] {
 
   days.forEach((day) => {
     const weekIndex = normalizeNumber(day.week_index)
-    if (!grouped.has(weekIndex)) {
-      grouped.set(weekIndex, {
-        weekIndex,
-        title: `Semana ${weekIndex}`,
-        status: day.status,
+      if (!grouped.has(weekIndex)) {
+        grouped.set(weekIndex, {
+          id: null,
+          weekIndex,
+          title: `Semana ${weekIndex}`,
+          status: day.status,
         days: [],
         summary: day.focus,
       })

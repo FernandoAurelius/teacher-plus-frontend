@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStudyPlanWorkspaceStore } from '../model/study-plan-workspace-store'
 import { Button } from '@/shared/ui/button'
@@ -18,23 +18,25 @@ import {
 import type { StudyTask } from '@/entities/study-plan'
 import StudyTaskCard from './study-task-card.vue'
 import StudyRoadmap from './study-roadmap.vue'
+import DayTaskModal from './day-task-modal.vue'
 
 const store = useStudyPlanWorkspaceStore()
 const route = useRoute()
 const router = useRouter()
+const dayModalOpen = ref(false)
 
 const planId = computed(() => route.params.planId as string | undefined)
 
 onMounted(() => {
   if (planId.value) {
-    void store.loadPlan(planId.value)
+    void Promise.all([store.loadPlan(planId.value), store.loadWeekOverview(planId.value)])
   }
 })
 
 watch(
   () => planId.value,
   (id) => {
-    if (id) void store.loadPlan(id)
+    if (id) void Promise.all([store.loadPlan(id), store.loadWeekOverview(id)])
   },
   { immediate: false },
 )
@@ -64,6 +66,16 @@ const taskIcon = (task: StudyTask) => {
 
 const handleTaskComplete = (task: StudyTask, payload: any) => {
   void store.updateTaskProgress(task.id, payload)
+}
+
+const handleSelectDay = (dayId: string) => {
+  store.selectDay(dayId)
+  dayModalOpen.value = true
+}
+
+const handleGenerateDay = (weekId?: string | null) => {
+  const targetWeek = weekId ?? store.activeWeek?.id ?? null
+  void store.createDay(targetWeek ?? null)
 }
 </script>
 
@@ -145,64 +157,22 @@ const handleTaskComplete = (task: StudyTask, payload: any) => {
       </header>
 
       <div class="space-y-6">
-        <div class="rounded-3xl border border-white/40 bg-white/70 p-5 shadow-lg dark:bg-slate-900/70">
-          <p class="text-xs uppercase text-slate-500">Roadmap</p>
-          <p class="text-sm text-muted-foreground">Arraste e clique nos dias para abrir as tarefas.</p>
-        </div>
-
         <StudyRoadmap
           :weeks="store.weeks"
           :active-day-id="store.activeDayId"
-          @select="store.selectDay"
+          :creating-day="store.creatingDay"
+          @select="handleSelectDay"
+          @generate="handleGenerateDay"
         />
 
-        <div class="rounded-3xl border border-white/50 bg-white/90 p-6 shadow-lg dark:bg-slate-900/80">
-          <div class="flex flex-wrap items-center gap-3 border-b border-dashed border-slate-200 pb-4">
-            <div class="flex flex-col">
-              <p class="text-xs uppercase text-slate-500">Dia selecionado</p>
-              <h3 class="text-xl font-semibold">{{ store.activeDay?.title ?? 'Escolha um dia' }}</h3>
-              <p class="text-sm text-muted-foreground">{{ store.activeDay?.focus }}</p>
-            </div>
-            <div class="ml-auto flex flex-wrap items-center gap-2 text-xs">
-              <Badge variant="secondary">{{ store.activeDay?.status ?? 'pending' }}</Badge>
-              <span v-if="store.activeDay" class="rounded-full bg-slate-100 px-3 py-1 text-slate-500">
-                {{ store.activeDay.target_minutes }} min
-              </span>
-              <Button
-                v-if="store.activeDay"
-                size="sm"
-                variant="outline"
-                :disabled="store.extendingDayId === store.activeDay.id"
-                @click="store.extendDay(store.activeDay)"
-              >
-                <PlusCircle class="size-4" />
-                {{ store.extendingDayId === store.activeDay.id ? 'Solicitando...' : 'Expandir dia' }}
-              </Button>
-              <Button
-                v-if="store.activeDay"
-                size="sm"
-                variant="ghost"
-                :disabled="store.generatingDayId === store.activeDay.id"
-                @click="store.generateDay(store.activeDay.id)"
-              >
-                {{ store.generatingDayId === store.activeDay.id ? 'Gerando...' : 'Gerar dia' }}
-              </Button>
-            </div>
-          </div>
-
-          <div v-if="store.activeDay" class="mt-4 space-y-3">
-            <StudyTaskCard
-              v-for="task in store.activeDay.tasks"
-              :key="task.id"
-              :task="task"
-              :content="store.taskContent(task)"
-              :updating="store.updatingTaskId === task.id"
-              @complete="(payload) => handleTaskComplete(task, payload)"
-            />
-          </div>
-          <p v-else class="mt-4 text-sm text-muted-foreground">Selecione um dia para ver as atividades.</p>
-        </div>
       </div>
+
+      <DayTaskModal
+        :open="dayModalOpen"
+        :day="store.activeDay"
+        @update:open="(value) => (dayModalOpen = value)"
+        @complete="(task, payload) => handleTaskComplete(task, payload)"
+      />
     </div>
   </section>
 </template>

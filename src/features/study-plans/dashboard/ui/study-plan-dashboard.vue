@@ -42,7 +42,6 @@ const handleOpenPlan = (id: string) => {
 <template>
   <section class="relative">
     <div class="neo-blob neo-blob-1 animate-float-y" aria-hidden="true"></div>
-    <div class="neo-blob neo-blob-2 animate-float-x" aria-hidden="true"></div>
     <div class="relative space-y-8">
       <header class="space-y-3 text-center lg:text-left">
         <h1 class="font-display text-3xl font-semibold text-slate-900 dark:text-white">Meus planos</h1>

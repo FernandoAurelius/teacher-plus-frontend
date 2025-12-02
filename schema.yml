@@ -229,6 +229,40 @@ paths:
               schema:
                 $ref: '#/components/schemas/StudyPlan'
           description: ''
+  /api/ai/study-plans/{plan_id}/days/:
+    post:
+      operationId: createStudyPlanDay
+      description: Cria um novo dia no plano e opcionalmente aciona a IA para gerar
+        tarefas sob demanda.
+      parameters:
+      - in: path
+        name: plan_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateStudyDayRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateStudyDayRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateStudyDayRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateStudyDayResponse'
+          description: ''
   /api/ai/study-plans/{plan_id}/days/{day_id}/generate/:
     post:
       operationId: generateStudyDay
@@ -275,6 +309,46 @@ paths:
                     type: string
                   day_id:
                     type: string
+          description: ''
+  /api/ai/study-plans/{plan_id}/days/{day_id}/results/:
+    post:
+      operationId: recordStudyDayResult
+      description: Persiste resultados agregados de um dia (status, notas, minutos,
+        score).
+      parameters:
+      - in: path
+        name: day_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: plan_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudyDayResult'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StudyDayResult'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StudyDayResult'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudyDay'
           description: ''
   /api/ai/study-plans/{plan_id}/materials/:
     post:
@@ -346,6 +420,29 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/StudyTask'
+          description: ''
+  /api/ai/study-plans/{plan_id}/weeks/:
+    get:
+      operationId: listStudyPlanWeeks
+      description: Retorna apenas o esqueleto semanal (foco/status/dias) de um plano
+        de estudos.
+      parameters:
+      - in: path
+        name: plan_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudyPlanWeekOverview'
           description: ''
   /api/ai/study-plans/generate/:
     post:
@@ -462,7 +559,7 @@ paths:
       tags:
       - api
       security:
-      - cookieAuth: []
+      - {}
       responses:
         '200':
           content:
@@ -506,9 +603,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/RefreshResponse'
           description: ''
-  /api/user-context/:
+  /api/study-context/:
     get:
-      operationId: getUserContext
+      operationId: getStudyContext
       description: Retrieves the current authenticated user's context if it exists.
       tags:
       - api
@@ -519,16 +616,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserContext'
+                $ref: '#/components/schemas/StudyContext'
           description: ''
         '404':
           content:
             application/json:
               schema:
-                description: User context not found
+                description: Study context not found
           description: ''
     post:
-      operationId: updateUserContext
+      operationId: upsertStudyContext
       description: Updates or creates user context information.
       tags:
       - api
@@ -536,13 +633,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserContext'
+              $ref: '#/components/schemas/StudyContext'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/UserContext'
+              $ref: '#/components/schemas/StudyContext'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/UserContext'
+              $ref: '#/components/schemas/StudyContext'
         required: true
       security:
       - cookieAuth: []
@@ -551,19 +648,78 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserContext'
+                $ref: '#/components/schemas/StudyContext'
           description: ''
         '201':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserContext'
+                $ref: '#/components/schemas/StudyContext'
           description: ''
         '400':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserContext'
+                $ref: '#/components/schemas/StudyContext'
+          description: ''
+  /api/user-context/:
+    get:
+      operationId: getStudyContext_2
+      description: Retrieves the current authenticated user's context if it exists.
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudyContext'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                description: Study context not found
+          description: ''
+    post:
+      operationId: upsertStudyContext_2
+      description: Updates or creates user context information.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudyContext'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StudyContext'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StudyContext'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudyContext'
+          description: ''
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudyContext'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudyContext'
           description: ''
   /api/users/:
     get:
@@ -725,6 +881,52 @@ components:
           type: string
       required:
       - reply
+    CreateStudyDayRequest:
+      type: object
+      properties:
+        week_id:
+          type: string
+          format: uuid
+          nullable: true
+        scheduled_date:
+          type: string
+          format: date
+          nullable: true
+        title:
+          type: string
+        focus:
+          type: string
+        target_minutes:
+          type: integer
+          minimum: 0
+        goal_override:
+          type: string
+        context_snapshot:
+          type: object
+          additionalProperties: {}
+        metadata:
+          type: object
+          additionalProperties: {}
+        auto_generate:
+          type: boolean
+          default: true
+        reset_existing:
+          type: boolean
+          default: true
+    CreateStudyDayResponse:
+      type: object
+      properties:
+        plan_id:
+          type: string
+          format: uuid
+        job_id:
+          type: string
+          nullable: true
+        day:
+          $ref: '#/components/schemas/StudyDay'
+      required:
+      - day
+      - plan_id
     DocumentIngest:
       type: object
       properties:
@@ -871,6 +1073,79 @@ components:
         * `ready` - ready
         * `in_progress` - in_progress
         * `completed` - completed
+    StudyContext:
+      type: object
+      properties:
+        plan_label:
+          type: string
+          maxLength: 120
+        start_date:
+          type: string
+          format: date
+          nullable: true
+        end_date:
+          type: string
+          format: date
+          nullable: true
+        persona:
+          type: string
+          maxLength: 20
+        goal:
+          type: string
+          maxLength: 100
+        deadline:
+          type: string
+          format: date
+        weekly_time_hours:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        study_routine:
+          type: string
+        background_level:
+          type: string
+          maxLength: 2000
+        self_assessment:
+          nullable: true
+        diagnostic_status:
+          type: string
+          nullable: true
+          maxLength: 20
+        diagnostic_snapshot:
+          nullable: true
+        interests: {}
+        preferences_formats: {}
+        preferences_language:
+          type: string
+          maxLength: 50
+        preferences_accessibility: {}
+        tech_device:
+          type: string
+          maxLength: 100
+        tech_connectivity:
+          type: string
+          maxLength: 100
+        notifications:
+          type: string
+          maxLength: 100
+        consent_lgpd:
+          type: boolean
+        materials:
+          type: array
+          items:
+            type: string
+            format: uuid
+      required:
+      - background_level
+      - deadline
+      - goal
+      - notifications
+      - persona
+      - preferences_language
+      - study_routine
+      - tech_connectivity
+      - tech_device
+      - weekly_time_hours
     StudyDay:
       type: object
       properties:
@@ -939,6 +1214,22 @@ components:
       - tasks
       - title
       - week_index
+    StudyDayResult:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        minutes_spent:
+          type: integer
+          minimum: 0
+        score:
+          type: number
+          format: double
+        notes:
+          type: string
+        payload:
+          type: object
+          additionalProperties: {}
     StudyPlan:
       type: object
       properties:
@@ -1041,6 +1332,19 @@ components:
       - title
       - total_days
       - updated_at
+    StudyPlanWeekOverview:
+      type: object
+      properties:
+        plan_id:
+          type: string
+          format: uuid
+        weeks:
+          type: array
+          items:
+            $ref: '#/components/schemas/StudyWeek'
+      required:
+      - plan_id
+      - weeks
     StudyTask:
       type: object
       properties:
@@ -1162,68 +1466,6 @@ components:
           additionalProperties: {}
       required:
       - status
-    UserContext:
-      type: object
-      properties:
-        persona:
-          type: string
-          maxLength: 20
-        goal:
-          type: string
-          maxLength: 100
-        deadline:
-          type: string
-          format: date
-        weekly_time_hours:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        study_routine:
-          type: string
-        background_level:
-          type: string
-          maxLength: 2000
-        self_assessment:
-          nullable: true
-        diagnostic_status:
-          type: string
-          nullable: true
-          maxLength: 20
-        diagnostic_snapshot:
-          nullable: true
-        interests: {}
-        preferences_formats: {}
-        preferences_language:
-          type: string
-          maxLength: 50
-        preferences_accessibility: {}
-        tech_device:
-          type: string
-          maxLength: 100
-        tech_connectivity:
-          type: string
-          maxLength: 100
-        notifications:
-          type: string
-          maxLength: 100
-        consent_lgpd:
-          type: boolean
-        materials:
-          type: array
-          items:
-            type: string
-            format: uuid
-      required:
-      - background_level
-      - deadline
-      - goal
-      - notifications
-      - persona
-      - preferences_language
-      - study_routine
-      - tech_connectivity
-      - tech_device
-      - weekly_time_hours
     UserRead:
       type: object
       properties:
