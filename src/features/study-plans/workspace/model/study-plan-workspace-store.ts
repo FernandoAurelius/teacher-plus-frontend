@@ -260,8 +260,9 @@ export const useStudyPlanWorkspaceStore = defineStore('studyPlanWorkspace', () =
         notes: payload.notes,
         payload: payload.payload,
       }
-      const response = await client.updateStudyTaskProgress(
-        { body, params: { task_id: taskId } },
+      console.log('Atualizando tarefa', taskId, body)
+      const response = await client.updateStudyTaskProgress(body,
+        { params: { task_id: taskId } },
       )
       toast.success('Tarefa atualizada', {
         description: 'Sincronizamos o status com o plano.',
@@ -282,12 +283,17 @@ export const useStudyPlanWorkspaceStore = defineStore('studyPlanWorkspace', () =
     uploadingMaterial.value = true
     uploadMessage.value = ''
     try {
-      const response = await client.uploadStudyPlanMaterial(formData, { params: { plan_id: planId.value } })
+      // usa axios direto para multipart, mantendo baseURL e credenciais do client
+      const http = (client as any).axiosInstance ?? client
+      const { data } = await http.post(`/api/ai/study-plans/${planId.value}/materials/`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
       uploadMessage.value = 'Processando material...'
-      jobMonitor.start(response.job_id)
+      const jobId = (data as any)?.job_id
+      if (jobId) jobMonitor.start(jobId)
     } catch (error) {
       console.error('Erro ao enviar material', error)
-      uploadMessage.value = 'Não conseguimos processar o arquivo.'
+      uploadMessage.value = 'Nao conseguimos processar o arquivo.'
       toast.error('Falha no upload', { description: uploadMessage.value })
     } finally {
       uploadingMaterial.value = false

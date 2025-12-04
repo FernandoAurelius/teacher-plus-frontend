@@ -28,8 +28,8 @@ const statusMetaMap: Record<ContentBlockStatus, ContentBlockMeta> = {
   ready: { label: "Pronto", tone: "info" },
   in_progress: { label: "Em andamento", tone: "info" },
   review: { label: "Revisar", tone: "warning" },
-  done: { label: "Concluido", tone: "success" },
-  completed: { label: "Concluido", tone: "success" },
+  done: { label: "Concluído", tone: "success" },
+  completed: { label: "Concluído", tone: "success" },
   blocked: { label: "Bloqueado", tone: "danger" },
 }
 
