@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStudyPlanWorkspaceStore } from '../model/study-plan-workspace-store'
 import { Button } from '@/shared/ui/button'
@@ -11,19 +11,12 @@ import {
   Sparkles,
   UploadCloud,
   AlertTriangle,
-  PlusCircle,
-  Clock,
-  BookCopy,
 } from 'lucide-vue-next'
-import type { StudyTask } from '@/entities/study-plan'
-import StudyTaskCard from './study-task-card.vue'
 import StudyRoadmap from './study-roadmap.vue'
-import DayTaskModal from './day-task-modal.vue'
 
 const store = useStudyPlanWorkspaceStore()
 const route = useRoute()
 const router = useRouter()
-const dayModalOpen = ref(false)
 
 const planId = computed(() => route.params.planId as string | undefined)
 
@@ -52,25 +45,9 @@ const handleUploadMaterial = (event: Event) => {
   void store.uploadMaterial(formData)
 }
 
-const taskIcon = (task: StudyTask) => {
-  switch (task.task_type) {
-    case 'lesson':
-      return BookCopy
-    case 'practice':
-    case 'assessment':
-      return Sparkles
-    default:
-      return Clock
-  }
-}
-
-const handleTaskComplete = (task: StudyTask, payload: any) => {
-  void store.updateTaskProgress(task.id, payload)
-}
-
 const handleSelectDay = (dayId: string) => {
-  store.selectDay(dayId)
-  dayModalOpen.value = true
+  if (!planId.value) return
+  router.push(`/portal/${planId.value}/day/${dayId}`)
 }
 
 const handleGenerateDay = (weekId?: string | null) => {
@@ -164,15 +141,7 @@ const handleGenerateDay = (weekId?: string | null) => {
           @select="handleSelectDay"
           @generate="handleGenerateDay"
         />
-
       </div>
-
-      <DayTaskModal
-        :open="dayModalOpen"
-        :day="store.activeDay"
-        @update:open="(value) => (dayModalOpen = value)"
-        @complete="(task, payload) => handleTaskComplete(task, payload)"
-      />
     </div>
   </section>
 </template>

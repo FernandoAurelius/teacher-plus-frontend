@@ -1,12 +1,20 @@
 import type { WizardFormValues } from './validation'
+import type { WizardFormValues } from './validation'
 import { schemas } from '@/shared/api/schemas'
 
 type UserContextPayload = typeof schemas.UserContext._type
 
-export function mapUserContext(values: WizardFormValues): UserContextPayload {
-  const weeklyHours = Number.isFinite(Number(values.weekly_time_hours))
-    ? Math.min(Math.max(Number(values.weekly_time_hours), 0), 60)
-    : 0
+const safeString = (value: unknown, fallback = '') =>
+  typeof value === 'string' ? value.trim() : fallback
+
+const safeNumber = (value: unknown, fallback = 0) => {
+  const parsed = Number(value)
+  return Number.isFinite(parsed) ? parsed : fallback
+}
+
+export function mapUserContext(values: Partial<WizardFormValues>): UserContextPayload {
+  const weeklyHoursRaw = safeNumber(values.weekly_time_hours, 0)
+  const weeklyHours = Math.min(Math.max(weeklyHoursRaw, 0), 60)
 
   const sanitizeStringArray = (input?: string[]) =>
     (input ?? []).map((item) => item.trim()).filter(Boolean)
@@ -14,24 +22,24 @@ export function mapUserContext(values: WizardFormValues): UserContextPayload {
   console.log('[wizard] mapUserContext input', values)
 
   return {
-    persona: values.persona.trim(),
-    goal: values.goal.trim(),
-    deadline: values.deadline.trim(),
+    persona: safeString(values.persona),
+    goal: safeString(values.goal),
+    deadline: safeString(values.deadline),
     weekly_time_hours: weeklyHours,
-    study_routine: values.study_routine.trim(),
-    background_level: values.background_level.trim(),
-    background_institution_type: values.background_institution_type.trim(),
+    study_routine: safeString(values.study_routine),
+    background_level: safeString(values.background_level),
+    background_institution_type: safeString(values.background_institution_type),
     self_assessment: undefined,
     diagnostic_status: 'pending',
     diagnostic_snapshot: undefined,
     interests: sanitizeStringArray(values.interests),
     preferences_formats: sanitizeStringArray(values.preferences_formats),
-    preferences_language: values.preferences_language || 'pt-BR',
+    preferences_language: safeString(values.preferences_language, 'pt-BR') || 'pt-BR',
     preferences_accessibility: sanitizeStringArray(values.preferences_accessibility),
-    tech_device: values.tech_device.trim(),
-    tech_connectivity: values.tech_connectivity.trim(),
-    notifications: values.notifications.trim(),
-    consent_lgpd: values.consent_lgpd,
+    tech_device: safeString(values.tech_device),
+    tech_connectivity: safeString(values.tech_connectivity),
+    notifications: safeString(values.notifications),
+    consent_lgpd: Boolean(values.consent_lgpd),
     materials: undefined,
   }
 }

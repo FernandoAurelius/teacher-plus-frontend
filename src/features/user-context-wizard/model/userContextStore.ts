@@ -86,9 +86,11 @@ export const useUserContextWizardStore = defineStore('userContextWizard', () => 
     isSubmitting.value = true
     if (values) mergeValues(values)
     try {
-      const payload = mapUserContext(data.value)
+      const merged = { ...defaultWizardValues, ...data.value, ...(values ?? {}) }
+      const payload = mapUserContext(merged)
       console.log('[wizard] submit payload', payload)
-      await client.updateUserContext(payload)
+      const response = await client.upsertStudyContext(payload)
+      console.log('[wizard] submit response', response)
       submittedAt.value = new Date()
       clearDraft()
       return true

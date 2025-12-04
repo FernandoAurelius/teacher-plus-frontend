@@ -6,6 +6,7 @@ import SignupPage from '@/pages/auth/SignupPage.vue'
 import LogoutPage from '@/pages/auth/LogoutPage.vue'
 import PortalDashboardPage from '@/pages/portal/PortalDashboardPage.vue'
 import PlanWorkspacePage from '@/pages/portal/PlanWorkspacePage.vue'
+import StudyDayPage from '@/pages/portal/StudyDayPage.vue'
 import { useAuthStore } from '@/features/auth/model/store'
 
 const router = createRouter({
@@ -17,6 +18,11 @@ const router = createRouter({
     { path: '/logout', component: LogoutPage, meta: { requiresAuth: true } },
     { path: '/wizard', component: WizardPage, meta: { requiresAuth: true } },
     { path: '/portal', component: PortalDashboardPage, meta: { requiresAuth: true, bgIcons: false } },
+    {
+      path: '/portal/:planId/day/:dayId',
+      component: StudyDayPage,
+      meta: { requiresAuth: true, bgIcons: false },
+    },
     { path: '/portal/:planId', component: PlanWorkspacePage, meta: { requiresAuth: true, bgIcons: false } },
   ],
 })

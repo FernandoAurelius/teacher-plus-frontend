@@ -35,6 +35,16 @@ export const useStudyPlanWorkspaceStore = defineStore('studyPlanWorkspace', () =
   })
 
   const planId = computed(() => plan.value?.id ?? localStorage.getItem(STORAGE_KEY) ?? null)
+
+  const requirePlanId = () => {
+    const id = planId.value
+    if (!id) {
+      errorMessage.value = 'Nenhum plano selecionado.'
+      toast.error('Nenhum plano selecionado. Abra um plano e tente novamente.')
+      return null
+    }
+    return id
+  }
   const weeks = computed(() => {
     if (plan.value?.weeks?.length) {
       return mapWeeks(plan.value.weeks)
@@ -146,17 +156,29 @@ export const useStudyPlanWorkspaceStore = defineStore('studyPlanWorkspace', () =
     }
   }
 
+  const loadDay = async (planIdValue: string, dayId: string) => {
+    await loadPlan(planIdValue)
+    const targetDay = days.value.find((current) => current.id === dayId)
+    if (targetDay) {
+      selectDay(dayId)
+      return targetDay
+    }
+    errorMessage.value = 'Dia nao encontrado para este plano.'
+    return null
+  }
+
   const setActiveTask = (taskId: string | null) => {
     activeTaskId.value = taskId
   }
 
   const extendDay = async (day: StudyDay) => {
-    if (!planId.value) return
+    const id = requirePlanId()
+    if (!id) return
     extendingDayId.value = day.id
     try {
       const response = await client.generateSectionTasks(
         { section_id: day.section_id },
-        { params: { plan_id: planId.value } },
+        { params: { plan_id: id } },
       )
       if (response.job_id) {
         jobMonitor.start(response.job_id)
@@ -173,11 +195,13 @@ export const useStudyPlanWorkspaceStore = defineStore('studyPlanWorkspace', () =
   }
 
   const generateDay = async (dayId: string) => {
-    if (!planId.value) return
+    const id = requirePlanId()
+    if (!id) return
     generatingDayId.value = dayId
     try {
       const response = await client.generateStudyDay(
-        { body: { reset_existing: false }, params: { day_id: dayId, plan_id: planId.value } },
+        { reset_existing: false },
+        { params: { plan_id: id, day_id: dayId } }
       )
       if (response.job_id) {
         jobMonitor.start(response.job_id)
@@ -194,17 +218,18 @@ export const useStudyPlanWorkspaceStore = defineStore('studyPlanWorkspace', () =
   }
 
   const createDay = async (weekId?: string | null) => {
-    if (!planId.value) return
+    const id = requirePlanId()
+    if (!id) return
     creatingDay.value = true
     try {
       const response = await client.createStudyPlanDay(
-        { body: { week_id: weekId ?? null, auto_generate: true }, params: { plan_id: planId.value } },
+        { week_id: weekId ?? null, auto_generate: true }, { params: { plan_id: id } },
       )
       toast.success('Gerando dia sob demanda', {
         description: 'Atualizaremos assim que as tarefas ficarem prontas.',
       })
       activeDayId.value = response.day.id
-      await Promise.all([loadPlan(planId.value), loadWeekOverview(planId.value)])
+      await Promise.all([loadPlan(id), loadWeekOverview(id)])
       return response.day
     } catch (error) {
       console.error('Erro ao gerar novo dia', error)
@@ -223,8 +248,14 @@ export const useStudyPlanWorkspaceStore = defineStore('studyPlanWorkspace', () =
   ) => {
     updatingTaskId.value = taskId
     try {
+      const status = (payload as TaskProgressPayload)?.status
+      if (!status) {
+        console.error('updateTaskProgress: status ausente', payload)
+        toast.error('Status da tarefa ausente, tente novamente.')
+        return null
+      }
       const body: TaskProgressPayload = {
-        status: (payload.status as TaskProgressPayload["status"]) ?? "completed",
+        status: status as TaskProgressPayload["status"],
         minutes_spent: payload.minutes_spent ?? 0,
         notes: payload.notes,
         payload: payload.payload,
@@ -295,6 +326,7 @@ export const useStudyPlanWorkspaceStore = defineStore('studyPlanWorkspace', () =
     loadWeekOverview,
     selectWeek,
     selectDay,
+    loadDay,
     extendDay,
     generateDay,
     createDay,

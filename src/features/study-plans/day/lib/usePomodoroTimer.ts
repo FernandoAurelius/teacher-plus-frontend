@@ -3,7 +3,7 @@
  * Mantem modo, segundos restantes e estado de execucao sem depender do componente.
  */
 import { computed, unref, watch } from 'vue'
-import { useIntervalFn, useStorage } from '@vueuse/core'
+import { useIntervalFn, useStorage, type MaybeRef } from '@vueuse/core'
 
 type PomodoroMode = 'focus' | 'break'
 
@@ -22,7 +22,7 @@ const buildState = (mode: PomodoroMode = 'focus'): PomodoroState => ({
   isRunning: false,
 })
 
-export function usePomodoroTimer(dayId: string | null | undefined) {
+export function usePomodoroTimer(dayId: MaybeRef<string | null | undefined>) {
   const storageKey = computed(() => `tp_pomodoro_${unref(dayId) ?? 'unknown'}`)
   const state = useStorage<PomodoroState>(storageKey, () => buildState(), undefined, {
     mergeDefaults: true,
